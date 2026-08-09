@@ -946,6 +946,79 @@ td small { display: block; color: var(--muted); font-size: 12.5px; line-height: 
   border: 1px solid var(--text);
 }
 .btn-dark:hover { opacity: .87; }
+
+/* 主下载按钮：比其他按钮再重一档，整个页面只有这一个是这个分量 */
+.btn-dl { padding: 14px 26px; font-size: 15.5px; }
+.btn-dl svg { flex: none; }
+.btn-meta {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 500;
+  opacity: .62;
+  padding-left: 10px;
+  margin-left: 2px;
+  border-left: 1px solid currentColor;
+  font-variant-numeric: tabular-nums;
+}
+.dl-sub {
+  margin: 14px 0 0;
+  font-size: 13.5px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+.dl-sub a { color: var(--beam); text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--beam) 40%, transparent); }
+.dl-sub a:hover { border-bottom-color: var(--beam); }
+
+/* 首次打开的步骤。用有序列表是因为顺序真的有意义 ——
+   第 1 步不做，第 3 步那个按钮根本不会出现。 */
+.steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+  display: grid;
+  gap: 10px;
+}
+.steps li {
+  counter-increment: step;
+  position: relative;
+  padding-left: 34px;
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--text-dim);
+}
+.steps li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 1px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--beam);
+  color: var(--beam-ink);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  display: grid;
+  place-items: center;
+}
+.steps b { color: var(--text); font-weight: 620; }
+
+.adv { margin-top: 18px; border-top: 1px dashed var(--line); padding-top: 14px; }
+.adv summary {
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--muted);
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.adv summary::-webkit-details-marker { display: none; }
+.adv summary::before { content: "▸"; font-size: 10px; transition: transform .18s ease; }
+.adv[open] summary::before { transform: rotate(90deg); }
+.adv summary:hover { color: var(--text); }
 .btn-line { border-color: var(--line); color: var(--text); }
 .btn-line:hover { border-color: var(--beam); background: var(--beam-glow); }
 .btn[aria-disabled="true"] { opacity: .5; cursor: not-allowed; pointer-events: none; }
@@ -1395,7 +1468,7 @@ cd Tools/livewall-import &amp;&amp; swift build -c release
     <div class="rail"><span class="rail-num">09</span><span>拿到手</span></div>
     <div>
       <h2 class="sec-h rise">现在开始用。商店版也在路上。</h2>
-      <p class="sec-p rise">Beta 构建通过 GitHub Releases 发布，直接下载压缩包、拖进「应用程序」就能用。没有安装器，没有捆绑，没有来路不明的下载站。</p>
+      <p class="sec-p rise">点下面的按钮直接开始下载，得到一个 <code>.dmg</code>，打开后把图标拖进「应用程序」就装好了。没有捆绑，没有推广插件，没有来路不明的下载站。</p>
 
       <div class="status-grid rise">
         <div class="status-cell"><span class="k">App 测试</span><span class="v">105</span><span class="n">自动回归通过</span></div>
@@ -1404,10 +1477,23 @@ cd Tools/livewall-import &amp;&amp; swift build -c release
         <div class="status-cell"><span class="k">系统要求</span><span class="v">macOS 14+</span><span class="n">Apple 芯片与 Intel</span></div>
       </div>
 
+      <!-- /releases/latest/download/<文件名> 永远指向最新一次发布。
+           所以打包脚本里的文件名不带版本号 —— 否则每发一版都要回来改这个链接。 -->
       <div class="btn-row rise">
-        <a class="btn btn-dark" href="https://github.com/futurebackrookie/livewall-site/releases" target="_blank" rel="noopener">下载 Beta 构建</a>
+        <a class="btn btn-dark btn-dl" href="https://github.com/futurebackrookie/livewall-site/releases/latest/download/LiveWall.dmg">
+          <svg width="17" height="17" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M8 1.6v8.2m0 0L4.7 6.5M8 9.8l3.3-3.3M2.2 11.6v1.3a1.5 1.5 0 0 0 1.5 1.5h8.6a1.5 1.5 0 0 0 1.5-1.5v-1.3"
+                  stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          下载 LiveWall
+          <span class="btn-meta">dmg · 3.6 MB</span>
+        </a>
         <a class="btn btn-line" href="https://github.com/futurebackrookie/livewall-catalog" target="_blank" rel="noopener">浏览壁纸目录</a>
       </div>
+      <p class="dl-sub rise">
+        通用版本，Apple 芯片与 Intel 都能跑，需要 macOS 14 或更高。
+        <a href="https://github.com/futurebackrookie/livewall-site/releases" target="_blank" rel="noopener">查看全部版本与校验和</a>
+      </p>
 
       <!-- 首次打开的说明必须显眼。没有公证的 app 会被 Gatekeeper 拦下，
            不写清楚的话大部分人会以为软件坏了，直接删掉走人。 -->
@@ -1417,23 +1503,28 @@ cd Tools/livewall-import &amp;&amp; swift build -c release
           第一次打开会被系统拦下 —— 这是正常的
         </div>
         <div class="panel-body" style="padding:18px 20px">
-          <p class="sec-p" style="margin:0 0 16px;max-width:none">
-            LiveWall 目前<strong>没有经过 Apple 公证</strong>，所以从浏览器下载后，macOS 会提示
-            「无法验证开发者」并拒绝打开。这不代表软件有问题，只代表它还没交过 Apple 的年费。
-            解除方式二选一：
+          <p class="sec-p" style="margin:0 0 18px;max-width:none">
+            LiveWall 还<strong>没有经过 Apple 公证</strong> —— 公证要一个 Apple 开发者付费账号，
+            目前还没有。所以第一次启动会被系统拦下，提示「无法验证开发者」。
+            这不代表软件有问题。<strong>全程点鼠标，不用开终端</strong>，做一次就好：
           </p>
-          <div class="gov-list">
-            <div class="gov-item">
-              <b>图形界面</b>
-              <span>双击 LiveWall 被拒绝之后，打开「系统设置 → 隐私与安全性」，
-                    下拉到「安全性」，会看到刚才那次拦截记录，点<strong>「仍要打开」</strong>。只需做一次。</span>
-            </div>
-            <div class="gov-item">
-              <b>终端一行</b>
-              <span>把 app 拖进「应用程序」后执行下面这条，移除下载隔离标记，之后正常双击即可。</span>
-            </div>
-          </div>
-          <div class="code" style="margin-top:14px">xattr -d com.apple.quarantine /Applications/LiveWall.app</div>
+
+          <ol class="steps">
+            <li><b>双击 LiveWall，让它被拒绝一次。</b>这一步不能跳 —— 系统要先记下这次拦截，
+                后面那个「仍要打开」的按钮才会出现。</li>
+            <li>打开<b>「系统设置」→「隐私与安全性」</b>。</li>
+            <li>往下拉到<b>「安全性」</b>那一栏，会看到一行「已阻止使用 LiveWall」。</li>
+            <li>点它右边的<b>「仍要打开」</b>，再确认一次。</li>
+          </ol>
+
+          <p class="sec-p" style="margin:16px 0 0;max-width:none">
+            之后正常双击就能开，不会再问。同样的说明也放在 dmg 里的「请先读我.txt」中。
+          </p>
+
+          <details class="adv">
+            <summary>习惯用终端的话，一行也行</summary>
+            <div class="code" style="margin:12px 0 0">xattr -d com.apple.quarantine /Applications/LiveWall.app</div>
+          </details>
         </div>
       </div>
 
