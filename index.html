@@ -1,0 +1,1963 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LiveWall — macOS 动态壁纸</title>
+<meta name="description" content="视频、WebGL、分层视差壁纸，跑在 macOS 桌面图标之下。为 Mac 从头写的动态壁纸应用。">
+<meta name="theme-color" content="#08070E" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#F2F1F7" media="(prefers-color-scheme: light)">
+<link rel="canonical" href="https://futurebackrookie.github.io/livewall-site/">
+<meta property="og:title" content="LiveWall — macOS 动态壁纸">
+<meta property="og:description" content="让视频、WebGL 和分层壁纸真正跑在你的 Mac 桌面图标之下。">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:url" content="https://futurebackrookie.github.io/livewall-site/">
+<meta property="og:image" content="https://futurebackrookie.github.io/livewall-site/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="LiveWall — macOS 动态壁纸">
+<meta name="twitter:description" content="为 Mac 从头写的动态壁纸应用。">
+<meta name="twitter:image" content="https://futurebackrookie.github.io/livewall-site/og-cover.png">
+<link rel="icon" type="image/png" href="icon.png">
+<link rel="apple-touch-icon" href="icon.png">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"LiveWall","applicationCategory":"UtilitiesApplication","operatingSystem":"macOS 14 or later","description":"Native macOS live wallpaper app for video, WebGL and layered wallpapers.","softwareVersion":"Beta","downloadUrl":"https://github.com/futurebackrookie/LiveWall/releases","codeRepository":"https://github.com/futurebackrookie/LiveWall"}
+</script>
+</head>
+<body>
+
+<style>
+/* ===========================================================
+   LiveWall 官网
+   设计语言：暗房里的显示器。界面用偏紫近黑 + 单一青色强调；
+   RGB 三色只在「子像素」概念处出现（标题色差 / 频谱 / 类型标签）。
+   浅色主题 = 白天的桌面，对应 app 自己的日出日落功能。
+   字体用 app 自己渲染用的那套：SF Pro / 苹方 / SF Mono。
+   =========================================================== */
+
+/* --- 令牌：浅色（白天）为基准 --- */
+:root {
+  --ink:        #F2F1F7;
+  --surface:    #FFFFFF;
+  --surface-2:  #E9E7F1;
+  --line:       #D6D2E3;
+  --line-soft:  #E6E3EF;
+  --text:       #151221;
+  --text-dim:   #4A4360;
+  --muted:      #6E6786;
+  --beam:       #0B7D96;
+  --beam-ink:   #FFFFFF;
+  --beam-glow:  rgba(11,125,150,.14);
+  --sub-r:      #D6265C;
+  --sub-g:      #0E8F5E;
+  --sub-b:      #3B54D6;
+  --shadow:     0 1px 2px rgba(21,18,33,.06), 0 8px 24px rgba(21,18,33,.07);
+  --shadow-lg:  0 2px 4px rgba(21,18,33,.06), 0 24px 60px rgba(21,18,33,.13);
+
+  --font-ui: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC",
+             "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC",
+             "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  --font-mono: "SF Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --gutter: clamp(20px, 5vw, 72px);
+  --rail: 132px;
+  --maxw: 1240px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink:        #08070E;
+    --surface:    #14111F;
+    --surface-2:  #1C1830;
+    --line:       #2A2438;
+    --line-soft:  #201B2E;
+    --text:       #ECE9F5;
+    --text-dim:   #B5AECB;
+    --muted:      #8E88A6;
+    --beam:       #7CE0F5;
+    --beam-ink:   #05161C;
+    --beam-glow:  rgba(124,224,245,.13);
+    --sub-r:      #FF5C8A;
+    --sub-g:      #6BF0B4;
+    --sub-b:      #8AA2FF;
+    --shadow:     0 1px 2px rgba(0,0,0,.5), 0 10px 30px rgba(0,0,0,.45);
+    --shadow-lg:  0 2px 6px rgba(0,0,0,.5), 0 30px 70px rgba(0,0,0,.6);
+  }
+}
+
+/* 阅读器主题开关必须双向压过媒体查询 */
+:root[data-theme="light"] {
+  --ink:#F2F1F7; --surface:#FFFFFF; --surface-2:#E9E7F1; --line:#D6D2E3; --line-soft:#E6E3EF;
+  --text:#151221; --text-dim:#4A4360; --muted:#6E6786;
+  --beam:#0B7D96; --beam-ink:#FFFFFF; --beam-glow:rgba(11,125,150,.14);
+  --sub-r:#D6265C; --sub-g:#0E8F5E; --sub-b:#3B54D6;
+  --shadow:0 1px 2px rgba(21,18,33,.06), 0 8px 24px rgba(21,18,33,.07);
+  --shadow-lg:0 2px 4px rgba(21,18,33,.06), 0 24px 60px rgba(21,18,33,.13);
+}
+:root[data-theme="dark"] {
+  --ink:#08070E; --surface:#14111F; --surface-2:#1C1830; --line:#2A2438; --line-soft:#201B2E;
+  --text:#ECE9F5; --text-dim:#B5AECB; --muted:#8E88A6;
+  --beam:#7CE0F5; --beam-ink:#05161C; --beam-glow:rgba(124,224,245,.13);
+  --sub-r:#FF5C8A; --sub-g:#6BF0B4; --sub-b:#8AA2FF;
+  --shadow:0 1px 2px rgba(0,0,0,.5), 0 10px 30px rgba(0,0,0,.45);
+  --shadow-lg:0 2px 6px rgba(0,0,0,.5), 0 30px 70px rgba(0,0,0,.6);
+}
+
+/* --- 基础 --- */
+* { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 1.75;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a { color: inherit; }
+
+.skip-link {
+  position: fixed;
+  z-index: 200;
+  left: 16px;
+  top: -60px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--text);
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 650;
+  text-decoration: none;
+  transition: top .15s ease;
+}
+.skip-link:focus { top: 16px; }
+
+:where(a, button, summary, input, [tabindex]):focus-visible {
+  outline: 2px solid var(--beam);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* 拉丁文显示字：收紧字距。中文不收，收了发挤 */
+.lat { font-family: var(--font-display); letter-spacing: -.035em; }
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+.wrap {
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* ===========================================================
+   导航
+   =========================================================== */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  background: color-mix(in srgb, var(--ink) 78%, transparent);
+  backdrop-filter: saturate(180%) blur(24px);
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+  border-bottom: 1px solid transparent;
+  transition: border-color .3s ease, background .3s ease;
+}
+.nav[data-stuck="true"] { border-bottom-color: var(--line); }
+
+.nav-in {
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding: 13px var(--gutter);
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  font-weight: 650;
+  font-size: 16.5px;
+  letter-spacing: -.02em;
+  font-family: var(--font-display);
+  margin-right: auto;
+}
+.brand-mark { width: 22px; height: 22px; display: block; flex: none; }
+
+.nav-links { display: flex; gap: 26px; }
+.nav-links a {
+  text-decoration: none;
+  font-size: 13.5px;
+  color: var(--muted);
+  transition: color .18s ease;
+}
+.nav-links a:hover { color: var(--text); }
+@media (max-width: 860px) { .nav-links { display: none; } }
+
+.nav-cta {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 7px 15px;
+  border-radius: 100px;
+  text-decoration: none;
+  border: 1px solid var(--line);
+  color: var(--text);
+  white-space: nowrap;
+  transition: border-color .18s ease, background .18s ease;
+}
+.nav-cta:hover { border-color: var(--beam); background: var(--beam-glow); }
+
+/* ===========================================================
+   首屏：真的在跑的壁纸 + 覆在上面的标题
+   =========================================================== */
+.hero {
+  position: relative;
+  min-height: min(94svh, 900px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* 画布世界永远是深色的 —— 显示器在什么房间里都是深色的 */
+#stage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: #0A0616;
+  z-index: -2;
+}
+
+.hero-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(to top, var(--ink) 2%, color-mix(in srgb, var(--ink) 55%, transparent) 32%, transparent 62%),
+    linear-gradient(to right, rgba(6,3,14,.72), rgba(6,3,14,.15) 55%, transparent);
+  pointer-events: none;
+}
+
+.hero-body {
+  position: relative;
+  /* 只能写 padding-block。用 padding 简写会把 .wrap 的 padding-inline 清零
+     —— 两个都是单类选择器，后写的赢，首屏就整个贴边了。 */
+  padding-block: 128px clamp(30px, 5vw, 58px);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: #B9B0D8;
+  margin-bottom: 26px;
+}
+.eyebrow::before {
+  content: "";
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #6BF0B4;
+  box-shadow: 0 0 0 3px rgba(107,240,180,.18);
+  animation: pulse 2.6s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+
+h1.hero-h {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(38px, 7.2vw, 92px);
+  line-height: 1.04;
+  margin: 0 0 22px;
+  color: #FFFFFF;
+  text-wrap: balance;
+  max-width: 16em;
+}
+
+/* 子像素色差：凑近看屏幕就是这个样子。加载后收拢 */
+.split { position: relative; display: inline-block; }
+.split::before, .split::after {
+  content: attr(data-t);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.split::before { color: #FF3B7B; mix-blend-mode: screen; animation: split-r 1.5s cubic-bezier(.2,.8,.2,1) forwards; }
+.split::after  { color: #35D6FF; mix-blend-mode: screen; animation: split-b 1.5s cubic-bezier(.2,.8,.2,1) forwards; }
+@keyframes split-r { from { transform: translate3d(-13px,4px,0); opacity: .95; } to { transform: none; opacity: 0; } }
+@keyframes split-b { from { transform: translate3d(13px,-4px,0); opacity: .95; } to { transform: none; opacity: 0; } }
+
+.hero-sub {
+  font-size: clamp(15.5px, 1.6vw, 18.5px);
+  line-height: 1.72;
+  color: #CFC7E6;
+  max-width: 32em;
+  margin: 0 0 34px;
+}
+.hero-sub strong { color: #FFFFFF; font-weight: 600; }
+
+.btn-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 12px 24px;
+  border-radius: 100px;
+  font-size: 14.5px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: transform .16s ease, background .18s ease, border-color .18s ease;
+}
+.btn:active { transform: translateY(1px); }
+.btn-primary { background: #FFFFFF; color: #0B0714; }
+.btn-primary:hover { background: #E4DFF4; }
+.btn-ghost {
+  background: rgba(255,255,255,.07);
+  border-color: rgba(255,255,255,.22);
+  color: #FFFFFF;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.btn-ghost:hover { background: rgba(255,255,255,.15); }
+
+/* 首屏底部：播放列表切场景 —— 这就是 app 里的播放列表 */
+.playlist {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 22px 0 0;
+  margin-top: 40px;
+  border-top: 1px solid rgba(255,255,255,.13);
+}
+.playlist-label {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: #948AB8;
+  margin-right: 8px;
+}
+.chip {
+  font-family: var(--font-ui);
+  font-size: 12.5px;
+  padding: 6px 14px;
+  border-radius: 100px;
+  border: 1px solid rgba(255,255,255,.2);
+  background: rgba(255,255,255,.05);
+  color: #D6CFEA;
+  cursor: pointer;
+  transition: background .18s ease, border-color .18s ease, color .18s ease;
+}
+.chip:hover { background: rgba(255,255,255,.14); color: #FFFFFF; }
+.chip[aria-pressed="true"] {
+  background: #FFFFFF;
+  border-color: #FFFFFF;
+  color: #0B0714;
+  font-weight: 600;
+}
+.hint {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #7E759F;
+  margin-left: auto;
+}
+@media (max-width: 700px) { .hint { display: none; } }
+
+.hero-proof {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin-top: 20px;
+  color: #AFA7C5;
+  font-size: 12px;
+}
+.hero-proof span { display: inline-flex; align-items: center; gap: 7px; }
+.hero-proof span::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: #6BF0B4; }
+.hero-proof span:nth-child(2)::before { background: #7CE0F5; }
+.hero-proof span:nth-child(3)::before { background: #FF5C8A; }
+
+/* ===========================================================
+   分节骨架：左侧 mono 竖标签作轴，内容偏左
+   =========================================================== */
+.sec { padding: clamp(72px, 9vw, 132px) 0; border-top: 1px solid var(--line-soft); }
+.sec:first-of-type { border-top: none; }
+
+.sec-grid {
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  display: grid;
+  grid-template-columns: var(--rail) minmax(0, 1fr);
+  gap: 0 clamp(20px, 4vw, 56px);
+}
+@media (max-width: 900px) { .sec-grid { grid-template-columns: minmax(0, 1fr); } }
+
+.rail {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.rail-num { color: var(--beam); }
+@media (max-width: 900px) {
+  .rail { flex-direction: row; gap: 10px; padding-top: 0; margin-bottom: 18px; }
+}
+
+.sec-h {
+  font-family: var(--font-display);
+  font-weight: 680;
+  font-size: clamp(27px, 3.7vw, 44px);
+  line-height: 1.2;
+  margin: 0 0 18px;
+  text-wrap: balance;
+  max-width: 18em;
+}
+.sec-p {
+  font-size: 16.5px;
+  line-height: 1.8;
+  color: var(--text-dim);
+  max-width: 33em;
+  margin: 0 0 34px;
+}
+.sec-p code {
+  font-family: var(--font-mono);
+  font-size: .88em;
+  background: var(--surface-2);
+  padding: 2px 6px;
+  border-radius: 5px;
+  color: var(--text);
+}
+
+/* ===========================================================
+   § 精选壁纸 —— 一个真的会切场景的预览，而不是四张静态假封面
+   =========================================================== */
+.gallery-showcase {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #090614;
+  box-shadow: var(--shadow-lg);
+}
+.gallery-preview { display: block; width: 100%; aspect-ratio: 16 / 7; min-height: 250px; }
+.gallery-overlay {
+  position: absolute;
+  inset: auto 0 0;
+  padding: clamp(20px, 4vw, 38px);
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 22px;
+  color: #FFF;
+  background: linear-gradient(to top, rgba(4,3,10,.82), rgba(4,3,10,0));
+  pointer-events: none;
+}
+.gallery-kicker { margin: 0 0 5px; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: #9BDDED; }
+.gallery-title { margin: 0; font-family: var(--font-display); font-size: clamp(24px, 3.3vw, 38px); letter-spacing: -.025em; line-height: 1.05; }
+.gallery-meta { margin: 7px 0 0; color: #D4D0E4; font-size: 13px; }
+.live-pill { flex: none; display: inline-flex; align-items: center; gap: 7px; padding: 6px 10px; border: 1px solid rgba(255,255,255,.22); border-radius: 100px; font-family: var(--font-mono); font-size: 10px; letter-spacing: .08em; color: #E7E3F2; background: rgba(12,8,24,.34); backdrop-filter: blur(10px); }
+.live-pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #6BF0B4; box-shadow: 0 0 0 3px rgba(107,240,180,.16); }
+.wall-picker { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
+.wall-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 104px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: var(--surface);
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+  isolation: isolate;
+  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+.wall-card::before { content: ""; position: absolute; inset: 0; z-index: -1; opacity: .84; transition: opacity .18s ease; }
+.wall-card[data-scene="0"]::before { background: radial-gradient(circle at 74% 24%, #74e8e3, transparent 32%), linear-gradient(135deg, #0d274b, #2d6a75 55%, #22234b); }
+.wall-card[data-scene="1"]::before { background: radial-gradient(circle at 70% 20%, #1bb6c1, transparent 30%), linear-gradient(135deg, #06112e, #0b4d63 55%, #083044); }
+.wall-card[data-scene="2"]::before { background: radial-gradient(circle at 65% 20%, #ee55bd, transparent 35%), linear-gradient(135deg, #190b38, #542266 55%, #0d1b5d); }
+.wall-card[data-scene="3"]::before { background: radial-gradient(circle at 70% 25%, #fdbe79, transparent 32%), linear-gradient(135deg, #2b143c, #8e4d5a 54%, #271a50); }
+.wall-card:hover { transform: translateY(-2px); border-color: var(--beam); box-shadow: var(--shadow); }
+.wall-card:hover::before { opacity: 1; }
+.wall-card[aria-pressed="true"] { border-color: #FFF; box-shadow: 0 0 0 2px var(--beam), var(--shadow); }
+.wall-card .kind { display: block; font-family: var(--font-mono); font-size: 10px; letter-spacing: .1em; color: rgba(255,255,255,.72); text-transform: uppercase; }
+.wall-card b { display: block; margin-top: 2px; font-family: var(--font-display); font-size: 18px; color: #FFF; letter-spacing: -.02em; }
+.wall-card small { display: block; margin-top: 5px; color: rgba(255,255,255,.76); font-size: 11px; }
+@media (max-width: 700px) { .wall-picker { grid-template-columns: repeat(2, minmax(0, 1fr)); } .gallery-preview { aspect-ratio: 4 / 3; } .gallery-overlay { align-items: start; flex-direction: column; } }
+
+/* ===========================================================
+   § 三条开始路径 / 信任区
+   =========================================================== */
+.path-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.path-card { display: flex; flex-direction: column; min-height: 292px; padding: 25px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface); box-shadow: var(--shadow); }
+.path-step { font-family: var(--font-mono); color: var(--beam); font-size: 11px; letter-spacing: .14em; }
+.path-card h3 { margin: 18px 0 9px; font-family: var(--font-display); font-size: 22px; line-height: 1.17; letter-spacing: -.02em; }
+.path-card p { margin: 0; color: var(--text-dim); font-size: 14px; line-height: 1.75; }
+.path-card a { margin-top: auto; padding-top: 22px; color: var(--text); font-size: 14px; font-weight: 650; text-decoration: none; }
+.path-card a::after { content: " ↗"; color: var(--beam); }
+.path-card a:hover { color: var(--beam); }
+.trust-grid { display: grid; grid-template-columns: 1.25fr repeat(3, minmax(0, 1fr)); gap: 1px; border: 1px solid var(--line-soft); border-radius: 14px; overflow: hidden; background: var(--line-soft); }
+.trust-card { padding: 22px; background: var(--surface); }
+.trust-card strong { display: block; margin-bottom: 6px; font-family: var(--font-display); font-size: 18px; letter-spacing: -.01em; }
+.trust-card p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.7; }
+.trust-card:first-child { background: var(--surface-2); }
+.trust-card:first-child strong { font-size: 21px; }
+@media (max-width: 840px) { .path-grid { grid-template-columns: 1fr; } .path-card { min-height: 220px; } .trust-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .trust-card:first-child { grid-column: 1 / -1; } }
+@media (max-width: 520px) { .trust-grid { grid-template-columns: 1fr; } .trust-card:first-child { grid-column: auto; } }
+
+/* ===========================================================
+   § 图层 —— 可交互的桌面。整个页面的赌注在这
+   =========================================================== */
+.desk-frame {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-lg);
+  background: #0A0616;
+  aspect-ratio: 16 / 10;
+  container-type: inline-size;
+  user-select: none;
+}
+@media (max-width: 560px) { .desk-frame { aspect-ratio: 4 / 3; } }
+
+#desk-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; z-index: 1; }
+
+/* 菜单栏 */
+.desk-menubar {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 6.5%;
+  min-height: 20px;
+  z-index: 40;
+  background: rgba(12,8,24,.42);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 12px;
+  font-size: clamp(8px, 1.15cqw, 11.5px);
+  color: rgba(255,255,255,.9);
+}
+.desk-menubar b { font-weight: 650; }
+.desk-menubar span { color: rgba(255,255,255,.62); }
+.desk-menubar .right { margin-left: auto; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+/* 图标层：z-index 由 JS 在 20 / 2 之间切 —— 就是 app 的 coversDesktopIcons */
+.desk-icons {
+  position: absolute;
+  top: 11%; right: 3%;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 1.8cqw, 20px);
+  align-items: center;
+  transition: opacity .35s ease;
+}
+.desk-icons[data-under="true"] { z-index: 2; }
+
+.dicon { display: flex; flex-direction: column; align-items: center; gap: 5px; width: clamp(44px, 8cqw, 76px); }
+.dicon svg { width: clamp(28px, 5.2cqw, 50px); height: auto; filter: drop-shadow(0 2px 5px rgba(0,0,0,.45)); }
+.dicon span {
+  font-size: clamp(7px, 1.05cqw, 11px);
+  color: #FFFFFF;
+  text-shadow: 0 1px 3px rgba(0,0,0,.9);
+  line-height: 1.3;
+  text-align: center;
+}
+
+/* 前景窗口 —— 永远在最上面，用来演示遮挡暂停 */
+.desk-window {
+  position: absolute;
+  left: 5%; bottom: 9%;
+  width: min(52%, 430px);
+  z-index: 30;
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgba(24,18,40,.66);
+  backdrop-filter: blur(30px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  border: 1px solid rgba(255,255,255,.14);
+  box-shadow: 0 20px 60px rgba(0,0,0,.6);
+  transition: opacity .4s ease, transform .4s cubic-bezier(.3,.8,.3,1);
+}
+/* 铺满：窗口盖住整块屏幕,于是壁纸没必要再画 */
+.desk-window[data-full="true"] {
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  border-color: transparent;
+  background: rgba(20,15,34,.9);
+}
+.dw-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: clamp(6px, 1.1cqw, 10px) 11px;
+  border-bottom: 1px solid rgba(255,255,255,.09);
+}
+.dot { width: clamp(6px,1cqw,10px); height: clamp(6px,1cqw,10px); border-radius: 50%; }
+.dw-title {
+  margin-left: 7px;
+  font-size: clamp(8px, 1.15cqw, 11.5px);
+  color: rgba(255,255,255,.82);
+  font-weight: 600;
+}
+.dw-body { padding: clamp(9px, 1.6cqw, 16px); display: grid; gap: clamp(6px,1cqw,10px); }
+.dw-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.dw-row span {
+  font-size: clamp(7.5px, 1.1cqw, 11px);
+  color: rgba(255,255,255,.66);
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+.dw-row span:last-child { color: rgba(255,255,255,.95); }
+.dw-track { height: clamp(3px,.55cqw,5px); border-radius: 100px; background: rgba(255,255,255,.16); overflow: hidden; }
+.dw-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, #35D6FF, #A78BFA); }
+
+/* 白边标注 —— 那个真实修过的 bug */
+.strip-note {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 6.5%;
+  min-height: 20px;
+  z-index: 45;
+  background: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: clamp(7px, 1.05cqw, 10.5px);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #B3103C;
+  opacity: 0;
+  transition: opacity .3s ease;
+  pointer-events: none;
+}
+.strip-note[data-on="true"] { opacity: 1; }
+
+/* 控制条 */
+.desk-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+  align-items: center;
+}
+.switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 15px 9px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  font-size: 13.5px;
+  cursor: pointer;
+  color: var(--text);
+  transition: border-color .18s ease;
+  text-align: left;
+}
+.switch:hover { border-color: var(--beam); }
+.switch-track {
+  width: 34px; height: 20px;
+  border-radius: 100px;
+  background: var(--line);
+  position: relative;
+  flex: none;
+  transition: background .22s ease;
+}
+.switch-knob {
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  box-shadow: 0 1px 3px rgba(0,0,0,.3);
+  transition: transform .22s cubic-bezier(.3,.9,.3,1);
+}
+.switch[aria-pressed="true"] .switch-track { background: var(--beam); }
+.switch[aria-pressed="true"] .switch-knob { transform: translateX(14px); }
+
+.readout {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+  padding: 9px 14px;
+  border-radius: 10px;
+  background: var(--surface-2);
+  border: 1px solid var(--line-soft);
+  margin-left: auto;
+  white-space: nowrap;
+  overflow-x: auto;
+  max-width: 100%;
+}
+.readout b { color: var(--beam); font-weight: 600; }
+@media (max-width: 760px) { .readout { margin-left: 0; width: 100%; } }
+
+/* ===========================================================
+   § 三类渲染器
+   =========================================================== */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--line-soft);
+  border: 1px solid var(--line-soft);
+  border-radius: 14px;
+  overflow: hidden;
+}
+@media (max-width: 940px) {
+  .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .status-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 560px) {
+  .cards { grid-template-columns: minmax(0, 1fr); }
+  .status-grid { grid-template-columns: minmax(0, 1fr); }
+}
+.card {
+  background: var(--surface);
+  padding: 30px 26px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: background .2s ease;
+}
+.card:hover { background: var(--surface-2); }
+.card-kind {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.card-kind::before { content: ""; width: 9px; height: 9px; border-radius: 2px; }
+.card:nth-child(1) .card-kind { color: var(--sub-r); }
+.card:nth-child(1) .card-kind::before { background: var(--sub-r); }
+.card:nth-child(2) .card-kind { color: var(--sub-g); }
+.card:nth-child(2) .card-kind::before { background: var(--sub-g); }
+.card:nth-child(3) .card-kind { color: var(--sub-b); }
+.card:nth-child(3) .card-kind::before { background: var(--sub-b); }
+
+.card h3 {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 650;
+  margin: 0;
+  letter-spacing: -.01em;
+}
+.card p { margin: 0; font-size: 14.5px; line-height: 1.72; color: var(--text-dim); }
+.card .impl {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px dashed var(--line);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--muted);
+  word-break: break-word;
+}
+
+/* ===========================================================
+   § 省电 —— 调速器实时读数，做成调试面板
+   =========================================================== */
+.gov {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: 26px;
+  align-items: start;
+}
+@media (max-width: 900px) { .gov { grid-template-columns: minmax(0, 1fr); } }
+
+.panel {
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: var(--surface);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.panel-head {
+  padding: 12px 17px;
+  border-bottom: 1px solid var(--line-soft);
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: var(--surface-2);
+}
+.panel-body { padding: 8px 0; }
+
+/* 时间与状态同一行，消息独占下一行 —— 两栏布局里这个面板永远是窄的，
+   三者挤一行必然折行。日志本来也是这么排的。 */
+.logline {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 3px 12px;
+  align-items: baseline;
+  padding: 9px 17px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+  border-left: 2px solid transparent;
+  transition: background .2s ease, border-color .2s ease;
+}
+.logline[data-live="true"] { background: var(--beam-glow); border-left-color: var(--beam); }
+.logline .t { color: var(--muted); font-size: 11.5px; grid-column: 1; grid-row: 1; }
+.logline .pill { grid-column: 2; grid-row: 1; justify-self: end; }
+.logline .msg { color: var(--text-dim); grid-column: 1 / -1; grid-row: 2; word-break: break-word; }
+.logline[data-live="true"] .msg { color: var(--text); }
+.pill {
+  font-size: 10.5px;
+  padding: 2px 9px;
+  border-radius: 100px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  white-space: nowrap;
+}
+.pill[data-s="play"]   { background: color-mix(in srgb, var(--sub-g) 20%, transparent); color: var(--sub-g); }
+.pill[data-s="throt"]  { background: color-mix(in srgb, var(--beam) 20%, transparent); color: var(--beam); }
+.pill[data-s="pause"]  { background: color-mix(in srgb, var(--sub-r) 18%, transparent); color: var(--sub-r); }
+
+.gov-list { display: grid; gap: 1px; background: var(--line-soft); border-radius: 13px; overflow: hidden; border: 1px solid var(--line-soft); }
+.gov-item { background: var(--surface); padding: 15px 18px; display: grid; gap: 3px; }
+.gov-item b { font-size: 14.5px; font-weight: 620; letter-spacing: -.005em; }
+.gov-item span { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+/* ===========================================================
+   § 音频 —— 频谱条
+   =========================================================== */
+.spectrum-shell {
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: var(--surface);
+  padding: 22px;
+  box-shadow: var(--shadow);
+}
+.spectrum {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 128px;
+  margin-bottom: 14px;
+}
+.bar {
+  flex: 1;
+  min-width: 0;
+  border-radius: 2px 2px 0 0;
+  background: linear-gradient(to top, var(--sub-b), var(--beam));
+  height: 4%;
+  will-change: height;
+}
+.spectrum-foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  flex-wrap: wrap;
+}
+
+/* ===========================================================
+   § 迁移表
+   =========================================================== */
+.table-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 13px; background: var(--surface); box-shadow: var(--shadow); }
+table { width: 100%; border-collapse: collapse; min-width: 560px; }
+th, td { text-align: left; padding: 13px 18px; border-bottom: 1px solid var(--line-soft); font-size: 14.5px; vertical-align: top; }
+th {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 500;
+  background: var(--surface-2);
+}
+tbody tr:last-child td { border-bottom: none; }
+td:first-child { font-family: var(--font-mono); font-size: 13px; color: var(--text); white-space: nowrap; }
+td .st { font-weight: 600; white-space: nowrap; }
+td .st[data-v="ok"]   { color: var(--sub-g); }
+td .st[data-v="warn"] { color: #C98A00; }
+td .st[data-v="no"]   { color: var(--sub-r); }
+@media (prefers-color-scheme: dark) { td .st[data-v="warn"] { color: #F5C24B; } }
+:root[data-theme="dark"] td .st[data-v="warn"] { color: #F5C24B; }
+:root[data-theme="light"] td .st[data-v="warn"] { color: #C98A00; }
+td small { display: block; color: var(--muted); font-size: 12.5px; line-height: 1.6; margin-top: 2px; }
+
+.code {
+  margin: 26px 0 0;
+  white-space: pre;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  padding: 18px 20px;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.9;
+  color: var(--text-dim);
+  box-shadow: var(--shadow);
+}
+.code .c { color: var(--muted); }
+.code .k { color: var(--beam); }
+
+/* ===========================================================
+   § 拿到手 / 状态
+   =========================================================== */
+.status-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--line-soft);
+  border: 1px solid var(--line-soft);
+  border-radius: 13px;
+  overflow: hidden;
+  margin-bottom: 30px;
+}
+.status-cell { background: var(--surface); padding: 20px; display: grid; gap: 7px; align-content: start; }
+.status-cell .k {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.status-cell .v { font-family: var(--font-display); font-size: 25px; font-weight: 680; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.status-cell .n { font-size: 12.5px; color: var(--muted); line-height: 1.6; }
+
+.btn-dark {
+  background: var(--text);
+  color: var(--ink);
+  border: 1px solid var(--text);
+}
+.btn-dark:hover { opacity: .87; }
+.btn-line { border-color: var(--line); color: var(--text); }
+.btn-line:hover { border-color: var(--beam); background: var(--beam-glow); }
+.btn[aria-disabled="true"] { opacity: .5; cursor: not-allowed; pointer-events: none; }
+
+.note {
+  margin-top: 22px;
+  padding: 15px 18px;
+  border-left: 2px solid var(--beam);
+  background: var(--beam-glow);
+  border-radius: 0 9px 9px 0;
+  font-size: 13.5px;
+  line-height: 1.75;
+  color: var(--text-dim);
+}
+.note b { color: var(--text); }
+
+/* ===========================================================
+   页脚
+   =========================================================== */
+footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
+.foot-in {
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px;
+  align-items: center;
+  font-size: 13px;
+  color: var(--muted);
+}
+.foot-links { display: flex; gap: 22px; margin-left: auto; flex-wrap: wrap; }
+.foot-links a { text-decoration: none; transition: color .18s ease; }
+.foot-links a:hover { color: var(--text); }
+.legal { width: 100%; font-size: 12px; line-height: 1.75; color: var(--muted); border-top: 1px solid var(--line-soft); padding-top: 20px; }
+
+/* 滚动入场 */
+.rise { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.8,.2,1); }
+.rise.in { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+  .rise { opacity: 1; transform: none; }
+}
+</style>
+
+<!-- ============================== 导航 ============================== -->
+<a class="skip-link" href="#main-content">跳到主要内容</a>
+<nav class="nav" id="nav">
+  <div class="nav-in">
+    <a class="brand" href="#top">
+      <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+        <rect x="3"  y="9"  width="26" height="22" rx="6" fill="#FF5C8A" opacity=".85"/>
+        <rect x="7"  y="9"  width="26" height="22" rx="6" fill="#6BF0B4" opacity=".7"  style="mix-blend-mode:screen"/>
+        <rect x="11" y="9"  width="26" height="22" rx="6" fill="#7CE0F5" opacity=".75" style="mix-blend-mode:screen"/>
+      </svg>
+      LiveWall
+    </a>
+    <div class="nav-links">
+      <a href="#gallery">壁纸预览</a>
+      <a href="#layers">Mac 原生</a>
+      <a href="#paths">怎么开始</a>
+      <a href="#trust">隐私与兼容</a>
+      <a href="#get">拿到手</a>
+    </div>
+    <a class="nav-cta" href="#get">下载</a>
+  </div>
+</nav>
+
+<!-- ============================== 首屏 ============================== -->
+<header class="hero" id="top">
+  <canvas id="stage" aria-hidden="true"></canvas>
+  <div class="hero-scrim"></div>
+
+  <div class="hero-body wrap">
+    <p class="eyebrow">正在播放 · 这块背景是实时渲染的</p>
+
+    <h1 class="hero-h">你的 Mac 桌面，<span class="split" data-t="终于">终于</span>活过来了。</h1>
+
+    <p class="hero-sub">
+      视频、WebGL、2.5D 分层视差，跑在 macOS <strong>桌面图标之下</strong>，
+      点击穿透到访达。为 Mac 从头写的 —— 不是套壳网页，不是在后台塞个播放器。
+    </p>
+
+    <div class="btn-row">
+      <a class="btn btn-primary" href="#get">获取 Beta 版</a>
+      <a class="btn btn-ghost" href="#gallery">先看壁纸</a>
+    </div>
+
+    <div class="hero-proof" aria-label="产品能力摘要">
+      <span>macOS 14+ 原生运行</span>
+      <span>视频 · 网页 · 分层壁纸</span>
+      <span>本地优先，不上传壁纸</span>
+    </div>
+
+    <div class="playlist" id="playlist">
+      <span class="playlist-label">播放列表</span>
+      <button class="chip" type="button" data-scene="0" aria-pressed="true">极光</button>
+      <button class="chip" type="button" data-scene="1" aria-pressed="false">深海</button>
+      <button class="chip" type="button" data-scene="2" aria-pressed="false">霓虹</button>
+      <button class="chip" type="button" data-scene="3" aria-pressed="false">黎明</button>
+      <span class="hint" id="hero-hint">移动鼠标 · 视差跟随</span>
+    </div>
+  </div>
+</header>
+
+<main id="main-content" tabindex="-1">
+
+<!-- ============================== § 精选壁纸 ============================== -->
+<section class="sec" id="gallery">
+  <div class="sec-grid">
+    <div class="rail"><span class="rail-num">01</span><span>精选壁纸</span></div>
+    <div>
+      <h2 class="sec-h rise">先挑一张。剩下的，交给你的桌面。</h2>
+      <p class="sec-p rise">
+        这是可操作的实时预览，不是贴了几张宣传图。点一张壁纸，页面会像 LiveWall 一样平滑切换；
+        真正的 App 还能把视频、WebGL 和分层图放到每一块显示器、每一个 Space。
+      </p>
+
+      <div class="gallery-showcase rise" id="gallery-showcase">
+        <canvas class="gallery-preview" id="gallery-preview" aria-label="动态壁纸实时预览"></canvas>
+        <div class="gallery-overlay">
+          <div>
+            <p class="gallery-kicker" id="gallery-kind">WEBGL / 实时预览</p>
+            <h3 class="gallery-title" id="gallery-title">极光信号</h3>
+            <p class="gallery-meta" id="gallery-meta">60 FPS · 鼠标视差 · 可调参数</p>
+          </div>
+          <span class="live-pill">LIVE PREVIEW</span>
+        </div>
+      </div>
+
+      <div class="wall-picker rise" role="group" aria-label="选择预览壁纸">
+        <button class="wall-card" type="button" data-scene="0" aria-pressed="true"><span class="kind">WebGL · 4K</span><b>极光信号</b><small>视差 · 参数可调</small></button>
+        <button class="wall-card" type="button" data-scene="1" aria-pressed="false"><span class="kind">Video · 4K</span><b>深海回声</b><small>无缝循环 · 硬件解码</small></button>
+        <button class="wall-card" type="button" data-scene="2" aria-pressed="false"><span class="kind">WebGL · 4K</span><b>霓虹雨幕</b><small>60 FPS · 低功耗</small></button>
+        <button class="wall-card" type="button" data-scene="3" aria-pressed="false"><span class="kind">Layered · 4K</span><b>黎明之间</b><small>2.5D · 零视频解码</small></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== § 图层 ============================== -->
+<section class="sec" id="layers">
+  <div class="sec-grid">
+    <div class="rail"><span class="rail-num">02</span><span>Mac 原生</span></div>
+    <div>
+      <h2 class="sec-h rise">壁纸得挤进桌面图片和桌面图标中间那一层。</h2>
+      <p class="sec-p rise">
+        macOS 没有「设置动态壁纸」这个 API。真正的做法是把一个无边框窗口的层级钉在
+        <code>CGWindowLevelForKey(.desktopIconWindow) − 1</code> —— 正好在桌面图片之上、
+        图标之下，再让它跟随所有 Space、忽略鼠标事件。
+        下面这块桌面是真的：<strong>扳开关看壁纸穿过图标层</strong>。
+      </p>
+
+      <div class="desk-frame rise" id="desk">
+        <canvas id="desk-canvas" aria-hidden="true"></canvas>
+
+        <div class="strip-note" id="strip" aria-hidden="true">← 曾经的 bug：顶端 122px 白边</div>
+
+        <div class="desk-menubar">
+          <b>访达</b><span>文件</span><span>编辑</span><span>显示</span>
+          <span class="right" id="menu-clock">22:14</span>
+        </div>
+
+        <div class="desk-icons" id="icons" data-under="true">
+          <div class="dicon">
+            <svg viewBox="0 0 48 40" aria-hidden="true">
+              <path d="M2 8a4 4 0 0 1 4-4h12l5 5h19a4 4 0 0 1 4 4v23a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z" fill="#5AA9F5"/>
+              <path d="M2 14h44v19a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z" fill="#7FC1FA"/>
+            </svg>
+            <span>项目</span>
+          </div>
+          <div class="dicon">
+            <svg viewBox="0 0 40 48" aria-hidden="true">
+              <path d="M4 4a3 3 0 0 1 3-3h18l11 11v32a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3z" fill="#F1EEF9"/>
+              <path d="M25 1l11 11H28a3 3 0 0 1-3-3z" fill="#C9C2DE"/>
+              <rect x="10" y="20" width="20" height="2.4" rx="1.2" fill="#B9B1D0"/>
+              <rect x="10" y="27" width="20" height="2.4" rx="1.2" fill="#B9B1D0"/>
+              <rect x="10" y="34" width="13" height="2.4" rx="1.2" fill="#B9B1D0"/>
+            </svg>
+            <span>说明.txt</span>
+          </div>
+        </div>
+
+        <div class="desk-window" id="win">
+          <div class="dw-bar">
+            <span class="dot" style="background:#FF5F57"></span>
+            <span class="dot" style="background:#FEBC2E"></span>
+            <span class="dot" style="background:#28C840"></span>
+            <span class="dw-title">LiveWall</span>
+          </div>
+          <div class="dw-body">
+            <div class="dw-row"><span>渲染器</span><span>WebGL</span></div>
+            <div class="dw-track"><div class="dw-fill" style="width:72%"></div></div>
+            <div class="dw-row"><span>帧率上限</span><span>60 FPS</span></div>
+            <div class="dw-row"><span>显示器</span><span>MSI MD342CQP</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="desk-controls">
+        <button class="switch" id="sw-cover" type="button" aria-pressed="false">
+          <span class="switch-track"><span class="switch-knob"></span></span>
+          壁纸覆盖桌面图标
+        </button>
+        <button class="switch" id="sw-occl" type="button" aria-pressed="false">
+          <span class="switch-track"><span class="switch-knob"></span></span>
+          铺满一个窗口
+        </button>
+        <div class="readout mono" id="layer-readout">level = <b>−2147483628</b> · 图标之下 · 播放中</div>
+      </div>
+
+      <div class="note rise">
+        <b>覆盖图标那个开关走的是 <span class="mono">+2</span>，不是 <span class="mono">+1</span>。</b>
+        图标层再往上一级住着一个 WindowServer 的窗口，占屏幕最顶端约 122px。同层的前后顺序不归我们决定，
+        实测它排在前面 —— 结果就是壁纸顶端被压出一条白边。真机上撞出来的，读代码看不出来。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== § 壁纸类型 ============================== -->
+<section class="sec" id="renderers">
+  <div class="sec-grid">
+    <div class="rail"><span class="rail-num">03</span><span>壁纸类型</span></div>
+    <div>
+      <h2 class="sec-h rise">三条渲染管线，各用各该用的系统框架。</h2>
+      <p class="sec-p rise">
+        不是把什么都塞进一个 WebView 里凑合。视频走硬件解码，网页走 WebKit，图片走 Core Animation ——
+        谁也不为谁的短板买单。
+      </p>
+
+      <div class="cards rise">
+        <div class="card">
+          <span class="card-kind">视频</span>
+          <h3>无缝循环，硬件解码</h3>
+          <p>队列播放器加循环器，接缝处不黑一帧、不卡一下。4K60 交给显卡，CPU 基本闲着。</p>
+          <span class="impl">AVQueuePlayer + AVPlayerLooper</span>
+        </div>
+        <div class="card">
+          <span class="card-kind">网页 / WebGL</span>
+          <h3>着色器壁纸，参数能调</h3>
+          <p>壁纸自己声明的开关、滑块、颜色、选图，全部出现在属性面板里，改完立刻生效。</p>
+          <span class="impl">WKWebView + 本地 http 源</span>
+        </div>
+        <div class="card">
+          <span class="card-kind">图片 / 分层</span>
+          <h3>2.5D 视差，几乎不耗电</h3>
+          <p>几张切好的图各带景深，按鼠标位置错位移动。层间的相对运动就是景深感的来源。</p>
+          <span class="impl">CALayer · depth 0…1</span>
+        </div>
+      </div>
+
+      <div class="code rise">
+<span class="c">// 分层壁纸的全部格式定义，就这么多</span>
+{
+  <span class="k">"layers"</span>: [
+    { <span class="k">"image"</span>: "sky.png",   <span class="k">"depth"</span>: 0.0  },  <span class="c">// 最远，几乎不动</span>
+    { <span class="k">"image"</span>: "hills.png", <span class="k">"depth"</span>: 0.45 },
+    { <span class="k">"image"</span>: "tree.png",  <span class="k">"depth"</span>: 1.0  }   <span class="c">// 最近，动得最多</span>
+  ]
+}</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== § 省电 ============================== -->
+<section class="sec" id="power">
+  <div class="sec-grid">
+    <div class="rail"><span class="rail-num">04</span><span>省电</span></div>
+    <div>
+      <h2 class="sec-h rise">看不见的时候，它一帧都不画。</h2>
+      <p class="sec-p rise">
+        自制壁纸软件和成品的真正差距在这。所有暂停/降频的判断集中在一个调速器里，
+        渲染器自己不做任何决定 —— 于是「壁纸为什么停了」永远只有一个答案，而且写在日志里。
+      </p>
+
+      <div class="gov">
+        <div class="panel rise">
+          <div class="panel-head">
+            <span class="dot" style="background:var(--sub-g)"></span>
+            实时决策 · com.livewall.LiveWall
+          </div>
+          <div class="panel-body" id="govlog"></div>
+        </div>
+
+        <div class="gov-list rise">
+          <div class="gov-item"><b>屏幕被窗口盖满</b><span>收益最大的一项。用窗口列表的前后顺序判断是不是真被完全遮住，默认开启。</span></div>
+          <div class="gov-item"><b>锁屏 / 显示器休眠 / 系统睡眠</b><span>三条系统通知各自对应一个暂停原因，醒来自动恢复。</span></div>
+          <div class="gov-item"><b>低电量模式</b><span>跟随系统开关，用户开省电模式就是想让后台安静。</span></div>
+          <div class="gov-item"><b>用电池供电</b><span>可选暂停，或降到低帧率继续放。</span></div>
+          <div class="gov-item"><b>网页壁纸的帧率上限</b><span>直接接管 <span class="mono">requestAnimationFrame</span> —— 页面绕不过去，不是靠它自觉。</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== § 音频 ============================== -->
+<section class="sec" id="audio">
+  <div class="sec-grid">
+    <div class="rail"><span class="rail-num">05</span><span>音频响应</span></div>
+    <div>
+      <h2 class="sec-h rise">4096 点 FFT，64 段对数分频。</h2>
+      <p class="sec-p rise">
+        采样加 Hann 窗、实数 FFT、对数分频、峰值衰减平滑，拼成 128 个值推给壁纸页面。
+        设置里能选输入设备，旁边就是实时频谱条 —— 让你一眼看出到底有没有信号进来。
+        <strong>默认关闭</strong>，不开就不会弹麦克风权限。
+      </p>
+
+      <div class="spectrum-shell rise">
+        <div class="spectrum" id="spectrum" aria-hidden="true"></div>
+        <div class="spectrum-foot">
+          <span>20 Hz</span><span>200 Hz</span><span>2 kHz</span><span>20 kHz</span>
+        </div>
+      </div>
+
+      <div class="note rise">
+        <b>说实话：macOS 不让应用直接采集系统播放的声音。</b>
+        不装 BlackHole 这类环回声卡，采到的就是麦克风里的环境声，不是你正在放的歌。
+        功能是完整的，但这个前提得你自己满足 —— 这是系统的限制，不是没做完。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== § 迁移 ============================== -->
+<section class="sec" id="import">
+  <div class="sec-grid">
+    <div class="rail"><span class="rail-num">06</span><span>迁移</span></div>
+    <div>
+      <h2 class="sec-h rise">你在 Windows 上攒的那些壁纸，能带过来。</h2>
+      <p class="sec-p rise">
+        命令行转换工具只读你本机已有的文件 —— 不联网、不碰 Steam、不下载任何东西。
+        实测跑过 8 个真实条目、713 MB，转换成功率 8/8。
+      </p>
+
+      <div class="table-scroll rise">
+        <table>
+          <thead>
+            <tr><th>原类型</th><th>结果</th><th>说明</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>video</td>
+              <td><span class="st" data-v="ok">无损转换</span></td>
+              <td>webm / VP9 自动转码成 H.264<small>AVFoundation 不解这两种编码，必须转</small></td>
+            </tr>
+            <tr>
+              <td>web</td>
+              <td><span class="st" data-v="ok">可用</span></td>
+              <td>页面用的那套 JS 接口由兼容层补齐<small>属性监听、随机取文件、音频回调都在</small></td>
+            </tr>
+            <tr>
+              <td>scene</td>
+              <td><span class="st" data-v="warn">部分</span></td>
+              <td>内嵌视频的能自动提取出来<small>纯场景要在 Windows 端先预渲染成视频 —— 原样支持等于重写人家整个渲染器</small></td>
+            </tr>
+            <tr>
+              <td>application</td>
+              <td><span class="st" data-v="no">无解</span></td>
+              <td>Windows 可执行文件<small>这个真没办法</small></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="code rise">
+<span class="c"># 装依赖，编译转换器</span>
+brew install ffmpeg
+cd Tools/livewall-import &amp;&amp; swift build -c release
+
+<span class="c"># 指向你本机的内容目录，输出 .livewall 包</span>
+.build/release/livewall-import &lt;你的路径&gt; -o ~/Desktop/out
+
+<span class="c"># 把 out 里的 .livewall 拖进 LiveWall</span></div>
+
+      <div class="note rise">
+        转换结果供个人使用。<b>原壁纸的版权归各自作者所有</b> —— 工具只是换个封装格式，不改变这一点。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== § 三条开始路径 ============================== -->
+<section class="sec" id="paths">
+  <div class="sec-grid">
+    <div class="rail"><span class="rail-num">07</span><span>怎么开始</span></div>
+    <div>
+      <h2 class="sec-h rise">你从哪来，LiveWall 就从哪开始。</h2>
+      <p class="sec-p rise">
+        第一次换动态壁纸、把 Windows 的收藏带过来，还是自己做作品投稿，入口不该一样。
+        所以官网把三条路分开，而不是把所有人扔进一个 README。
+      </p>
+      <div class="path-grid rise">
+        <article class="path-card">
+          <span class="path-step">01 / 想马上用</span>
+          <h3>挑一张动态壁纸，放进桌面。</h3>
+          <p>从精选目录下载 `.livewall`，拖进 App。视频、图片、网页和分层壁纸各走自己的原生渲染器。</p>
+          <a href="https://github.com/futurebackrookie/livewall-catalog" target="_blank" rel="noopener">浏览精选壁纸</a>
+        </article>
+        <article class="path-card">
+          <span class="path-step">02 / 来自 Windows</span>
+          <h3>带上已有收藏，不必从零开始。</h3>
+          <p>转换器只读取你电脑上已有的项目，不登录 Steam、不下载内容。视频和网页类优先支持，Scene 明确给出预渲染路径。</p>
+          <a href="#import">查看兼容与转换方式</a>
+        </article>
+        <article class="path-card">
+          <span class="path-step">03 / 我是创作者</span>
+          <h3>做一张壁纸，让更多人的桌面动起来。</h3>
+          <p>先从零成本的精选目录投稿：清楚的格式、校验和、版本记录与审核轨迹。真正开放上传前，不把风险甩给创作者。</p>
+          <a href="https://github.com/futurebackrookie/livewall-catalog/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">阅读投稿说明</a>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== § 信任与边界 ============================== -->
+<section class="sec" id="trust">
+  <div class="sec-grid">
+    <div class="rail"><span class="rail-num">08</span><span>透明边界</span></div>
+    <div>
+      <h2 class="sec-h rise">你的桌面不该成为谁的云端素材库。</h2>
+      <p class="sec-p rise">
+        动态壁纸能访问大量本地文件，所以 LiveWall 的默认策略是少拿权限、少留数据、少说大话。
+        能做的明确做到；做不到的明确告诉你。
+      </p>
+      <div class="trust-grid rise">
+        <article class="trust-card"><strong>本地优先。</strong><p>壁纸、书签、导入记录和诊断报告都在你的 Mac。不会自动上传，也没有广告追踪脚本。</p></article>
+        <article class="trust-card"><strong>公开 API。</strong><p>桌面层级、多 Space、省电策略和文件权限均使用 macOS 公开能力，为商店审核留出正路。</p></article>
+        <article class="trust-card"><strong>诊断可带走。</strong><p>遇到黑屏或兼容问题，可导出已脱敏的本地报告；它包含状态和错误，不包含壁纸文件。</p></article>
+        <article class="trust-card"><strong>不假装兼容。</strong><p>Windows 应用类壁纸和原生 Scene 渲染不承诺支持；Scene 有正规的视频预渲染方案。</p></article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== § 拿到手 ============================== -->
+<section class="sec" id="get">
+  <div class="sec-grid">
+    <div class="rail"><span class="rail-num">09</span><span>拿到手</span></div>
+    <div>
+      <h2 class="sec-h rise">现在开始用。商店版也在路上。</h2>
+      <p class="sec-p rise">Beta 构建会通过 GitHub Releases 发布；想先确认代码、自己构建或挑壁纸，也都有直接入口。没有隐藏安装器，没有来路不明的下载站。</p>
+
+      <div class="status-grid rise">
+        <div class="status-cell"><span class="k">App 测试</span><span class="v">105</span><span class="n">自动回归通过</span></div>
+        <div class="status-cell"><span class="k">转换器测试</span><span class="v">23</span><span class="n">导入链路单独验证</span></div>
+        <div class="status-cell"><span class="k">诊断模式</span><span class="v">本地</span><span class="n">不上传崩溃与壁纸数据</span></div>
+        <div class="status-cell"><span class="k">系统要求</span><span class="v">macOS 14+</span><span class="n">Apple 芯片与 Intel</span></div>
+      </div>
+
+      <div class="btn-row rise">
+        <a class="btn btn-dark" href="https://github.com/futurebackrookie/LiveWall/releases" target="_blank" rel="noopener">查看 Beta 构建</a>
+        <a class="btn btn-line" href="https://github.com/futurebackrookie/LiveWall" target="_blank" rel="noopener">源码 · GitHub</a>
+        <a class="btn btn-line" href="https://github.com/futurebackrookie/livewall-catalog" target="_blank" rel="noopener">浏览壁纸目录</a>
+      </div>
+
+      <div class="code rise">
+brew install xcodegen
+xcodegen generate
+xcodebuild -project LiveWall.xcodeproj -scheme LiveWall \
+  -configuration Release -derivedDataPath ./build \
+  CODE_SIGN_IDENTITY=<span class="k">"-"</span> build
+open build/Build/Products/Release/LiveWall.app</div>
+
+      <div class="note rise">
+        <b>沙盒、隐私清单、硬化运行时和登录项能力都已就位，没有使用私有 API。</b>
+        App Store 版本还需要 Apple Developer Program、正式签名、商店素材和 TestFlight 验收；在此之前，Beta 发布页是唯一正式下载来源。
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="foot-in">
+    <span>LiveWall · macOS 动态壁纸</span>
+    <div class="foot-links">
+      <a href="https://github.com/futurebackrookie/LiveWall/releases" target="_blank" rel="noopener">Beta 构建</a>
+      <a href="https://github.com/futurebackrookie/LiveWall">GitHub</a>
+      <a href="https://github.com/futurebackrookie/livewall-catalog">壁纸目录</a>
+      <a href="#top">回到顶部</a>
+    </div>
+    <p class="legal">
+      LiveWall 与任何第三方壁纸软件、平台均无关联，也未获其授权或背书。
+      文中提及的产品名称仅用于说明兼容性，商标归各自持有者所有。
+      转换工具在你自己的电脑上处理你自己已有的文件。
+    </p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* =========================================================
+     1. 壁纸着色器
+     一个 shader，四组参数 = 四张明显不同的壁纸。
+     ========================================================= */
+  var VERT = [
+    "attribute vec2 p;",
+    "void main(){ gl_Position = vec4(p, 0.0, 1.0); }"
+  ].join("\n");
+
+  var FRAG = [
+    "precision highp float;",
+    "uniform vec2  uRes;",
+    "uniform float uTime;",
+    "uniform vec2  uMouse;",
+    "uniform vec3  uA;",
+    "uniform vec3  uB;",
+    "uniform vec3  uC;",
+    "uniform vec3  uD;",
+    "uniform float uWarp;",
+    "uniform float uSpeed;",
+    "uniform float uGrain;",
+
+    "float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123); }",
+
+    "float noise(vec2 p){",
+    "  vec2 i = floor(p), f = fract(p);",
+    "  vec2 u = f * f * (3.0 - 2.0 * f);",
+    "  return mix(mix(hash(i), hash(i + vec2(1.0,0.0)), u.x),",
+    "             mix(hash(i + vec2(0.0,1.0)), hash(i + vec2(1.0,1.0)), u.x), u.y);",
+    "}",
+
+    "float fbm(vec2 p){",
+    "  float v = 0.0, a = 0.5;",
+    "  for (int i = 0; i < 5; i++){ v += a * noise(p); p *= 2.03; a *= 0.5; }",
+    "  return v;",
+    "}",
+
+    // 余弦调色板：一组系数换一种气质
+    "vec3 pal(float t){ return uA + uB * cos(6.28318 * (uC * t + uD)); }",
+
+    "void main(){",
+    "  vec2 uv = (gl_FragCoord.xy - 0.5 * uRes) / min(uRes.x, uRes.y);",
+    "  float t = uTime * uSpeed;",
+    // 鼠标视差 —— app 里也是这个效果
+    "  uv += uMouse * 0.045;",
+    "  vec2 q = vec2(fbm(uv * 1.6 + t * 0.10), fbm(uv * 1.6 + vec2(5.2, 1.3) - t * 0.08));",
+    "  vec2 r = vec2(fbm(uv * 1.6 + uWarp * q + vec2(1.7, 9.2) + t * 0.13),",
+    "                fbm(uv * 1.6 + uWarp * q + vec2(8.3, 2.8) - t * 0.11));",
+    "  float f = fbm(uv * 1.6 + uWarp * r);",
+    "  vec3 col = pal(f + 0.18 * length(r));",
+    // 亮部再压一层流动的光带
+    "  col += 0.20 * pow(max(f, 0.0), 3.0) * vec3(1.0);",
+    // 暗角
+    "  float vig = 1.0 - 0.42 * dot(uv, uv);",
+    "  col *= clamp(vig, 0.0, 1.0);",
+    // 颗粒：挡住色带
+    "  col += (hash(gl_FragCoord.xy + fract(uTime)) - 0.5) * uGrain;",
+    "  gl_FragColor = vec4(clamp(col, 0.0, 1.0), 1.0);",
+    "}"
+  ].join("\n");
+
+  var SCENES = [
+    // 每组是一张明显不同的壁纸。相位决定「暗部什么色、亮部什么色」：
+    // C 压在 1.0 以下，色相就只在一段窄区间里走，不会扫成彩虹。
+    // 极光：深蓝暗部 -> 薄荷青亮部。红通道全程压住，不然亮部发黄绿
+    { name:"极光", A:[0.16,0.32,0.46], B:[0.14,0.30,0.18], C:[0.25,0.714,0.30], D:[0.45,0.321,0.08], warp:2.6, speed:0.30, grain:0.030 },
+    // 深海：近黑蓝 -> 青绿
+    { name:"深海", A:[0.08,0.26,0.40], B:[0.07,0.24,0.20], C:[0.30,0.60,0.25],  D:[0.50,0.35,0.05],  warp:3.4, speed:0.18, grain:0.026 },
+    // 霓虹：电光蓝 -> 品红，绿通道压死
+    { name:"霓虹", A:[0.34,0.12,0.42], B:[0.34,0.10,0.26], C:[0.714,0.30,0.20], D:[0.321,0.50,0.03], warp:1.8, speed:0.46, grain:0.038 },
+    // 黎明：李子紫 -> 琥珀。蓝的衰减必须压平，否则中间调发橄榄
+    { name:"黎明", A:[0.38,0.22,0.36], B:[0.32,0.22,0.22], C:[0.60,0.65,0.30],  D:[0.42,0.36,0.04],  warp:2.2, speed:0.24, grain:0.028 }
+  ];
+
+  function makeRenderer(canvas, sceneIndex) {
+    var gl = null;
+    try {
+      gl = canvas.getContext("webgl", { antialias: false, alpha: false, depth: false, powerPreference: "low-power" })
+        || canvas.getContext("experimental-webgl");
+    } catch (e) { gl = null; }
+    if (!gl) return fallback2D(canvas, sceneIndex);
+
+    function compile(type, src) {
+      var s = gl.createShader(type);
+      gl.shaderSource(s, src);
+      gl.compileShader(s);
+      if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) { gl.deleteShader(s); return null; }
+      return s;
+    }
+    var vs = compile(gl.VERTEX_SHADER, VERT), fs = compile(gl.FRAGMENT_SHADER, FRAG);
+    if (!vs || !fs) return fallback2D(canvas, sceneIndex);
+
+    var prog = gl.createProgram();
+    gl.attachShader(prog, vs); gl.attachShader(prog, fs); gl.linkProgram(prog);
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return fallback2D(canvas, sceneIndex);
+    gl.useProgram(prog);
+
+    var buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
+    var loc = gl.getAttribLocation(prog, "p");
+    gl.enableVertexAttribArray(loc);
+    gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+
+    var U = {};
+    ["uRes","uTime","uMouse","uA","uB","uC","uD","uWarp","uSpeed","uGrain"].forEach(function (n) {
+      U[n] = gl.getUniformLocation(prog, n);
+    });
+
+    // 当前值与目标值分开存：切场景时插值过去,就是 app 里的淡入淡出
+    var cur = cloneScene(SCENES[sceneIndex]);
+    var tgt = cloneScene(SCENES[sceneIndex]);
+    var mouse = { x: 0, y: 0, tx: 0, ty: 0 };
+    var raf = 0, t0 = performance.now(), running = false;
+
+    function resize() {
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var w = Math.max(1, Math.round(canvas.clientWidth * dpr));
+      var h = Math.max(1, Math.round(canvas.clientHeight * dpr));
+      if (canvas.width !== w || canvas.height !== h) {
+        canvas.width = w; canvas.height = h;
+        gl.viewport(0, 0, w, h);
+      }
+    }
+
+    function draw(now) {
+      resize();
+      var k = 0.055;
+      lerpScene(cur, tgt, k);
+      mouse.x += (mouse.tx - mouse.x) * 0.06;
+      mouse.y += (mouse.ty - mouse.y) * 0.06;
+
+      gl.uniform2f(U.uRes, canvas.width, canvas.height);
+      gl.uniform1f(U.uTime, (now - t0) / 1000);
+      gl.uniform2f(U.uMouse, mouse.x, mouse.y);
+      gl.uniform3fv(U.uA, cur.A); gl.uniform3fv(U.uB, cur.B);
+      gl.uniform3fv(U.uC, cur.C); gl.uniform3fv(U.uD, cur.D);
+      gl.uniform1f(U.uWarp, cur.warp);
+      gl.uniform1f(U.uSpeed, cur.speed);
+      gl.uniform1f(U.uGrain, cur.grain);
+      gl.drawArrays(gl.TRIANGLES, 0, 3);
+
+      if (running) raf = requestAnimationFrame(draw);
+    }
+
+    return {
+      start: function () {
+        if (running) return;
+        running = true;
+        if (reduce) { draw(performance.now()); running = false; return; }
+        raf = requestAnimationFrame(draw);
+      },
+      stop: function () { running = false; cancelAnimationFrame(raf); },
+      setScene: function (i) { tgt = cloneScene(SCENES[i]); if (reduce) { cur = cloneScene(SCENES[i]); this.start(); } },
+      setMouse: function (x, y) { mouse.tx = x; mouse.ty = y; },
+      ok: true
+    };
+  }
+
+  function cloneScene(s) {
+    return { A:s.A.slice(), B:s.B.slice(), C:s.C.slice(), D:s.D.slice(),
+             warp:s.warp, speed:s.speed, grain:s.grain };
+  }
+  function lerpScene(a, b, k) {
+    ["A","B","C","D"].forEach(function (n) {
+      for (var i = 0; i < 3; i++) a[n][i] += (b[n][i] - a[n][i]) * k;
+    });
+    a.warp  += (b.warp  - a.warp)  * k;
+    a.speed += (b.speed - a.speed) * k;
+    a.grain += (b.grain - a.grain) * k;
+  }
+
+  // WebGL 不可用时退到 2D 渐变 —— 不留白屏
+  function fallback2D(canvas, idx) {
+    var ctx = canvas.getContext("2d");
+    var s = SCENES[idx];
+    function paint() {
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.max(1, Math.round(canvas.clientWidth * dpr));
+      canvas.height = Math.max(1, Math.round(canvas.clientHeight * dpr));
+      if (!ctx) return;
+      var g = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      function rgb(o) { return "rgb(" + o.map(function (v) { return Math.round(Math.min(1, Math.max(0, v)) * 255); }).join(",") + ")"; }
+      g.addColorStop(0, rgb(s.A.map(function (v, i) { return v + s.B[i] * 0.5; })));
+      g.addColorStop(0.5, rgb(s.A.map(function (v, i) { return v + s.B[i]; })));
+      g.addColorStop(1, rgb(s.A));
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+    paint();
+    return {
+      start: paint,
+      stop: function () {},
+      setScene: function (i) { s = SCENES[i]; paint(); },
+      setMouse: function () {},
+      ok: false
+    };
+  }
+
+  /* =========================================================
+     2. 首屏 + 播放列表
+     ========================================================= */
+  var stage = document.getElementById("stage");
+  var hero = makeRenderer(stage, 0);
+  hero.start();
+
+  var playlist = document.getElementById("playlist");
+  var chips = playlist ? Array.prototype.slice.call(playlist.querySelectorAll(".chip")) : [];
+  chips.forEach(function (chip) {
+    chip.addEventListener("click", function () {
+      var scene = parseInt(chip.getAttribute("data-scene"), 10);
+      if (galleryRenderer) {
+        selectGalleryScene(scene);
+      } else {
+        chips.forEach(function (c) { c.setAttribute("aria-pressed", String(c === chip)); });
+        hero.setScene(scene);
+      }
+    });
+  });
+
+  // 鼠标视差：跟 app 一样，归一化到 −1…1
+  if (!reduce && hero.ok) {
+    window.addEventListener("pointermove", function (e) {
+      hero.setMouse((e.clientX / window.innerWidth) * 2 - 1,
+                    1 - (e.clientY / window.innerHeight) * 2);
+    }, { passive: true });
+  }
+  window.addEventListener("resize", function () { if (reduce) hero.start(); }, { passive: true });
+
+  // 滚出视野就停 —— 页面自己也遵守省电那一节讲的规矩
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(function (es) {
+      es.forEach(function (e) { e.isIntersecting ? hero.start() : hero.stop(); });
+    }, { threshold: 0.02 }).observe(stage);
+  }
+  document.addEventListener("visibilitychange", function () {
+    document.hidden ? hero.stop() : hero.start();
+    syncGalleryActivity();
+  });
+
+  /* =========================================================
+     3. 精选壁纸 —— 一块真实切场景的独立预览
+     ========================================================= */
+  var PREVIEWS = [
+    { kind: "WEBGL / 实时预览", title: "极光信号", meta: "60 FPS · 鼠标视差 · 可调参数" },
+    { kind: "VIDEO / 无缝循环", title: "深海回声", meta: "4K · 硬件解码 · 遮挡即暂停" },
+    { kind: "WEBGL / 实时预览", title: "霓虹雨幕", meta: "60 FPS · 音频响应 · 低功耗" },
+    { kind: "LAYERED / 2.5D", title: "黎明之间", meta: "分层景深 · 鼠标视差 · 几乎不耗电" }
+  ];
+  var galleryCanvas = document.getElementById("gallery-preview");
+  var galleryRenderer = galleryCanvas ? makeRenderer(galleryCanvas, 0) : null;
+  var galleryShowcase = document.getElementById("gallery-showcase");
+  var galleryCards = Array.prototype.slice.call(document.querySelectorAll(".wall-card"));
+  var galleryKind = document.getElementById("gallery-kind");
+  var galleryTitle = document.getElementById("gallery-title");
+  var galleryMeta = document.getElementById("gallery-meta");
+  var galleryInView = false;
+
+  function syncGalleryActivity() {
+    if (!galleryRenderer) return;
+    (!document.hidden && galleryInView) ? galleryRenderer.start() : galleryRenderer.stop();
+  }
+
+  function selectGalleryScene(index) {
+    var preview = PREVIEWS[index];
+    if (!preview) return;
+    galleryCards.forEach(function (card) {
+      card.setAttribute("aria-pressed", String(parseInt(card.getAttribute("data-scene"), 10) === index));
+    });
+    if (galleryRenderer) galleryRenderer.setScene(index);
+    // 首屏同步切换，用户会立刻感到“这张壁纸就是正在播放的那一张”。
+    hero.setScene(index);
+    chips.forEach(function (chip) { chip.setAttribute("aria-pressed", String(parseInt(chip.getAttribute("data-scene"), 10) === index)); });
+    if (galleryKind) galleryKind.textContent = preview.kind;
+    if (galleryTitle) galleryTitle.textContent = preview.title;
+    if (galleryMeta) galleryMeta.textContent = preview.meta;
+  }
+
+  galleryCards.forEach(function (card) {
+    card.addEventListener("click", function () { selectGalleryScene(parseInt(card.getAttribute("data-scene"), 10)); });
+  });
+  if (galleryRenderer && galleryShowcase) {
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (es) {
+        es.forEach(function (e) { galleryInView = e.isIntersecting; syncGalleryActivity(); });
+      }, { threshold: 0.08 }).observe(galleryShowcase);
+    } else { galleryInView = true; syncGalleryActivity(); }
+    if (!reduce && galleryRenderer.ok) {
+      galleryShowcase.addEventListener("pointermove", function (e) {
+        var r = galleryShowcase.getBoundingClientRect();
+        galleryRenderer.setMouse(((e.clientX - r.left) / r.width) * 2 - 1,
+                                 1 - ((e.clientY - r.top) / r.height) * 2);
+      }, { passive: true });
+    }
+  }
+
+  /* =========================================================
+     4. 桌面演示 —— 页面的赌注
+     ========================================================= */
+  var deskCanvas = document.getElementById("desk-canvas");
+  var desk = makeRenderer(deskCanvas, 1);
+  var deskFrame = document.getElementById("desk");
+  var icons = document.getElementById("icons");
+  var win = document.getElementById("win");
+  var strip = document.getElementById("strip");
+  var swCover = document.getElementById("sw-cover");
+  var swOccl = document.getElementById("sw-occl");
+  var readout = document.getElementById("layer-readout");
+
+  var BASE = -2147483603;          // CGWindowLevelForKey(.desktopIconWindow) 的实测值
+  var state = { cover: false, occl: false };
+
+  function paintReadout() {
+    var level = state.cover ? BASE + 2 : BASE - 1;
+    var where = state.cover ? "图标之上" : "图标之下";
+    var play = state.occl ? "已暂停 · 被窗口遮挡" : "播放中";
+    readout.innerHTML = "level = <b>" + level.toLocaleString("en-US").replace(/,/g, "") + "</b> · " + where + " · " + play;
+  }
+
+  function sync() {
+    icons.setAttribute("data-under", String(!state.cover));
+    icons.style.opacity = state.occl ? "0" : "1";
+    swCover.setAttribute("aria-pressed", String(state.cover));
+    swOccl.setAttribute("aria-pressed", String(state.occl));
+    win.setAttribute("data-full", String(state.occl));
+    // 窗口盖满 → 壁纸真的停下来。页面自己也照这一节讲的规矩办
+    state.occl ? desk.stop() : desk.start();
+    paintReadout();
+  }
+
+  if (swCover) {
+    swCover.addEventListener("click", function () {
+      state.cover = !state.cover;
+      sync();
+      // 只在切到「覆盖」的瞬间闪一下那条白边,说明为什么用 +2
+      if (state.cover && !reduce) {
+        strip.setAttribute("data-on", "true");
+        setTimeout(function () { strip.setAttribute("data-on", "false"); }, 1100);
+      }
+    });
+  }
+  if (swOccl) {
+    swOccl.addEventListener("click", function () { state.occl = !state.occl; sync(); });
+  }
+
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        (e.isIntersecting && !state.occl) ? desk.start() : desk.stop();
+      });
+    }, { threshold: 0.05 }).observe(deskFrame);
+  } else {
+    desk.start();
+  }
+
+  if (!reduce && desk.ok) {
+    deskFrame.addEventListener("pointermove", function (e) {
+      var r = deskFrame.getBoundingClientRect();
+      desk.setMouse(((e.clientX - r.left) / r.width) * 2 - 1,
+                    1 - ((e.clientY - r.top) / r.height) * 2);
+    }, { passive: true });
+  }
+  sync();
+
+  // 菜单栏时钟：真时间,细节而已
+  var clock = document.getElementById("menu-clock");
+  function tick() {
+    if (!clock) return;
+    var d = new Date();
+    clock.textContent = d.getHours() + ":" + String(d.getMinutes()).padStart(2, "0");
+  }
+  tick();
+  setInterval(tick, 20000);
+
+  /* =========================================================
+     5. 调速器读数 —— 用 app 真实的暂停原因
+     ========================================================= */
+  var GOV = [
+    { t: "22:14:02", s: "play",  p: "播放中 · 60 FPS", m: "governor: 前台可见,全速" },
+    { t: "22:16:41", s: "pause", p: "已暂停 · 被窗口遮挡", m: "occlusion: 屏幕被不透明窗口盖满" },
+    { t: "22:31:08", s: "play",  p: "播放中 · 60 FPS", m: "occlusion: 桌面重新露出" },
+    { t: "23:02:19", s: "throt", p: "省电 · 30 FPS", m: "power: 低电量模式已开启" },
+    { t: "23:47:55", s: "pause", p: "已暂停 · 显示器休眠", m: "display: 进入休眠" },
+    { t: "07:12:30", s: "pause", p: "已暂停 · 锁屏", m: "session: 屏幕已锁定" },
+    { t: "08:03:11", s: "play",  p: "播放中 · 60 FPS", m: "session: 已解锁,恢复渲染" }
+  ];
+
+  var govlog = document.getElementById("govlog");
+  if (govlog) {
+    GOV.forEach(function (row) {
+      var el = document.createElement("div");
+      el.className = "logline";
+      el.setAttribute("data-live", "false");
+      el.innerHTML = '<span class="t">' + row.t + '</span>' +
+                     '<span class="pill" data-s="' + row.s + '">' + row.p + '</span>' +
+                     '<span class="msg">' + row.m + '</span>';
+      govlog.appendChild(el);
+    });
+
+    var lines = govlog.querySelectorAll(".logline");
+    var gi = 0;
+    function step() {
+      lines.forEach(function (l, i) { l.setAttribute("data-live", String(i === gi)); });
+      gi = (gi + 1) % lines.length;
+    }
+    step();
+    if (!reduce) setInterval(step, 2200);
+  }
+
+  /* =========================================================
+     6. 频谱条
+     真实频谱由 4096 点 FFT 驱动;这里是同样形状的示意信号。
+     ========================================================= */
+  var spectrum = document.getElementById("spectrum");
+  if (spectrum) {
+    var N = 56, bars = [], vals = new Float32Array(N), peaks = new Float32Array(N);
+    for (var i = 0; i < N; i++) {
+      var b = document.createElement("div");
+      b.className = "bar";
+      spectrum.appendChild(b);
+      bars.push(b);
+    }
+    var st = 0, running = false, sraf = 0;
+    function spectrumFrame() {
+      st += 0.045;
+      for (var i = 0; i < N; i++) {
+        var f = i / N;
+        // 低频重、高频轻,再叠几个不同步的正弦当「音乐」
+        var env = Math.pow(1 - f, 0.85) * (0.55 + 0.45 * Math.pow(1 - f, 3));
+        var v = (Math.sin(st * 1.7 + i * 0.28) * 0.5 + 0.5) * 0.55
+              + (Math.sin(st * 2.9 - i * 0.11) * 0.5 + 0.5) * 0.3
+              + (Math.sin(st * 5.3 + i * 0.62) * 0.5 + 0.5) * 0.15;
+        var target = Math.max(0.04, v * env * 1.15);
+        // 峰值衰减平滑,跟 app 里同一套手法
+        vals[i] += (target - vals[i]) * 0.35;
+        peaks[i] = Math.max(vals[i], peaks[i] - 0.012);
+        bars[i].style.height = (peaks[i] * 100).toFixed(1) + "%";
+      }
+      if (running) sraf = requestAnimationFrame(spectrumFrame);
+    }
+    function startSpectrum() {
+      if (running) return;
+      running = true;
+      if (reduce) { spectrumFrame(); running = false; return; }
+      sraf = requestAnimationFrame(spectrumFrame);
+    }
+    function stopSpectrum() { running = false; cancelAnimationFrame(sraf); }
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (es) {
+        es.forEach(function (e) { e.isIntersecting ? startSpectrum() : stopSpectrum(); });
+      }, { threshold: 0.15 }).observe(spectrum);
+    } else { startSpectrum(); }
+  }
+
+  /* =========================================================
+     7. 滚动入场 + 导航吸顶
+     ========================================================= */
+  var risers = document.querySelectorAll(".rise");
+  if ("IntersectionObserver" in window && !reduce) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.08, rootMargin: "0px 0px -40px 0px" });
+    risers.forEach(function (el) { io.observe(el); });
+  } else {
+    risers.forEach(function (el) { el.classList.add("in"); });
+  }
+
+  var nav = document.getElementById("nav");
+  function onScroll() { nav.setAttribute("data-stuck", String(window.scrollY > 12)); }
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+
+  // 触屏没有鼠标,提示改掉
+  if (window.matchMedia("(pointer: coarse)").matches) {
+    var hint = document.getElementById("hero-hint");
+    if (hint) hint.textContent = "点上面切换壁纸";
+  }
+})();
+</script>
+</body>
+</html>
