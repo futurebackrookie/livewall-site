@@ -43,7 +43,10 @@ body=$(grep -vE '^<(title|meta name="description")' content.html)
   echo '<link rel="icon" type="image/png" href="icon.png">'
   echo '<link rel="apple-touch-icon" href="icon.png">'
   echo '<script type="application/ld+json">'
-  echo '{"@context":"https://schema.org","@type":"SoftwareApplication","name":"LiveWall","applicationCategory":"UtilitiesApplication","operatingSystem":"macOS 14 or later","description":"Native macOS live wallpaper app for video, WebGL and layered wallpapers.","softwareVersion":"Beta","downloadUrl":"https://github.com/futurebackrookie/LiveWall/releases","codeRepository":"https://github.com/futurebackrookie/LiveWall"}'
+  # downloadUrl 必须指向公开仓库。源码仓库 LiveWall 是私有的，
+  # 对未登录访客一律 404 —— 写进结构化数据等于告诉搜索引擎一个死链，
+  # 也不能写 codeRepository（源码根本不对外）。
+  echo '{"@context":"https://schema.org","@type":"SoftwareApplication","name":"LiveWall","applicationCategory":"UtilitiesApplication","operatingSystem":"macOS 14 or later","description":"Native macOS live wallpaper app for video, WebGL and layered wallpapers.","softwareVersion":"Beta","downloadUrl":"https://github.com/futurebackrookie/livewall-site/releases","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}'
   echo '</script>'
   echo '</head>'
   echo '<body>'

@@ -23,7 +23,7 @@
 <link rel="icon" type="image/png" href="icon.png">
 <link rel="apple-touch-icon" href="icon.png">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"SoftwareApplication","name":"LiveWall","applicationCategory":"UtilitiesApplication","operatingSystem":"macOS 14 or later","description":"Native macOS live wallpaper app for video, WebGL and layered wallpapers.","softwareVersion":"Beta","downloadUrl":"https://github.com/futurebackrookie/LiveWall/releases","codeRepository":"https://github.com/futurebackrookie/LiveWall"}
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"LiveWall","applicationCategory":"UtilitiesApplication","operatingSystem":"macOS 14 or later","description":"Native macOS live wallpaper app for video, WebGL and layered wallpapers.","softwareVersion":"Beta","downloadUrl":"https://github.com/futurebackrookie/livewall-site/releases","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
 </script>
 </head>
 <body>
@@ -1422,7 +1422,7 @@ cd Tools/livewall-import &amp;&amp; swift build -c release
     <div class="rail"><span class="rail-num">09</span><span>拿到手</span></div>
     <div>
       <h2 class="sec-h rise">现在开始用。商店版也在路上。</h2>
-      <p class="sec-p rise">Beta 构建会通过 GitHub Releases 发布；想先确认代码、自己构建或挑壁纸，也都有直接入口。没有隐藏安装器，没有来路不明的下载站。</p>
+      <p class="sec-p rise">Beta 构建通过 GitHub Releases 发布，直接下载压缩包、拖进「应用程序」就能用。没有安装器，没有捆绑，没有来路不明的下载站。</p>
 
       <div class="status-grid rise">
         <div class="status-cell"><span class="k">App 测试</span><span class="v">105</span><span class="n">自动回归通过</span></div>
@@ -1432,22 +1432,42 @@ cd Tools/livewall-import &amp;&amp; swift build -c release
       </div>
 
       <div class="btn-row rise">
-        <a class="btn btn-dark" href="https://github.com/futurebackrookie/LiveWall/releases" target="_blank" rel="noopener">查看 Beta 构建</a>
-        <a class="btn btn-line" href="https://github.com/futurebackrookie/LiveWall" target="_blank" rel="noopener">源码 · GitHub</a>
+        <a class="btn btn-dark" href="https://github.com/futurebackrookie/livewall-site/releases" target="_blank" rel="noopener">下载 Beta 构建</a>
         <a class="btn btn-line" href="https://github.com/futurebackrookie/livewall-catalog" target="_blank" rel="noopener">浏览壁纸目录</a>
       </div>
 
-      <div class="code rise">
-brew install xcodegen
-xcodegen generate
-xcodebuild -project LiveWall.xcodeproj -scheme LiveWall \
-  -configuration Release -derivedDataPath ./build \
-  CODE_SIGN_IDENTITY=<span class="k">"-"</span> build
-open build/Build/Products/Release/LiveWall.app</div>
+      <!-- 首次打开的说明必须显眼。没有公证的 app 会被 Gatekeeper 拦下，
+           不写清楚的话大部分人会以为软件坏了，直接删掉走人。 -->
+      <div class="panel rise" style="margin-top:30px">
+        <div class="panel-head">
+          <span class="dot" style="background:var(--sub-r)"></span>
+          第一次打开会被系统拦下 —— 这是正常的
+        </div>
+        <div class="panel-body" style="padding:18px 20px">
+          <p class="sec-p" style="margin:0 0 16px;max-width:none">
+            LiveWall 目前<strong>没有经过 Apple 公证</strong>，所以从浏览器下载后，macOS 会提示
+            「无法验证开发者」并拒绝打开。这不代表软件有问题，只代表它还没交过 Apple 的年费。
+            解除方式二选一：
+          </p>
+          <div class="gov-list">
+            <div class="gov-item">
+              <b>图形界面</b>
+              <span>双击 LiveWall 被拒绝之后，打开「系统设置 → 隐私与安全性」，
+                    下拉到「安全性」，会看到刚才那次拦截记录，点<strong>「仍要打开」</strong>。只需做一次。</span>
+            </div>
+            <div class="gov-item">
+              <b>终端一行</b>
+              <span>把 app 拖进「应用程序」后执行下面这条，移除下载隔离标记，之后正常双击即可。</span>
+            </div>
+          </div>
+          <div class="code" style="margin-top:14px">xattr -d com.apple.quarantine /Applications/LiveWall.app</div>
+        </div>
+      </div>
 
       <div class="note rise">
         <b>沙盒、隐私清单、硬化运行时和登录项能力都已就位，没有使用私有 API。</b>
-        App Store 版本还需要 Apple Developer Program、正式签名、商店素材和 TestFlight 验收；在此之前，Beta 发布页是唯一正式下载来源。
+        上架 App Store 还需要 Apple Developer Program、正式签名与商店素材；公证也依赖同一个账号。
+        在那之前，上面的 Releases 页是唯一正式下载来源 —— 从别处拿到的 LiveWall，我无法为它负责。
       </div>
     </div>
   </div>
@@ -1459,9 +1479,9 @@ open build/Build/Products/Release/LiveWall.app</div>
   <div class="foot-in">
     <span>LiveWall · macOS 动态壁纸</span>
     <div class="foot-links">
-      <a href="https://github.com/futurebackrookie/LiveWall/releases" target="_blank" rel="noopener">Beta 构建</a>
-      <a href="https://github.com/futurebackrookie/LiveWall">GitHub</a>
+      <a href="https://github.com/futurebackrookie/livewall-site/releases" target="_blank" rel="noopener">Beta 构建</a>
       <a href="https://github.com/futurebackrookie/livewall-catalog">壁纸目录</a>
+      <a href="https://github.com/futurebackrookie/livewall-catalog/blob/main/CONTRIBUTING.md">投稿壁纸</a>
       <a href="#top">回到顶部</a>
     </div>
     <p class="legal">
