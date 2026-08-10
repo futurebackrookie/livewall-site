@@ -1,6 +1,33 @@
-<title>LiveWall — macOS 动态壁纸</title>
-<meta name="description" content="视频、WebGL、分层视差壁纸，跑在 macOS 桌面图标之下。为 Mac 从头写的动态壁纸应用。">
-
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LiveWall — Live Wallpapers for macOS</title>
+<meta name="description" content="Video, WebGL and layered parallax wallpapers running beneath your macOS desktop icons. A live wallpaper app written for the Mac from scratch.">
+<link rel="canonical" href="https://futurebackrookie.github.io/livewall-site/en/">
+<link rel="alternate" hreflang="zh-Hans" href="https://futurebackrookie.github.io/livewall-site/">
+<link rel="alternate" hreflang="en" href="https://futurebackrookie.github.io/livewall-site/en/">
+<link rel="alternate" hreflang="ja" href="https://futurebackrookie.github.io/livewall-site/ja/">
+<link rel="alternate" hreflang="de" href="https://futurebackrookie.github.io/livewall-site/de/">
+<link rel="alternate" hreflang="fr" href="https://futurebackrookie.github.io/livewall-site/fr/">
+<link rel="alternate" hreflang="x-default" href="https://futurebackrookie.github.io/livewall-site/">
+<meta name="theme-color" content="#08070E" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#F2F1F7" media="(prefers-color-scheme: light)">
+<meta property="og:title" content="LiveWall — Live Wallpapers for macOS">
+<meta property="og:description" content="Video, WebGL and layered parallax wallpapers running beneath your macOS desktop icons. A live wallpaper app written for the Mac from scratch.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="https://futurebackrookie.github.io/livewall-site/en/">
+<meta property="og:image" content="https://futurebackrookie.github.io/livewall-site/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"LiveWall","applicationCategory":"UtilitiesApplication","operatingSystem":"macOS 14 or later","softwareVersion":"Beta","downloadUrl":"https://github.com/futurebackrookie/livewall-site/releases","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<link rel="icon" type="image/png" href="https://futurebackrookie.github.io/livewall-site/icon.png">
+<link rel="apple-touch-icon" href="https://futurebackrookie.github.io/livewall-site/icon.png">
+</head>
+<body>
 <style>
 /* ===========================================================
    LiveWall 官网
@@ -1150,7 +1177,7 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
 </style>
 
 <!-- ============================== 导航 ============================== -->
-<a class="skip-link" href="#main-content">跳到主要内容</a>
+<a class="skip-link" href="#main-content">Skip to main content</a>
 <nav class="nav" id="nav">
   <div class="nav-in">
     <a class="brand" href="#top">
@@ -1162,15 +1189,15 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
       LiveWall
     </a>
     <div class="nav-links">
-      <a href="#gallery">壁纸预览</a>
-      <a href="#layers">Mac 原生</a>
-      <a href="#paths">怎么开始</a>
-      <a href="#wallpapers">找壁纸</a>
-      <a href="#trust">隐私与兼容</a>
-      <a href="#get">拿到手</a>
+      <a href="#gallery">Wallpapers</a>
+      <a href="#layers">Native</a>
+      <a href="#paths">Get started</a>
+      <a href="#wallpapers">Find wallpapers</a>
+      <a href="#trust">Privacy</a>
+      <a href="#get">Download</a>
     </div>
-    <div class="langs" role="group" aria-label="Language"><a href="/livewall-site/" hreflang="zh-Hans" lang="zh-Hans" aria-current="true">简体中文</a><a href="/livewall-site/en/" hreflang="en" lang="en">English</a><a href="/livewall-site/ja/" hreflang="ja" lang="ja">日本語</a><a href="/livewall-site/de/" hreflang="de" lang="de">Deutsch</a><a href="/livewall-site/fr/" hreflang="fr" lang="fr">Français</a></div>
-    <a class="nav-cta" href="#get">下载</a>
+    <div class="langs" role="group" aria-label="Language"><a href="/livewall-site/" hreflang="zh-Hans" lang="zh-Hans">简体中文</a><a href="/livewall-site/en/" hreflang="en" lang="en" aria-current="true">English</a><a href="/livewall-site/ja/" hreflang="ja" lang="ja">日本語</a><a href="/livewall-site/de/" hreflang="de" lang="de">Deutsch</a><a href="/livewall-site/fr/" hreflang="fr" lang="fr">Français</a></div>
+    <a class="nav-cta" href="#get">Download</a>
   </div>
 </nav>
 
@@ -1180,33 +1207,34 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
   <div class="hero-scrim"></div>
 
   <div class="hero-body wrap">
-    <p class="eyebrow">正在播放 · 这块背景是实时渲染的</p>
+    <p class="eyebrow">Now playing · this background is rendering live</p>
 
-    <h1 class="hero-h">你的 Mac 桌面，<span class="split" data-t="终于">终于</span>活过来了。</h1>
+    <h1 class="hero-h">Your Mac desktop, <span class="split" data-t="finally">finally</span> alive.</h1>
 
     <p class="hero-sub">
-      视频、WebGL、2.5D 分层视差，跑在 macOS <strong>桌面图标之下</strong>，
-      点击穿透到访达。为 Mac 从头写的 —— 不是套壳网页，不是在后台塞个播放器。
+      Video, WebGL and 2.5D parallax wallpapers, running <strong>beneath your desktop icons</strong>
+      with clicks passing straight through to Finder. Written for the Mac from scratch — not a web page in a shell,
+      not a video player parked in the background.
     </p>
 
     <div class="btn-row">
-      <a class="btn btn-primary" href="#get">获取 Beta 版</a>
-      <a class="btn btn-ghost" href="#gallery">先看壁纸</a>
+      <a class="btn btn-primary" href="#get">Get the beta</a>
+      <a class="btn btn-ghost" href="#gallery">See the wallpapers</a>
     </div>
 
     <div class="hero-proof" aria-label="产品能力摘要">
-      <span>macOS 14+ 原生运行</span>
-      <span>视频 · 网页 · 分层壁纸</span>
-      <span>本地优先，不上传壁纸</span>
+      <span>Native on macOS 14+</span>
+      <span>Video · Web · Layered</span>
+      <span>Local first, nothing uploaded</span>
     </div>
 
     <div class="playlist" id="playlist">
-      <span class="playlist-label">播放列表</span>
-      <button class="chip" type="button" data-scene="0" aria-pressed="true">极光</button>
-      <button class="chip" type="button" data-scene="1" aria-pressed="false">深海</button>
-      <button class="chip" type="button" data-scene="2" aria-pressed="false">霓虹</button>
-      <button class="chip" type="button" data-scene="3" aria-pressed="false">黎明</button>
-      <span class="hint" id="hero-hint">移动鼠标 · 视差跟随</span>
+      <span class="playlist-label">Playlist</span>
+      <button class="chip" type="button" data-scene="0" aria-pressed="true">Aurora</button>
+      <button class="chip" type="button" data-scene="1" aria-pressed="false">Deep Sea</button>
+      <button class="chip" type="button" data-scene="2" aria-pressed="false">Neon</button>
+      <button class="chip" type="button" data-scene="3" aria-pressed="false">Daybreak</button>
+      <span class="hint" id="hero-hint">Move your mouse · parallax follows</span>
     </div>
   </div>
 </header>
@@ -1216,31 +1244,32 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
 <!-- ============================== § 精选壁纸 ============================== -->
 <section class="sec" id="gallery">
   <div class="sec-grid">
-    <div class="rail"><span class="rail-num">01</span><span>精选壁纸</span></div>
+    <div class="rail"><span class="rail-num">01</span><span>Wallpapers</span></div>
     <div>
-      <h2 class="sec-h rise">先挑一张。剩下的，交给你的桌面。</h2>
+      <h2 class="sec-h rise">Pick one. Your desktop takes it from there.</h2>
       <p class="sec-p rise">
-        这是可操作的实时预览，不是贴了几张宣传图。点一张壁纸，页面会像 LiveWall 一样平滑切换；
-        真正的 App 还能把视频、WebGL 和分层图放到每一块显示器、每一个 Space。
+        This is a working live preview, not a row of marketing screenshots. Click a wallpaper and the page
+        cross-fades exactly the way LiveWall does; the real app puts video, WebGL and layered scenes on every
+        display and every Space.
       </p>
 
       <div class="gallery-showcase rise" id="gallery-showcase">
         <canvas class="gallery-preview" id="gallery-preview" aria-label="动态壁纸实时预览"></canvas>
         <div class="gallery-overlay">
           <div>
-            <p class="gallery-kicker" id="gallery-kind">WEBGL / 实时预览</p>
-            <h3 class="gallery-title" id="gallery-title">极光信号</h3>
-            <p class="gallery-meta" id="gallery-meta">60 FPS · 鼠标视差 · 可调参数</p>
+            <p class="gallery-kicker" id="gallery-kind">WEBGL / LIVE PREVIEW</p>
+            <h3 class="gallery-title" id="gallery-title">Aurora Signal</h3>
+            <p class="gallery-meta" id="gallery-meta">60 FPS · mouse parallax · tunable</p>
           </div>
           <span class="live-pill">LIVE PREVIEW</span>
         </div>
       </div>
 
       <div class="wall-picker rise" role="group" aria-label="选择预览壁纸">
-        <button class="wall-card" type="button" data-scene="0" aria-pressed="true"><span class="kind">WebGL · 4K</span><b>极光信号</b><small>视差 · 参数可调</small></button>
-        <button class="wall-card" type="button" data-scene="1" aria-pressed="false"><span class="kind">Video · 4K</span><b>深海回声</b><small>无缝循环 · 硬件解码</small></button>
-        <button class="wall-card" type="button" data-scene="2" aria-pressed="false"><span class="kind">WebGL · 4K</span><b>霓虹雨幕</b><small>60 FPS · 低功耗</small></button>
-        <button class="wall-card" type="button" data-scene="3" aria-pressed="false"><span class="kind">Layered · 4K</span><b>黎明之间</b><small>2.5D · 零视频解码</small></button>
+        <button class="wall-card" type="button" data-scene="0" aria-pressed="true"><span class="kind">WebGL · 4K</span><b>Aurora Signal</b><small>Parallax · tunable</small></button>
+        <button class="wall-card" type="button" data-scene="1" aria-pressed="false"><span class="kind">Video · 4K</span><b>Deep Sea Echo</b><small>Seamless loop · hardware decode</small></button>
+        <button class="wall-card" type="button" data-scene="2" aria-pressed="false"><span class="kind">WebGL · 4K</span><b>Neon Rain</b><small>60 FPS · low power</small></button>
+        <button class="wall-card" type="button" data-scene="3" aria-pressed="false"><span class="kind">Layered · 4K</span><b>Between Daybreak</b><small>2.5D · no video decode</small></button>
       </div>
     </div>
   </div>
@@ -1249,23 +1278,23 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
 <!-- ============================== § 图层 ============================== -->
 <section class="sec" id="layers">
   <div class="sec-grid">
-    <div class="rail"><span class="rail-num">02</span><span>Mac 原生</span></div>
+    <div class="rail"><span class="rail-num">02</span><span>Native</span></div>
     <div>
-      <h2 class="sec-h rise">壁纸得挤进桌面图片和桌面图标中间那一层。</h2>
+      <h2 class="sec-h rise">The wallpaper has to slot in between the desktop picture and the desktop icons.</h2>
       <p class="sec-p rise">
-        macOS 没有「设置动态壁纸」这个 API。真正的做法是把一个无边框窗口的层级钉在
-        <code>CGWindowLevelForKey(.desktopIconWindow) − 1</code> —— 正好在桌面图片之上、
-        图标之下，再让它跟随所有 Space、忽略鼠标事件。
-        下面这块桌面是真的：<strong>扳开关看壁纸穿过图标层</strong>。
+        macOS has no “set a live wallpaper” API. What actually works is pinning a borderless window to
+        <code>CGWindowLevelForKey(.desktopIconWindow) − 1</code> — right above the desktop picture and right
+        below the icons — then making it follow every Space and ignore mouse events.
+        The desktop below is real: <strong>flip the switch and watch the wallpaper cross the icon layer</strong>.
       </p>
 
       <div class="desk-frame rise" id="desk">
         <canvas id="desk-canvas" aria-hidden="true"></canvas>
 
-        <div class="strip-note" id="strip" aria-hidden="true">← 曾经的 bug：顶端 122px 白边</div>
+        <div class="strip-note" id="strip" aria-hidden="true">← the old bug: a 122px white strip on top</div>
 
         <div class="desk-menubar">
-          <b>访达</b><span>文件</span><span>编辑</span><span>显示</span>
+          <b>Finder</b><span>File</span><span>Edit</span><span>View</span>
           <span class="right" id="menu-clock">22:14</span>
         </div>
 
@@ -1275,7 +1304,7 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
               <path d="M2 8a4 4 0 0 1 4-4h12l5 5h19a4 4 0 0 1 4 4v23a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z" fill="#5AA9F5"/>
               <path d="M2 14h44v19a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z" fill="#7FC1FA"/>
             </svg>
-            <span>项目</span>
+            <span>Projects</span>
           </div>
           <div class="dicon">
             <svg viewBox="0 0 40 48" aria-hidden="true">
@@ -1285,7 +1314,7 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
               <rect x="10" y="27" width="20" height="2.4" rx="1.2" fill="#B9B1D0"/>
               <rect x="10" y="34" width="13" height="2.4" rx="1.2" fill="#B9B1D0"/>
             </svg>
-            <span>说明.txt</span>
+            <span>readme.txt</span>
           </div>
         </div>
 
@@ -1297,10 +1326,10 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
             <span class="dw-title">LiveWall</span>
           </div>
           <div class="dw-body">
-            <div class="dw-row"><span>渲染器</span><span>WebGL</span></div>
+            <div class="dw-row"><span>Renderer</span><span>WebGL</span></div>
             <div class="dw-track"><div class="dw-fill" style="width:72%"></div></div>
-            <div class="dw-row"><span>帧率上限</span><span>60 FPS</span></div>
-            <div class="dw-row"><span>显示器</span><span>MSI MD342CQP</span></div>
+            <div class="dw-row"><span>Frame cap</span><span>60 FPS</span></div>
+            <div class="dw-row"><span>Display</span><span>MSI MD342CQP</span></div>
           </div>
         </div>
       </div>
@@ -1308,19 +1337,20 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
       <div class="desk-controls">
         <button class="switch" id="sw-cover" type="button" aria-pressed="false">
           <span class="switch-track"><span class="switch-knob"></span></span>
-          壁纸覆盖桌面图标
+          Wallpaper covers desktop icons
         </button>
         <button class="switch" id="sw-occl" type="button" aria-pressed="false">
           <span class="switch-track"><span class="switch-knob"></span></span>
-          铺满一个窗口
+          Fill the screen with a window
         </button>
-        <div class="readout mono" id="layer-readout">level = <b>−2147483628</b> · 图标之下 · 播放中</div>
+        <div class="readout mono" id="layer-readout">level = <b>−2147483628</b> · below icons · playing</div>
       </div>
 
       <div class="note rise">
-        <b>覆盖图标那个开关走的是 <span class="mono">+2</span>，不是 <span class="mono">+1</span>。</b>
-        图标层再往上一级住着一个 WindowServer 的窗口，占屏幕最顶端约 122px。同层的前后顺序不归我们决定，
-        实测它排在前面 —— 结果就是壁纸顶端被压出一条白边。真机上撞出来的，读代码看不出来。
+        <b>The “cover icons” switch uses <span class="mono">+2</span>, not <span class="mono">+1</span>.</b>
+        One level above the icons lives a WindowServer window that occupies the top ~122px of the screen. Ordering
+        within a level isn’t ours to decide, and in practice it sits in front of us — which pressed a white strip
+        across the top of the wallpaper. Found by running it on real hardware; you cannot see this by reading code.
       </div>
     </div>
   </div>
@@ -1329,42 +1359,42 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
 <!-- ============================== § 壁纸类型 ============================== -->
 <section class="sec" id="renderers">
   <div class="sec-grid">
-    <div class="rail"><span class="rail-num">03</span><span>壁纸类型</span></div>
+    <div class="rail"><span class="rail-num">03</span><span>Wallpaper types</span></div>
     <div>
-      <h2 class="sec-h rise">三条渲染管线，各用各该用的系统框架。</h2>
+      <h2 class="sec-h rise">Three rendering pipelines, each on the framework built for it.</h2>
       <p class="sec-p rise">
-        不是把什么都塞进一个 WebView 里凑合。视频走硬件解码，网页走 WebKit，图片走 Core Animation ——
-        谁也不为谁的短板买单。
+        Not everything stuffed into one WebView. Video goes through hardware decode, web through WebKit, images
+        through Core Animation — nobody pays for anybody else’s weak spot.
       </p>
 
       <div class="cards rise">
         <div class="card">
-          <span class="card-kind">视频</span>
-          <h3>无缝循环，硬件解码</h3>
-          <p>队列播放器加循环器，接缝处不黑一帧、不卡一下。4K60 交给显卡，CPU 基本闲着。</p>
+          <span class="card-kind">Video</span>
+          <h3>Seamless loops, hardware decode</h3>
+          <p>A queue player plus a looper: no black frame at the seam, no stutter. 4K60 goes to the GPU and the CPU stays mostly idle.</p>
           <span class="impl">AVQueuePlayer + AVPlayerLooper</span>
         </div>
         <div class="card">
-          <span class="card-kind">网页 / WebGL</span>
-          <h3>着色器壁纸，参数能调</h3>
-          <p>壁纸自己声明的开关、滑块、颜色、选图，全部出现在属性面板里，改完立刻生效。</p>
-          <span class="impl">WKWebView + 本地 http 源</span>
+          <span class="card-kind">Web / WebGL</span>
+          <h3>Shader wallpapers you can tune</h3>
+          <p>Every switch, slider, colour and file picker a wallpaper declares shows up in the properties panel, and takes effect the moment you change it.</p>
+          <span class="impl">WKWebView + local http origin</span>
         </div>
         <div class="card">
-          <span class="card-kind">图片 / 分层</span>
-          <h3>2.5D 视差，几乎不耗电</h3>
-          <p>几张切好的图各带景深，按鼠标位置错位移动。层间的相对运动就是景深感的来源。</p>
+          <span class="card-kind">Image / Layered</span>
+          <h3>2.5D parallax, almost no power draw</h3>
+          <p>A few cut-out images each carry a depth value and shift by different amounts as the mouse moves. The relative motion between layers is what creates the sense of depth.</p>
           <span class="impl">CALayer · depth 0…1</span>
         </div>
       </div>
 
       <div class="code rise">
-<span class="c">// 分层壁纸的全部格式定义，就这么多</span>
+<span class="c">// The entire format definition for a layered wallpaper</span>
 {
   <span class="k">"layers"</span>: [
-    { <span class="k">"image"</span>: "sky.png",   <span class="k">"depth"</span>: 0.0  },  <span class="c">// 最远，几乎不动</span>
+    { <span class="k">"image"</span>: "sky.png",   <span class="k">"depth"</span>: 0.0  },  <span class="c">// farthest, barely moves</span>
     { <span class="k">"image"</span>: "hills.png", <span class="k">"depth"</span>: 0.45 },
-    { <span class="k">"image"</span>: "tree.png",  <span class="k">"depth"</span>: 1.0  }   <span class="c">// 最近，动得最多</span>
+    { <span class="k">"image"</span>: "tree.png",  <span class="k">"depth"</span>: 1.0  }   <span class="c">// nearest, moves most</span>
   ]
 }</div>
     </div>
@@ -1374,29 +1404,30 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
 <!-- ============================== § 省电 ============================== -->
 <section class="sec" id="power">
   <div class="sec-grid">
-    <div class="rail"><span class="rail-num">04</span><span>省电</span></div>
+    <div class="rail"><span class="rail-num">04</span><span>Power</span></div>
     <div>
-      <h2 class="sec-h rise">看不见的时候，它一帧都不画。</h2>
+      <h2 class="sec-h rise">When nobody can see it, it doesn’t draw a single frame.</h2>
       <p class="sec-p rise">
-        自制壁纸软件和成品的真正差距在这。所有暂停/降频的判断集中在一个调速器里，
-        渲染器自己不做任何决定 —— 于是「壁纸为什么停了」永远只有一个答案，而且写在日志里。
+        This is where a weekend wallpaper hack and a finished product actually differ. Every pause and throttle
+        decision lives in one governor; the renderers decide nothing on their own — so “why did my wallpaper stop?”
+        always has exactly one answer, and it’s in the log.
       </p>
 
       <div class="gov">
         <div class="panel rise">
           <div class="panel-head">
             <span class="dot" style="background:var(--sub-g)"></span>
-            实时决策 · com.livewall.LiveWall
+            live decisions · com.livewall.LiveWall
           </div>
           <div class="panel-body" id="govlog"></div>
         </div>
 
         <div class="gov-list rise">
-          <div class="gov-item"><b>屏幕被窗口盖满</b><span>收益最大的一项。用窗口列表的前后顺序判断是不是真被完全遮住，默认开启。</span></div>
-          <div class="gov-item"><b>锁屏 / 显示器休眠 / 系统睡眠</b><span>三条系统通知各自对应一个暂停原因，醒来自动恢复。</span></div>
-          <div class="gov-item"><b>低电量模式</b><span>跟随系统开关，用户开省电模式就是想让后台安静。</span></div>
-          <div class="gov-item"><b>用电池供电</b><span>可选暂停，或降到低帧率继续放。</span></div>
-          <div class="gov-item"><b>网页壁纸的帧率上限</b><span>直接接管 <span class="mono">requestAnimationFrame</span> —— 页面绕不过去，不是靠它自觉。</span></div>
+          <div class="gov-item"><b>Screen fully covered by a window</b><span>The biggest win of the lot. Front-to-back window order tells us whether we are really hidden. On by default.</span></div>
+          <div class="gov-item"><b>Lock screen / display sleep / system sleep</b><span>Three system notifications, three distinct pause reasons, automatic resume on wake.</span></div>
+          <div class="gov-item"><b>Low Power Mode</b><span>Follows the system switch — someone who turns on Low Power Mode wants the background to go quiet.</span></div>
+          <div class="gov-item"><b>Running on battery</b><span>Pause, or drop to a lower frame rate and keep playing. Your choice.</span></div>
+          <div class="gov-item"><b>Frame cap for web wallpapers</b><span>We take over <span class="mono">requestAnimationFrame</span> directly — the page cannot route around it, and we are not relying on it to behave.</span></div>
         </div>
       </div>
     </div>
@@ -1406,13 +1437,14 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
 <!-- ============================== § 音频 ============================== -->
 <section class="sec" id="audio">
   <div class="sec-grid">
-    <div class="rail"><span class="rail-num">05</span><span>音频响应</span></div>
+    <div class="rail"><span class="rail-num">05</span><span>Audio reactive</span></div>
     <div>
-      <h2 class="sec-h rise">4096 点 FFT，64 段对数分频。</h2>
+      <h2 class="sec-h rise">4096-point FFT, 64 logarithmic bands.</h2>
       <p class="sec-p rise">
-        采样加 Hann 窗、实数 FFT、对数分频、峰值衰减平滑，拼成 128 个值推给壁纸页面。
-        设置里能选输入设备，旁边就是实时频谱条 —— 让你一眼看出到底有没有信号进来。
-        <strong>默认关闭</strong>，不开就不会弹麦克风权限。
+        Hann window, real FFT, logarithmic banding, peak-decay smoothing — packed into the 128 values a wallpaper
+        page expects. You can pick the input device in Settings, with a live spectrum bar right next to it so you
+        can tell at a glance whether any signal is arriving.
+        <strong>Off by default</strong>, so nothing asks for microphone access unless you turn it on.
       </p>
 
       <div class="spectrum-shell rise">
@@ -1423,9 +1455,10 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
       </div>
 
       <div class="note rise">
-        <b>说实话：macOS 不让应用直接采集系统播放的声音。</b>
-        不装 BlackHole 这类环回声卡，采到的就是麦克风里的环境声，不是你正在放的歌。
-        功能是完整的，但这个前提得你自己满足 —— 这是系统的限制，不是没做完。
+        <b>Straight talk: macOS does not let an app capture the sound the system is playing.</b>
+        Without a loopback device like BlackHole, what you capture is the room through your microphone, not the
+        track you are listening to. The feature is complete, but that prerequisite is on you — it is a platform
+        limitation, not an unfinished feature.
       </div>
     </div>
   </div>
@@ -1434,56 +1467,57 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
 <!-- ============================== § 迁移 ============================== -->
 <section class="sec" id="import">
   <div class="sec-grid">
-    <div class="rail"><span class="rail-num">06</span><span>迁移</span></div>
+    <div class="rail"><span class="rail-num">06</span><span>Migrating</span></div>
     <div>
-      <h2 class="sec-h rise">你在 Windows 上攒的那些壁纸，能带过来。</h2>
+      <h2 class="sec-h rise">The wallpapers you collected on Windows can come with you.</h2>
       <p class="sec-p rise">
-        命令行转换工具只读你本机已有的文件 —— 不联网、不碰 Steam、不下载任何东西。
-        实测跑过 8 个真实条目、713 MB，转换成功率 8/8。
+        The command-line converter only reads files already on your machine — no network, no Steam, nothing
+        downloaded. Tested against 8 real items totalling 713 MB: 8 of 8 converted.
       </p>
 
       <div class="table-scroll rise">
         <table>
           <thead>
-            <tr><th>原类型</th><th>结果</th><th>说明</th></tr>
+            <tr><th>Source type</th><th>Result</th><th>Notes</th></tr>
           </thead>
           <tbody>
             <tr>
               <td>video</td>
-              <td><span class="st" data-v="ok">无损转换</span></td>
-              <td>webm / VP9 自动转码成 H.264<small>AVFoundation 不解这两种编码，必须转</small></td>
+              <td><span class="st" data-v="ok">lossless</span></td>
+              <td>webm / VP9 transcoded to H.264 automatically<small>AVFoundation cannot decode either codec, so transcoding is required</small></td>
             </tr>
             <tr>
               <td>web</td>
-              <td><span class="st" data-v="ok">可用</span></td>
-              <td>页面用的那套 JS 接口由兼容层补齐<small>属性监听、随机取文件、音频回调都在</small></td>
+              <td><span class="st" data-v="ok">works</span></td>
+              <td>The JS interface those pages expect is filled in by a compatibility shim<small>Property listeners, random file requests and audio callbacks are all there</small></td>
             </tr>
             <tr>
               <td>scene</td>
-              <td><span class="st" data-v="warn">部分</span></td>
-              <td>内嵌视频的能自动提取出来<small>纯场景要在 Windows 端先预渲染成视频 —— 原样支持等于重写人家整个渲染器</small></td>
+              <td><span class="st" data-v="warn">partial</span></td>
+              <td>Ones with embedded video are extracted automatically<small>Pure scenes have to be pre-rendered to video on the Windows side — supporting them as-is would mean rewriting somebody else’s entire renderer</small></td>
             </tr>
             <tr>
               <td>application</td>
-              <td><span class="st" data-v="no">无解</span></td>
-              <td>Windows 可执行文件<small>这个真没办法</small></td>
+              <td><span class="st" data-v="no">no</span></td>
+              <td>Windows executables<small>Nothing to be done here</small></td>
             </tr>
           </tbody>
         </table>
       </div>
 
       <div class="code rise">
-<span class="c"># 装依赖，编译转换器</span>
+<span class="c"># Install the dependency and build the converter</span>
 brew install ffmpeg
 cd Tools/livewall-import &amp;&amp; swift build -c release
 
-<span class="c"># 指向你本机的内容目录，输出 .livewall 包</span>
-.build/release/livewall-import &lt;你的路径&gt; -o ~/Desktop/out
+<span class="c"># Point it at your local content folder; it writes .livewall packages</span>
+.build/release/livewall-import &lt;your path&gt; -o ~/Desktop/out
 
-<span class="c"># 把 out 里的 .livewall 拖进 LiveWall</span></div>
+<span class="c"># Drag the .livewall files from out/ into LiveWall</span></div>
 
       <div class="note rise">
-        转换结果供个人使用。<b>原壁纸的版权归各自作者所有</b> —— 工具只是换个封装格式，不改变这一点。
+        Converted results are for your own use. <b>Copyright in the original wallpapers stays with their authors</b> —
+        the tool only changes the container format, and that changes nothing about ownership.
       </div>
     </div>
   </div>
@@ -1492,31 +1526,31 @@ cd Tools/livewall-import &amp;&amp; swift build -c release
 <!-- ============================== § 三条开始路径 ============================== -->
 <section class="sec" id="paths">
   <div class="sec-grid">
-    <div class="rail"><span class="rail-num">07</span><span>怎么开始</span></div>
+    <div class="rail"><span class="rail-num">07</span><span>Get started</span></div>
     <div>
-      <h2 class="sec-h rise">你从哪来，LiveWall 就从哪开始。</h2>
+      <h2 class="sec-h rise">Wherever you’re coming from, that’s where LiveWall starts.</h2>
       <p class="sec-p rise">
-        第一次换动态壁纸、把 Windows 的收藏带过来，还是自己做作品投稿，入口不该一样。
-        所以官网把三条路分开，而不是把所有人扔进一个 README。
+        Setting your first live wallpaper, bringing a Windows collection across, or publishing your own work are
+        not the same task. So the three routes are separate here, instead of everyone being dropped into one README.
       </p>
       <div class="path-grid rise">
         <article class="path-card">
-          <span class="path-step">01 / 想马上用</span>
-          <h3>挑一张动态壁纸，放进桌面。</h3>
-          <p>从精选目录下载 `.livewall`，拖进 App。视频、图片、网页和分层壁纸各走自己的原生渲染器。</p>
-          <a href="https://github.com/futurebackrookie/livewall-catalog" target="_blank" rel="noopener">浏览精选壁纸</a>
+          <span class="path-step">01 / Just want it running</span>
+          <h3>Pick a live wallpaper, put it on your desktop.</h3>
+          <p>Download a `.livewall` from the catalogue and drag it into the app. Video, images, web and layered wallpapers each get their own native renderer.</p>
+          <a href="https://github.com/futurebackrookie/livewall-catalog" target="_blank" rel="noopener">Browse the catalogue</a>
         </article>
         <article class="path-card">
-          <span class="path-step">02 / 来自 Windows</span>
-          <h3>带上已有收藏，不必从零开始。</h3>
-          <p>转换器只读取你电脑上已有的项目，不登录 Steam、不下载内容。视频和网页类优先支持，Scene 明确给出预渲染路径。</p>
-          <a href="#import">查看兼容与转换方式</a>
+          <span class="path-step">02 / Coming from Windows</span>
+          <h3>Bring your collection; don’t start over.</h3>
+          <p>The converter only reads projects already on your computer — no Steam login, no downloads. Video and web types are supported first, and Scene has a documented pre-render route.</p>
+          <a href="#import">See what converts, and how</a>
         </article>
         <article class="path-card">
-          <span class="path-step">03 / 我是创作者</span>
-          <h3>做一张壁纸，让更多人的桌面动起来。</h3>
-          <p>先从零成本的精选目录投稿：清楚的格式、校验和、版本记录与审核轨迹。真正开放上传前，不把风险甩给创作者。</p>
-          <a href="https://github.com/futurebackrookie/livewall-catalog/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">阅读投稿说明</a>
+          <span class="path-step">03 / I make wallpapers</span>
+          <h3>Make one, and put it on other people’s desktops.</h3>
+          <p>Start with the zero-cost catalogue: a clear format, checksums, version history and a visible review trail. Until uploads open properly, the risk doesn’t get pushed onto creators.</p>
+          <a href="https://github.com/futurebackrookie/livewall-catalog/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">Read the submission guide</a>
         </article>
       </div>
     </div>
@@ -1526,32 +1560,33 @@ cd Tools/livewall-import &amp;&amp; swift build -c release
 <!-- ============================== § 壁纸从哪来 ============================== -->
 <section class="sec" id="wallpapers">
   <div class="sec-grid">
-    <div class="rail"><span class="rail-num">08</span><span>壁纸从哪来</span></div>
+    <div class="rail"><span class="rail-num">08</span><span>Finding wallpapers</span></div>
     <div>
-      <h2 class="sec-h rise">LiveWall 不捆绑内容库，素材你自己挑。</h2>
+      <h2 class="sec-h rise">LiveWall doesn’t bundle a content library. You choose the material.</h2>
       <p class="sec-p rise">
-        任何 mp4、图片、HTML 都能直接拖进来用。下面是几个常去的地方 ——
-        <strong>我们不托管、不转售、也不审核这些站点上的内容</strong>，只是把路指出来。
+        Any mp4, image or HTML file can be dragged straight in. Below are a few places people go —
+        <strong>we don’t host, resell or vet anything on these sites</strong>, we’re only pointing at the road.
       </p>
 
-      <h3 class="src-h rise">授权明确</h3>
-      <p class="src-note rise">条款逐条核实过：商用免费、无需署名、可修改。App 里的来源列表只收这一类。</p>
+      <h3 class="src-h rise">Clearly licensed</h3>
+      <p class="src-note rise">Terms checked line by line: free for commercial use, no attribution required, modification allowed. The in-app source list only carries this tier.</p>
       <div class="gov-list rise">
         <div class="gov-item src-item">
-          <b><a href="https://pixabay.com/videos/search/live%20wallpaper/" target="_blank" rel="noopener">Pixabay 视频 ↗</a></b>
-          <span>可按分辨率筛 4K，搜 live wallpaper 或 loop 有大量现成的循环片段。
-                <em>Pixabay Content License：商用免费、无需署名、可修改；禁止把素材原样单独再分发或出售。</em></span>
+          <b><a href="https://pixabay.com/videos/search/live%20wallpaper/" target="_blank" rel="noopener">Pixabay video ↗</a></b>
+          <span>Filter by resolution for 4K; searching for “live wallpaper” or “loop” turns up plenty of ready-made loops.
+                <em>Pixabay Content License: free for commercial use, no attribution required, modification allowed; redistributing or selling content on a standalone basis is not.</em></span>
         </div>
         <div class="gov-item src-item">
-          <b><a href="https://www.pexels.com/videos/" target="_blank" rel="noopener">Pexels 视频 ↗</a></b>
-          <span>画质普遍较高，可按方向和分辨率筛选。
-                <em>Pexels License：免费使用、无需署名、可修改；禁止在其它素材站或壁纸站再分发，禁止出售未修改的副本。</em></span>
+          <b><a href="https://www.pexels.com/videos/" target="_blank" rel="noopener">Pexels video ↗</a></b>
+          <span>Generally high quality, filterable by orientation and resolution.
+                <em>Pexels License: free to use, no attribution required, modification allowed; redistributing on other stock or wallpaper platforms is not, nor is selling unaltered copies.</em></span>
         </div>
       </div>
 
-      <h3 class="src-h rise">第三方站点</h3>
+      <h3 class="src-h rise">Third-party sites</h3>
       <p class="src-note rise">
-        动漫和游戏风格的动态壁纸大多在这些站上。它们<strong>不逐条标注授权</strong>，请自行确认后再使用。
+        Most anime- and game-styled live wallpapers live on sites like these. They <strong>do not label licensing
+        item by item</strong>, so check before you use anything.
       </p>
       <div class="src-grid rise">
         <a href="https://www.desktophut.com/" target="_blank" rel="noopener nofollow">DesktopHut ↗</a>
@@ -1565,18 +1600,22 @@ cd Tools/livewall-import &amp;&amp; swift build -c release
       </div>
 
       <div class="note rise">
-        <b>这些链接不代表背书。</b>
-        LiveWall 与上述站点没有任何关联，不参与其运营，也无法保证其内容的授权状况、
-        画质或安全性。<b>下载前请自行确认授权</b> —— 二次创作（动漫、游戏角色等）的
-        版权归原作者，自己在本机用是一回事，公开分发是另一回事。
-        发现哪个站点有问题，<a href="https://github.com/futurebackrookie/livewall-catalog/issues" target="_blank" rel="noopener">开个 issue</a> 告诉我们，会撤掉。
+        <b>These links are not an endorsement.</b>
+        LiveWall has no connection to these sites, takes no part in running them, and cannot vouch for the licensing,
+        quality or safety of what they host. <b>Confirm the licence before you download</b> — copyright in derivative
+        work (anime and game characters and so on) belongs to the original creators, and using something on your own
+        machine is not the same as redistributing it.
+        If something is wrong with one of these sites,
+        <a href="https://github.com/futurebackrookie/livewall-catalog/issues" target="_blank" rel="noopener">open an issue</a> and we’ll drop it.
       </div>
 
       <div class="note rise" style="border-left-color:var(--sub-r);background:color-mix(in srgb, var(--sub-r) 8%, transparent)">
-        <b>能下载来自己用 ≠ 能打包投稿。</b>
-        很多免费素材站的授权允许你下载使用，却禁止再分发 —— Pexels 就明写禁止
-        「在其它素材站或壁纸站再分发」，而壁纸目录正是壁纸站。
-        换个封装格式不算「施加了创作性劳动」，所以这类素材<b>不要投稿到精选目录</b>。
+        <b>Free to download for yourself ≠ free to submit.</b>
+        Plenty of free stock sites allow you to download and use their material but forbid redistribution — Pexels
+        explicitly forbids redistributing “on other stock photo or wallpaper platforms”, and a wallpaper catalogue is
+        exactly that.
+        Changing the container format does not count as “applying creative effort”, so <b>please don’t submit this
+        material to the catalogue</b>.
       </div>
     </div>
   </div>
@@ -1585,18 +1624,18 @@ cd Tools/livewall-import &amp;&amp; swift build -c release
 <!-- ============================== § 信任与边界 ============================== -->
 <section class="sec" id="trust">
   <div class="sec-grid">
-    <div class="rail"><span class="rail-num">09</span><span>透明边界</span></div>
+    <div class="rail"><span class="rail-num">09</span><span>Boundaries</span></div>
     <div>
-      <h2 class="sec-h rise">你的桌面不该成为谁的云端素材库。</h2>
+      <h2 class="sec-h rise">Your desktop shouldn’t become somebody’s cloud asset library.</h2>
       <p class="sec-p rise">
-        动态壁纸能访问大量本地文件，所以 LiveWall 的默认策略是少拿权限、少留数据、少说大话。
-        能做的明确做到；做不到的明确告诉你。
+        A live wallpaper can reach a lot of local files, so LiveWall’s default posture is: ask for fewer permissions,
+        keep less data, promise less. What can be done is done properly; what can’t is stated plainly.
       </p>
       <div class="trust-grid rise">
-        <article class="trust-card"><strong>本地优先。</strong><p>壁纸、书签、导入记录和诊断报告都在你的 Mac。不会自动上传，也没有广告追踪脚本。</p></article>
-        <article class="trust-card"><strong>公开 API。</strong><p>桌面层级、多 Space、省电策略和文件权限均使用 macOS 公开能力，为商店审核留出正路。</p></article>
-        <article class="trust-card"><strong>诊断可带走。</strong><p>遇到黑屏或兼容问题，可导出已脱敏的本地报告；它包含状态和错误，不包含壁纸文件。</p></article>
-        <article class="trust-card"><strong>不假装兼容。</strong><p>Windows 应用类壁纸和原生 Scene 渲染不承诺支持；Scene 有正规的视频预渲染方案。</p></article>
+        <article class="trust-card"><strong>Local first.</strong><p>Wallpapers, bookmarks, import history and diagnostics all stay on your Mac. Nothing is uploaded automatically, and there are no ad-tracking scripts.</p></article>
+        <article class="trust-card"><strong>Public APIs only.</strong><p>Desktop window levels, multi-Space behaviour, the power strategy and file access all use documented macOS capabilities, keeping the App Store route open.</p></article>
+        <article class="trust-card"><strong>Diagnostics you can take with you.</strong><p>Hit a black screen or a compatibility problem and you can export a redacted local report. It contains state and errors, not your wallpaper files.</p></article>
+        <article class="trust-card"><strong>No pretend compatibility.</strong><p>Windows application-type wallpapers and native Scene rendering are not promised. Scene has a legitimate video pre-render path instead.</p></article>
       </div>
     </div>
   </div>
@@ -1605,16 +1644,16 @@ cd Tools/livewall-import &amp;&amp; swift build -c release
 <!-- ============================== § 拿到手 ============================== -->
 <section class="sec" id="get">
   <div class="sec-grid">
-    <div class="rail"><span class="rail-num">10</span><span>拿到手</span></div>
+    <div class="rail"><span class="rail-num">10</span><span>Get it</span></div>
     <div>
-      <h2 class="sec-h rise">现在开始用。商店版也在路上。</h2>
-      <p class="sec-p rise">点下面的按钮直接开始下载，得到一个 <code>.dmg</code>，打开后把图标拖进「应用程序」就装好了。没有捆绑，没有推广插件，没有来路不明的下载站。</p>
+      <h2 class="sec-h rise">Start using it now. The store build is on the way.</h2>
+      <p class="sec-p rise">The button below starts the download directly. You get a <code>.dmg</code>; open it and drag the icon into Applications. No bundleware, no promotional add-ons, no sketchy download portals.</p>
 
       <div class="status-grid rise">
-        <div class="status-cell"><span class="k">App 测试</span><span class="v">105</span><span class="n">自动回归通过</span></div>
-        <div class="status-cell"><span class="k">转换器测试</span><span class="v">23</span><span class="n">导入链路单独验证</span></div>
-        <div class="status-cell"><span class="k">诊断模式</span><span class="v">本地</span><span class="n">不上传崩溃与壁纸数据</span></div>
-        <div class="status-cell"><span class="k">系统要求</span><span class="v">macOS 14+</span><span class="n">Apple 芯片与 Intel</span></div>
+        <div class="status-cell"><span class="k">App tests</span><span class="v">105</span><span class="n">automated regression, passing</span></div>
+        <div class="status-cell"><span class="k">Converter tests</span><span class="v">23</span><span class="n">import path verified separately</span></div>
+        <div class="status-cell"><span class="k">Diagnostics</span><span class="v">Local</span><span class="n">no crash or wallpaper data uploaded</span></div>
+        <div class="status-cell"><span class="k">Requires</span><span class="v">macOS 14+</span><span class="n">Apple silicon and Intel</span></div>
       </div>
 
       <!-- /releases/latest/download/<文件名> 永远指向最新一次发布。
@@ -1625,14 +1664,14 @@ cd Tools/livewall-import &amp;&amp; swift build -c release
             <path d="M8 1.6v8.2m0 0L4.7 6.5M8 9.8l3.3-3.3M2.2 11.6v1.3a1.5 1.5 0 0 0 1.5 1.5h8.6a1.5 1.5 0 0 0 1.5-1.5v-1.3"
                   stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-          下载 LiveWall
+          Download LiveWall
           <span class="btn-meta">dmg · 3.6 MB</span>
         </a>
-        <a class="btn btn-line" href="https://github.com/futurebackrookie/livewall-catalog" target="_blank" rel="noopener">浏览壁纸目录</a>
+        <a class="btn btn-line" href="https://github.com/futurebackrookie/livewall-catalog" target="_blank" rel="noopener">Browse the wallpaper catalogue</a>
       </div>
       <p class="dl-sub rise">
-        通用版本，Apple 芯片与 Intel 都能跑，需要 macOS 14 或更高。
-        <a href="https://github.com/futurebackrookie/livewall-site/releases" target="_blank" rel="noopener">查看全部版本与校验和</a>
+        Universal build, runs on Apple silicon and Intel, needs macOS 14 or later.
+        <a href="https://github.com/futurebackrookie/livewall-site/releases" target="_blank" rel="noopener">All versions and checksums</a>
       </p>
 
       <!-- 首次打开的说明必须显眼。没有公证的 app 会被 Gatekeeper 拦下，
@@ -1640,38 +1679,39 @@ cd Tools/livewall-import &amp;&amp; swift build -c release
       <div class="panel rise" style="margin-top:30px">
         <div class="panel-head">
           <span class="dot" style="background:var(--sub-r)"></span>
-          第一次打开会被系统拦下 —— 这是正常的
+          macOS will block the first launch — that’s expected
         </div>
         <div class="panel-body" style="padding:18px 20px">
           <p class="sec-p" style="margin:0 0 18px;max-width:none">
-            LiveWall 还<strong>没有经过 Apple 公证</strong> —— 公证要一个 Apple 开发者付费账号，
-            目前还没有。所以第一次启动会被系统拦下，提示「无法验证开发者」。
-            这不代表软件有问题。<strong>全程点鼠标，不用开终端</strong>，做一次就好：
+            LiveWall is <strong>not notarised by Apple</strong> yet — notarisation requires a paid Apple Developer
+            account, and there isn’t one yet. So the first launch gets blocked with “cannot verify the developer”.
+            It doesn’t mean anything is wrong with the app. <strong>It’s all clicks, no Terminal</strong>, and you
+            only do it once:
           </p>
 
           <ol class="steps">
-            <li><b>双击 LiveWall，让它被拒绝一次。</b>这一步不能跳 —— 系统要先记下这次拦截，
-                后面那个「仍要打开」的按钮才会出现。</li>
-            <li>打开<b>「系统设置」→「隐私与安全性」</b>。</li>
-            <li>往下拉到<b>「安全性」</b>那一栏，会看到一行「已阻止使用 LiveWall」。</li>
-            <li>点它右边的<b>「仍要打开」</b>，再确认一次。</li>
+            <li><b>Double-click LiveWall and let it be refused once.</b> Don’t skip this — the system has to record the block before the “Open Anyway” button appears.</li>
+            <li>Open <b>System Settings → Privacy &amp; Security</b>.</li>
+            <li>Scroll down to <b>Security</b>; you’ll see a line saying LiveWall was blocked.</li>
+            <li>Click <b>Open Anyway</b> next to it, then confirm.</li>
           </ol>
 
           <p class="sec-p" style="margin:16px 0 0;max-width:none">
-            之后正常双击就能开，不会再问。同样的说明也放在 dmg 里的「请先读我.txt」中。
+            After that it opens normally and never asks again. The same instructions are inside the dmg, in “Read me first.txt”.
           </p>
 
           <details class="adv">
-            <summary>习惯用终端的话，一行也行</summary>
+            <summary>If you’d rather use the Terminal, one line does it</summary>
             <div class="code" style="margin:12px 0 0">xattr -d com.apple.quarantine /Applications/LiveWall.app</div>
           </details>
         </div>
       </div>
 
       <div class="note rise">
-        <b>沙盒、隐私清单、硬化运行时和登录项能力都已就位，没有使用私有 API。</b>
-        上架 App Store 还需要 Apple Developer Program、正式签名与商店素材；公证也依赖同一个账号。
-        在那之前，上面的 Releases 页是唯一正式下载来源 —— 从别处拿到的 LiveWall，我无法为它负责。
+        <b>Sandbox, privacy manifest, hardened runtime and the login-item capability are all in place, with no private APIs.</b>
+        Shipping on the App Store still needs the Apple Developer Program, proper signing and store assets; notarisation
+        depends on the same account.
+        Until then the Releases page above is the only official download — a copy of LiveWall from anywhere else is one I can’t vouch for.
       </div>
     </div>
   </div>
@@ -1681,22 +1721,22 @@ cd Tools/livewall-import &amp;&amp; swift build -c release
 
 <footer>
   <div class="foot-in">
-    <span>LiveWall · macOS 动态壁纸</span>
+    <span>LiveWall · live wallpapers for macOS</span>
     <div class="foot-links">
-      <a href="https://github.com/futurebackrookie/livewall-site/releases" target="_blank" rel="noopener">Beta 构建</a>
-      <a href="https://github.com/futurebackrookie/livewall-catalog">壁纸目录</a>
-      <a href="https://github.com/futurebackrookie/livewall-catalog/blob/main/CONTRIBUTING.md">投稿壁纸</a>
-      <a href="#top">回到顶部</a>
+      <a href="https://github.com/futurebackrookie/livewall-site/releases" target="_blank" rel="noopener">Beta builds</a>
+      <a href="https://github.com/futurebackrookie/livewall-catalog">Wallpaper catalogue</a>
+      <a href="https://github.com/futurebackrookie/livewall-catalog/blob/main/CONTRIBUTING.md">Submit a wallpaper</a>
+      <a href="#top">Back to top</a>
     </div>
     <p class="legal">
-      LiveWall 与任何第三方壁纸软件、平台均无关联，也未获其授权或背书。
-      文中提及的产品名称仅用于说明兼容性，商标归各自持有者所有。
-      转换工具在你自己的电脑上处理你自己已有的文件。
+      LiveWall is not affiliated with, authorised by, or endorsed by any third-party wallpaper software or platform.
+      Product names are mentioned only to describe compatibility; trademarks belong to their respective owners.
+      The converter processes files you already have, on your own computer.
     </p>
   </div>
 </footer>
 
-<script>window.__I18N={"js.preview1.kind":"WEBGL / 实时预览","js.preview1.title":"极光信号","js.preview1.meta":"60 FPS · 鼠标视差 · 可调参数","js.preview2.kind":"VIDEO / 无缝循环","js.preview2.title":"深海回声","js.preview2.meta":"4K · 硬件解码 · 遮挡即暂停","js.preview3.kind":"WEBGL / 实时预览","js.preview3.title":"霓虹雨幕","js.preview3.meta":"60 FPS · 音频响应 · 低功耗","js.preview4.kind":"LAYERED / 2.5D","js.preview4.title":"黎明之间","js.preview4.meta":"分层景深 · 鼠标视差 · 几乎不耗电","js.gov1.p":"播放中 · 60 FPS","js.gov1.m":"governor: 前台可见,全速","js.gov2.p":"已暂停 · 被窗口遮挡","js.gov2.m":"occlusion: 屏幕被不透明窗口盖满","js.gov3.p":"播放中 · 60 FPS","js.gov3.m":"occlusion: 桌面重新露出","js.gov4.p":"省电 · 30 FPS","js.gov4.m":"power: 低电量模式已开启","js.gov5.p":"已暂停 · 显示器休眠","js.gov5.m":"display: 进入休眠","js.gov6.p":"已暂停 · 锁屏","js.gov6.m":"session: 屏幕已锁定","js.gov7.p":"播放中 · 60 FPS","js.gov7.m":"session: 已解锁,恢复渲染","js.readout.above":"图标之上","js.readout.below":"图标之下","js.readout.occluded":"已暂停 · 被窗口遮挡","js.readout.playing":"播放中","js.hint.touch":"点上面切换壁纸"};</script>
+<script>window.__I18N={"js.preview1.kind":"WEBGL / LIVE PREVIEW","js.preview1.title":"Aurora Signal","js.preview1.meta":"60 FPS · mouse parallax · tunable","js.preview2.kind":"VIDEO / SEAMLESS LOOP","js.preview2.title":"Deep Sea Echo","js.preview2.meta":"4K · hardware decode · pauses when hidden","js.preview3.kind":"WEBGL / LIVE PREVIEW","js.preview3.title":"Neon Rain","js.preview3.meta":"60 FPS · audio reactive · low power","js.preview4.kind":"LAYERED / 2.5D","js.preview4.title":"Between Daybreak","js.preview4.meta":"Layered depth · mouse parallax · almost no power draw","js.gov1.p":"Playing · 60 FPS","js.gov1.m":"governor: visible in front, full speed","js.gov2.p":"Paused · covered by a window","js.gov2.m":"occlusion: screen fully covered by an opaque window","js.gov3.p":"Playing · 60 FPS","js.gov3.m":"occlusion: desktop visible again","js.gov4.p":"Throttled · 30 FPS","js.gov4.m":"power: Low Power Mode enabled","js.gov5.p":"Paused · display asleep","js.gov5.m":"display: entering sleep","js.gov6.p":"Paused · screen locked","js.gov6.m":"session: screen locked","js.gov7.p":"Playing · 60 FPS","js.gov7.m":"session: unlocked, rendering resumed","js.readout.above":"above icons","js.readout.below":"below icons","js.readout.occluded":"paused · covered by a window","js.readout.playing":"playing","js.hint.touch":"Tap above to switch wallpapers"};</script>
 <script>
 (function () {
   "use strict";
@@ -2192,3 +2232,6 @@ cd Tools/livewall-import &amp;&amp; swift build -c release
   }
 })();
 </script>
+
+</body>
+</html>
