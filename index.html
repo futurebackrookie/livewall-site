@@ -1046,6 +1046,53 @@ td small { display: block; color: var(--muted); font-size: 12.5px; line-height: 
 .adv summary::before { content: "▸"; font-size: 10px; transition: transform .18s ease; }
 .adv[open] summary::before { transform: rotate(90deg); }
 .adv summary:hover { color: var(--text); }
+
+/* ===========================================================
+   § 壁纸从哪来
+   两组分开排：授权明确的给足空间说清条款，第三方的只给链接 ——
+   版面上的分量差本身就是一种表态。
+   =========================================================== */
+.src-h {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 34px 0 6px;
+  font-weight: 500;
+}
+.src-h:first-of-type { margin-top: 4px; }
+.src-note { margin: 0 0 14px; font-size: 13.5px; color: var(--muted); line-height: 1.7; max-width: 44em; }
+
+.src-item b { font-size: 15px; }
+.src-item b a { color: var(--text); text-decoration: none; }
+.src-item b a:hover { color: var(--beam); }
+.src-item em {
+  display: block;
+  margin-top: 5px;
+  font-style: normal;
+  font-size: 12.5px;
+  color: var(--beam);
+  line-height: 1.65;
+}
+
+.src-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr));
+  gap: 8px;
+}
+.src-grid a {
+  display: block;
+  padding: 11px 14px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--surface);
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 13.5px;
+  transition: border-color .18s ease, color .18s ease, background .18s ease;
+}
+.src-grid a:hover { border-color: var(--muted); color: var(--text); background: var(--surface-2); }
 .btn-line { border-color: var(--line); color: var(--text); }
 .btn-line:hover { border-color: var(--beam); background: var(--beam-glow); }
 .btn[aria-disabled="true"] { opacity: .5; cursor: not-allowed; pointer-events: none; }
@@ -1113,6 +1160,7 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
       <a href="#gallery">壁纸预览</a>
       <a href="#layers">Mac 原生</a>
       <a href="#paths">怎么开始</a>
+      <a href="#wallpapers">找壁纸</a>
       <a href="#trust">隐私与兼容</a>
       <a href="#get">拿到手</a>
     </div>
@@ -1469,10 +1517,69 @@ cd Tools/livewall-import &amp;&amp; swift build -c release
   </div>
 </section>
 
+<!-- ============================== § 壁纸从哪来 ============================== -->
+<section class="sec" id="wallpapers">
+  <div class="sec-grid">
+    <div class="rail"><span class="rail-num">08</span><span>壁纸从哪来</span></div>
+    <div>
+      <h2 class="sec-h rise">LiveWall 不捆绑内容库，素材你自己挑。</h2>
+      <p class="sec-p rise">
+        任何 mp4、图片、HTML 都能直接拖进来用。下面是几个常去的地方 ——
+        <strong>我们不托管、不转售、也不审核这些站点上的内容</strong>，只是把路指出来。
+      </p>
+
+      <h3 class="src-h rise">授权明确</h3>
+      <p class="src-note rise">条款逐条核实过：商用免费、无需署名、可修改。App 里的来源列表只收这一类。</p>
+      <div class="gov-list rise">
+        <div class="gov-item src-item">
+          <b><a href="https://pixabay.com/videos/search/live%20wallpaper/" target="_blank" rel="noopener">Pixabay 视频 ↗</a></b>
+          <span>可按分辨率筛 4K，搜 live wallpaper 或 loop 有大量现成的循环片段。
+                <em>Pixabay Content License：商用免费、无需署名、可修改；禁止把素材原样单独再分发或出售。</em></span>
+        </div>
+        <div class="gov-item src-item">
+          <b><a href="https://www.pexels.com/videos/" target="_blank" rel="noopener">Pexels 视频 ↗</a></b>
+          <span>画质普遍较高，可按方向和分辨率筛选。
+                <em>Pexels License：免费使用、无需署名、可修改；禁止在其它素材站或壁纸站再分发，禁止出售未修改的副本。</em></span>
+        </div>
+      </div>
+
+      <h3 class="src-h rise">第三方站点</h3>
+      <p class="src-note rise">
+        动漫和游戏风格的动态壁纸大多在这些站上。它们<strong>不逐条标注授权</strong>，请自行确认后再使用。
+      </p>
+      <div class="src-grid rise">
+        <a href="https://www.desktophut.com/" target="_blank" rel="noopener nofollow">DesktopHut ↗</a>
+        <a href="https://moewalls.com/" target="_blank" rel="noopener nofollow">MoeWalls ↗</a>
+        <a href="https://motionbgs.com/" target="_blank" rel="noopener nofollow">MotionBGS ↗</a>
+        <a href="https://livebgs.com/" target="_blank" rel="noopener nofollow">LiveBgs ↗</a>
+        <a href="https://livewallp.com/" target="_blank" rel="noopener nofollow">LiveWallp ↗</a>
+        <a href="https://livewallpapers4free.com/" target="_blank" rel="noopener nofollow">LiveWallpapers4Free ↗</a>
+        <a href="https://mylivewallpapers.com/" target="_blank" rel="noopener nofollow">MyLiveWallpapers ↗</a>
+        <a href="https://wallsflow.com/" target="_blank" rel="noopener nofollow">WallsFlow ↗</a>
+      </div>
+
+      <div class="note rise">
+        <b>这些链接不代表背书。</b>
+        LiveWall 与上述站点没有任何关联，不参与其运营，也无法保证其内容的授权状况、
+        画质或安全性。<b>下载前请自行确认授权</b> —— 二次创作（动漫、游戏角色等）的
+        版权归原作者，自己在本机用是一回事，公开分发是另一回事。
+        发现哪个站点有问题，<a href="https://github.com/futurebackrookie/livewall-catalog/issues" target="_blank" rel="noopener">开个 issue</a> 告诉我们，会撤掉。
+      </div>
+
+      <div class="note rise" style="border-left-color:var(--sub-r);background:color-mix(in srgb, var(--sub-r) 8%, transparent)">
+        <b>能下载来自己用 ≠ 能打包投稿。</b>
+        很多免费素材站的授权允许你下载使用，却禁止再分发 —— Pexels 就明写禁止
+        「在其它素材站或壁纸站再分发」，而壁纸目录正是壁纸站。
+        换个封装格式不算「施加了创作性劳动」，所以这类素材<b>不要投稿到精选目录</b>。
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============================== § 信任与边界 ============================== -->
 <section class="sec" id="trust">
   <div class="sec-grid">
-    <div class="rail"><span class="rail-num">08</span><span>透明边界</span></div>
+    <div class="rail"><span class="rail-num">09</span><span>透明边界</span></div>
     <div>
       <h2 class="sec-h rise">你的桌面不该成为谁的云端素材库。</h2>
       <p class="sec-p rise">
@@ -1492,7 +1599,7 @@ cd Tools/livewall-import &amp;&amp; swift build -c release
 <!-- ============================== § 拿到手 ============================== -->
 <section class="sec" id="get">
   <div class="sec-grid">
-    <div class="rail"><span class="rail-num">09</span><span>拿到手</span></div>
+    <div class="rail"><span class="rail-num">10</span><span>拿到手</span></div>
     <div>
       <h2 class="sec-h rise">现在开始用。商店版也在路上。</h2>
       <p class="sec-p rise">点下面的按钮直接开始下载，得到一个 <code>.dmg</code>，打开后把图标拖进「应用程序」就装好了。没有捆绑，没有推广插件，没有来路不明的下载站。</p>
