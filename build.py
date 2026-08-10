@@ -29,6 +29,14 @@ LOCALES = {
 }
 DEFAULT = "zh-Hans"
 
+# Google Search Console 的所有权验证串。
+#
+# 这是第二种验证方式 —— 第一种是根目录那个 google*.html 文件。
+# 多留一种是因为文件万一被误删就会掉验证状态，而掉了之后 sitemap 的
+# 提交记录和「效果」报告都会一并失效。
+# 这个串是公开信息，本来就写在页面 <head> 里给 Google 读。
+GOOGLE_SITE_VERIFICATION = "93BTzCfdrxJ65LatgdtsEzQOmfIMGR1uFCZ4_jt4318"
+
 ROOT = pathlib.Path(__file__).parent
 PLACEHOLDER = re.compile(r"\{\{([\w.\-]+)\}\}")
 
@@ -104,6 +112,7 @@ def head(code, entries):
         '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">',
         f'<title>{entries["x.title1"]}</title>',
         f'<meta name="description" content="{entries["meta.description"]}">',
+        f'<meta name="google-site-verification" content="{GOOGLE_SITE_VERIFICATION}">',
         f'<link rel="canonical" href="{canonical}">',
     ]
     # hreflang：告诉搜索引擎这几个页面是同一内容的不同语言版本。
