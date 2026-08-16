@@ -27,6 +27,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"LiveWall","applicationCategory":"UtilitiesApplication","operatingSystem":"macOS 14 or later","softwareVersion":"Beta","downloadUrl":"https://github.com/futurebackrookie/livewall-site/releases","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
 <link rel="icon" type="image/png" href="https://futurebackrookie.github.io/livewall-site/icon.png">
 <link rel="apple-touch-icon" href="https://futurebackrookie.github.io/livewall-site/icon.png">
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "aca979be3ab8462e811dcefcae9aa19b"}'></script>
 </head>
 <body>
 <style>
@@ -557,6 +558,7 @@ h1.hero-h {
 .path-card a:hover { color: var(--beam); }
 .trust-grid { display: grid; grid-template-columns: 1.25fr repeat(3, minmax(0, 1fr)); gap: 1px; border: 1px solid var(--line-soft); border-radius: 14px; overflow: hidden; background: var(--line-soft); }
 .trust-card { padding: 22px; background: var(--surface); }
+.trust-note { margin-top: 18px; font-size: 13px; line-height: 1.65; color: var(--muted); max-width: 76ch; }
 .trust-card strong { display: block; margin-bottom: 6px; font-family: var(--font-display); font-size: 18px; letter-spacing: -.01em; }
 .trust-card p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.7; }
 .trust-card:first-child { background: var(--surface-2); }
@@ -1722,6 +1724,7 @@ cd Tools/livewall-import &amp;&amp; swift build -c release
         <article class="trust-card"><strong>診断は持ち出せます。</strong><p>黒画面や互換性の問題に当たったら、秘匿化済みのローカルレポートを書き出せます。含まれるのは状態とエラーで、壁紙ファイルは含まれません。</p></article>
         <article class="trust-card"><strong>できないふりはしません。</strong><p>Windows のアプリケーション型壁紙と Scene のネイティブ描画には対応を約束しません。Scene には動画への事前レンダリングという正攻法があります。</p></article>
       </div>
+      <p class="trust-note rise">このサイトについて：このページはアクセス数の計測に Cloudflare Web Analytics を使っています。Cookie は使わず、サイトをまたいだ追跡も行わず、訪問者ごとのプロファイルも作りません。知りたいのは「何人が、どこから来たか」だけです。上の項目はアプリの動作について、この項目はウェブサイト自体についての説明です。</p>
     </div>
   </div>
 </section>

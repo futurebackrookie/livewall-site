@@ -124,6 +124,7 @@
   "trust.p4": "Bei einem schwarzen Bild oder einem Kompatibilitätsproblem lässt sich ein bereinigter lokaler Bericht exportieren. Er enthält Zustände und Fehler, nicht deine Hintergrunddateien.",
   "trust.strong4": "Keine vorgetäuschte Kompatibilität.",
   "trust.p5": "Windows-Hintergründe vom Typ Anwendung und natives Scene-Rendering werden nicht zugesagt. Für Scene gibt es stattdessen den sauberen Weg über vorgerendertes Video.",
+  "trust.analytics": "Zu dieser Website: Diese Seite zählt Besuche mit Cloudflare Web Analytics. Es werden keine Cookies gesetzt, kein seitenübergreifendes Tracking betrieben und keine Profile einzelner Besucher angelegt — wir wollen nur wissen, wie viele Menschen kommen und woher. Die Punkte oben beschreiben die App, dieser Punkt die Website selbst.",
   "get.div1": "<span class=\"rail-num\">11</span><span>Holen</span>",
   "get.h21": "Jetzt loslegen. Die Store-Version kommt.",
   "get.p1": "Der Knopf unten startet den Download direkt. Du bekommst eine <code>.dmg</code>; öffne sie und zieh das Symbol in „Programme“. Keine Beipacksoftware, keine Werbe-Add-ons, keine dubiosen Downloadportale.",

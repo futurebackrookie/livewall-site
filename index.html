@@ -27,6 +27,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"LiveWall","applicationCategory":"UtilitiesApplication","operatingSystem":"macOS 14 or later","softwareVersion":"Beta","downloadUrl":"https://github.com/futurebackrookie/livewall-site/releases","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
 <link rel="icon" type="image/png" href="https://futurebackrookie.github.io/livewall-site/icon.png">
 <link rel="apple-touch-icon" href="https://futurebackrookie.github.io/livewall-site/icon.png">
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "aca979be3ab8462e811dcefcae9aa19b"}'></script>
 </head>
 <body>
 <style>
@@ -557,6 +558,7 @@ h1.hero-h {
 .path-card a:hover { color: var(--beam); }
 .trust-grid { display: grid; grid-template-columns: 1.25fr repeat(3, minmax(0, 1fr)); gap: 1px; border: 1px solid var(--line-soft); border-radius: 14px; overflow: hidden; background: var(--line-soft); }
 .trust-card { padding: 22px; background: var(--surface); }
+.trust-note { margin-top: 18px; font-size: 13px; line-height: 1.65; color: var(--muted); max-width: 76ch; }
 .trust-card strong { display: block; margin-bottom: 6px; font-family: var(--font-display); font-size: 18px; letter-spacing: -.01em; }
 .trust-card p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.7; }
 .trust-card:first-child { background: var(--surface-2); }
@@ -1713,6 +1715,7 @@ cd Tools/livewall-import &amp;&amp; swift build -c release
         <article class="trust-card"><strong>诊断可带走。</strong><p>遇到黑屏或兼容问题，可导出已脱敏的本地报告；它包含状态和错误，不包含壁纸文件。</p></article>
         <article class="trust-card"><strong>不假装兼容。</strong><p>Windows 应用类壁纸和原生 Scene 渲染不承诺支持；Scene 有正规的视频预渲染方案。</p></article>
       </div>
+      <p class="trust-note rise">关于本站：这个网页使用 Cloudflare Web Analytics 统计访问量。它不写 Cookie，不做跨站追踪，也不给单个访客建立档案——我们只想知道有多少人来过、从哪来。上面那几条说的是 app 的行为，这一条说的是网页本身。</p>
     </div>
   </div>
 </section>

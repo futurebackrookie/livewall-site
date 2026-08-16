@@ -27,6 +27,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"LiveWall","applicationCategory":"UtilitiesApplication","operatingSystem":"macOS 14 or later","softwareVersion":"Beta","downloadUrl":"https://github.com/futurebackrookie/livewall-site/releases","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
 <link rel="icon" type="image/png" href="https://futurebackrookie.github.io/livewall-site/icon.png">
 <link rel="apple-touch-icon" href="https://futurebackrookie.github.io/livewall-site/icon.png">
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "aca979be3ab8462e811dcefcae9aa19b"}'></script>
 </head>
 <body>
 <style>
@@ -557,6 +558,7 @@ h1.hero-h {
 .path-card a:hover { color: var(--beam); }
 .trust-grid { display: grid; grid-template-columns: 1.25fr repeat(3, minmax(0, 1fr)); gap: 1px; border: 1px solid var(--line-soft); border-radius: 14px; overflow: hidden; background: var(--line-soft); }
 .trust-card { padding: 22px; background: var(--surface); }
+.trust-note { margin-top: 18px; font-size: 13px; line-height: 1.65; color: var(--muted); max-width: 76ch; }
 .trust-card strong { display: block; margin-bottom: 6px; font-family: var(--font-display); font-size: 18px; letter-spacing: -.01em; }
 .trust-card p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.7; }
 .trust-card:first-child { background: var(--surface-2); }
@@ -1729,6 +1731,7 @@ cd Tools/livewall-import &amp;&amp; swift build -c release
         <article class="trust-card"><strong>Des diagnostics emportables.</strong><p>En cas d’écran noir ou de souci de compatibilité, vous pouvez exporter un rapport local expurgé. Il contient des états et des erreurs, pas vos fichiers de fond d’écran.</p></article>
         <article class="trust-card"><strong>Pas de compatibilité de façade.</strong><p>Les fonds d’écran Windows de type application et le rendu Scene natif ne sont pas promis. Pour Scene, il existe une voie propre : le pré-rendu en vidéo.</p></article>
       </div>
+      <p class="trust-note rise">À propos de ce site : cette page compte les visites avec Cloudflare Web Analytics. Aucun cookie n'est déposé, aucun suivi intersites n'est effectué et aucun profil de visiteur n'est constitué — nous voulons seulement savoir combien de personnes viennent et d'où. Les points ci-dessus décrivent l'application ; celui-ci décrit le site lui-même.</p>
     </div>
   </div>
 </section>

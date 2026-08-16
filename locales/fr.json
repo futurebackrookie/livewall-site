@@ -124,6 +124,7 @@
   "trust.p4": "En cas d’écran noir ou de souci de compatibilité, vous pouvez exporter un rapport local expurgé. Il contient des états et des erreurs, pas vos fichiers de fond d’écran.",
   "trust.strong4": "Pas de compatibilité de façade.",
   "trust.p5": "Les fonds d’écran Windows de type application et le rendu Scene natif ne sont pas promis. Pour Scene, il existe une voie propre : le pré-rendu en vidéo.",
+  "trust.analytics": "À propos de ce site : cette page compte les visites avec Cloudflare Web Analytics. Aucun cookie n'est déposé, aucun suivi intersites n'est effectué et aucun profil de visiteur n'est constitué — nous voulons seulement savoir combien de personnes viennent et d'où. Les points ci-dessus décrivent l'application ; celui-ci décrit le site lui-même.",
   "get.div1": "<span class=\"rail-num\">11</span><span>Obtenir</span>",
   "get.h21": "Commencez tout de suite. La version Store arrive.",
   "get.p1": "Le bouton ci-dessous lance le téléchargement directement. Vous obtenez un <code>.dmg</code> : ouvrez-le et glissez l’icône dans « Applications ». Aucun logiciel accompagnant, aucun module promotionnel, aucun portail de téléchargement douteux.",

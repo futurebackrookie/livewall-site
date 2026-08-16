@@ -37,14 +37,20 @@ DEFAULT = "zh-Hans"
 # 这个串是公开信息，本来就写在页面 <head> 里给 Google 读。
 GOOGLE_SITE_VERIFICATION = "93BTzCfdrxJ65LatgdtsEzQOmfIMGR1uFCZ4_jt4318"
 
-# 网页访问统计。留空 = 页面上一个追踪脚本都没有（当前状态）。
+# 网页访问统计。留空 = 页面上一个追踪脚本都没有。
 #
 # 只支持无 cookie 的方案。页面自己有一整节在讲隐私，挂 Google Analytics
 # 那种广告产品是自相矛盾 —— 而且欧盟访客还得弹 Cookie 同意条。
 #
 #   ANALYTICS = ("cloudflare", "你的 token")   # dash.cloudflare.com → Web Analytics
 #   ANALYTICS = ("goatcounter", "你的子域名")   # 形如 livewall（不含 .goatcounter.com）
-ANALYTICS = None
+#
+# 这个 token 不是密钥：它会原样出现在每个访客的页面源码里，Cloudflare 就是这么
+# 设计的（它标识「统计哪个站点」，不能用来读数据，读数据要登录后台）。
+# 所以进版本库没有问题，不用当敏感信息处理。
+# 主机名注册的是 futurebackrookie.github.io —— 账号级域名，名下其它
+# GitHub Pages 项目的流量会一起算进来，后台按 /livewall-site/* 路径筛才是本站数字。
+ANALYTICS = ("cloudflare", "aca979be3ab8462e811dcefcae9aa19b")
 
 ROOT = pathlib.Path(__file__).parent
 PLACEHOLDER = re.compile(r"\{\{([\w.\-]+)\}\}")
@@ -73,10 +79,22 @@ def check_keys(locales, template):
 
     # js.* 不以 {{}} 形式出现在模板里 —— 它们注入到 window.__I18N 供页面脚本读取，
     # 所以「模板里没用到」对它们不是错误。
-    # head() 直接消费这两条，模板里不会出现对应的 {{}}
-    HEAD_KEYS = {"x.title1", "meta.description"}
+    # 这几条由 build.py 自己消费，模板里不会出现对应的 {{}}：
+    # 前两条进 <head>，trust.analytics 只在开了统计时才输出。
+    CODE_KEYS = {"x.title1", "meta.description", "trust.analytics"}
+    # 豁免名单最容易变成孤儿词条的藏身处 —— 写进来却没人用，检查照样放行。
+    # 所以反过来验一遍：豁免的 key 必须真的被本文件用到。
+    #
+    # 注意这里必须数**出现次数**，不能只判断「在不在源码里」：
+    # CODE_KEYS 这行本身就写着这些 key，源码里永远找得到，那样写出来的
+    # 检查永远不会失败。第一版就是这么写的，拿一个纯属虚构的 key 去测才发现。
+    # 声明处贡献 1 次，所以真正被用到的至少出现 2 次。
+    _self = pathlib.Path(__file__).read_text()
+    _dead = {k for k in CODE_KEYS if _self.count(f'"{k}"') < 2}
+    if _dead:
+        errors.append(f"豁免名单里有 build.py 根本没用到的 key：{sorted(_dead)}")
     missing_in_template = {k for k in base - used
-                           if not k.startswith("js.") and k not in HEAD_KEYS}
+                           if not k.startswith("js.") and k not in CODE_KEYS}
     if missing_in_template:
         errors.append(f"{DEFAULT} 有 {len(missing_in_template)} 条词条模板里用不到："
                       f"{sorted(missing_in_template)[:5]}")
@@ -125,6 +143,13 @@ def analytics_tag():
         return [f'<script defer data-goatcounter="https://{key}.goatcounter.com/count" '
                 'src="//gc.zgo.at/count.js"></script>']
     raise ValueError(f"不认识的统计方案：{kind}")
+
+
+def analytics_note(entries):
+    """开了统计才输出这句话。"""
+    if not ANALYTICS:
+        return ""
+    return f'<p class="trust-note rise">{entries["trust.analytics"]}</p>'
 
 
 def head(code, entries):
@@ -203,6 +228,10 @@ def render(template, entries, code):
     # 只测根页面永远发现不了。
     out = out.replace("%%SITE%%", SITE_URL)
     out = out.replace("<!--LANG-SWITCHER-->", lang_switcher(code))
+    # 站点自己的访问统计声明。关掉统计时输出空串 —— 页面上有一整节在讲隐私，
+    # 挂了计数器却只字不提，被人打开开发者工具看见就是自打嘴巴；
+    # 反过来，没挂统计还写着「本站使用统计」同样是假话。所以跟着开关走。
+    out = out.replace("<!--SITE-ANALYTICS-NOTE-->", analytics_note(entries))
     # 页面脚本要用的文案单独注入。JS 里写死中文的话，切到别的语言后
     # 交互部分（层级读数、调速器日志、精选卡片）会突然变回中文。
     js_strings = {k: v for k, v in entries.items() if k.startswith("js.")}

@@ -124,6 +124,7 @@
   "trust.p4": "Hit a black screen or a compatibility problem and you can export a redacted local report. It contains state and errors, not your wallpaper files.",
   "trust.strong4": "No pretend compatibility.",
   "trust.p5": "Windows application-type wallpapers and native Scene rendering are not promised. Scene has a legitimate video pre-render path instead.",
+  "trust.analytics": "About this site: this web page uses Cloudflare Web Analytics to count visits. It sets no cookies, does no cross-site tracking, and builds no profile of individual visitors — we only want to know how many people came and where from. The points above describe the app; this one describes the website.",
   "get.div1": "<span class=\"rail-num\">11</span><span>Get it</span>",
   "get.h21": "Start using it now. The store build is on the way.",
   "get.p1": "The button below starts the download directly. You get a <code>.dmg</code>; open it and drag the icon into Applications. No bundleware, no promotional add-ons, no sketchy download portals.",
