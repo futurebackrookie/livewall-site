@@ -1084,8 +1084,72 @@ td small { display: block; color: var(--muted); font-size: 12.5px; line-height: 
   transition: border-color .18s ease, color .18s ease, background .18s ease;
 }
 .src-grid a:hover { border-color: var(--muted); color: var(--text); background: var(--surface-2); }
+
+/* 常见问题。用 <details> 而不是常驻展开：六条全铺开会把页面拉得很长，
+   而大多数人只关心其中一两条。 */
+.faq {
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: var(--surface);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.faq details { border-bottom: 1px solid var(--line-soft); }
+.faq details:last-child { border-bottom: none; }
+.faq summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 15px 18px;
+  font-size: 15px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background .18s ease;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::before {
+  content: "+";
+  font-family: var(--font-mono);
+  color: var(--beam);
+  font-size: 15px;
+  width: 14px;
+  flex: none;
+  transition: transform .2s ease;
+}
+.faq details[open] summary::before { content: "−"; }
+.faq summary:hover { background: var(--surface-2); }
+.faq-a {
+  padding: 0 18px 17px 42px;
+  font-size: 14.5px;
+  line-height: 1.75;
+  color: var(--text-dim);
+}
+.faq-a code { font-family: var(--font-mono); font-size: .88em; background: var(--surface-2); padding: 2px 6px; border-radius: 5px; color: var(--text); }
+.faq-a a { color: var(--beam); }
+
 .btn-line { border-color: var(--line); color: var(--text); }
 .btn-line:hover { border-color: var(--beam); background: var(--beam-glow); }
+
+/* 真实截图。加边框和圆角是为了和页面上那些「模拟界面」区分开 ——
+   这张是实拍，不该看起来像插画。 */
+.shot { margin: 0 0 26px; }
+.shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-lg);
+  background: var(--surface);
+}
+.shot figcaption {
+  margin-top: 10px;
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
 .btn[aria-disabled="true"] { opacity: .5; cursor: not-allowed; pointer-events: none; }
 
 .note {
@@ -1168,6 +1232,7 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
       <a href="#paths">{{nav.a3}}</a>
       <a href="#wallpapers">{{nav.a4}}</a>
       <a href="#trust">{{nav.a5}}</a>
+      <a href="#faq">{{nav.faq}}</a>
       <a href="#get">{{nav.a6}}</a>
     </div>
     <!--LANG-SWITCHER-->
@@ -1295,7 +1360,15 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
       </div>
 
       <div class="note rise">{{layers.div8}}</div>
-    </div>
+    
+      <!-- 第二张实拍。放在这里是因为它能和上面那块模拟桌面对上：
+           演示里扳的那个开关，在真实 app 里就是「壁纸覆盖桌面图标」这一项。 -->
+      <figure class="shot rise">
+        <img src="%%SITE%%/screenshot-displays.png" width="1040" height="410" loading="lazy" decoding="async"
+             alt="{{layers.shotalt}}">
+        <figcaption>{{layers.shotcap}}</figcaption>
+      </figure>
+</div>
   </div>
 </section>
 
@@ -1329,6 +1402,15 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
       </div>
 
       <div class="code rise">{{renderers.div2}}</div>
+
+      <!-- 第三张实拍。放在「壁纸类型」这节，因为它正好证明上面说的
+           「壁纸自己声明的开关和滑块会出现在属性面板里」。 -->
+      <figure class="shot rise" style="margin-top:26px">
+        <img src="%%SITE%%/screenshot-inspector.png" width="1040" height="450" loading="lazy" decoding="async"
+             alt="{{renderers.shotalt}}">
+        <figcaption>{{renderers.shotcap}}</figcaption>
+      </figure>
+
     </div>
   </div>
 </section>
@@ -1507,6 +1589,26 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
   </div>
 </section>
 
+
+<!-- ============================== § 常见问题 ============================== -->
+<section class="sec" id="faq">
+  <div class="sec-grid">
+    <div class="rail"><span class="rail-num">10</span><span>{{faq.rail}}</span></div>
+    <div>
+      <h2 class="sec-h rise">{{faq.h2}}</h2>
+      <div class="faq rise">
+        <details><summary>{{faq.q1}}</summary><div class="faq-a">{{faq.a1}}</div></details>
+        <details><summary>{{faq.q2}}</summary><div class="faq-a">{{faq.a2}}</div></details>
+        <details><summary>{{faq.q3}}</summary><div class="faq-a">{{faq.a3}}</div></details>
+        <details><summary>{{faq.q4}}</summary><div class="faq-a">{{faq.a4}}</div></details>
+        <details><summary>{{faq.q5}}</summary><div class="faq-a">{{faq.a5}}</div></details>
+        <details><summary>{{faq.q6}}</summary><div class="faq-a">{{faq.a6}}</div></details>
+      </div>
+      <div class="note rise">{{faq.feedback}}</div>
+    </div>
+  </div>
+</section>
+
 <!-- ============================== § 拿到手 ============================== -->
 <section class="sec" id="get">
   <div class="sec-grid">
@@ -1514,6 +1616,15 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
     <div>
       <h2 class="sec-h rise">{{get.h21}}</h2>
       <p class="sec-p rise">{{get.p1}}</p>
+
+      <!-- 真实截图。此前整个网站一张 app 的实拍都没有，访客翻到底也不知道
+           下载下来长什么样。这张只包含自制的内置壁纸 —— 用户库里的第三方
+           内容不能出现在商业站点的宣传图里。 -->
+      <figure class="shot rise">
+        <img src="%%SITE%%/screenshot-library.png" width="1040" height="265" loading="lazy" decoding="async"
+             alt="{{get.shotalt}}">
+        <figcaption>{{get.shotcap}}</figcaption>
+      </figure>
 
       <div class="status-grid rise">
         <div class="status-cell">{{get.div2}}</div>

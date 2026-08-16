@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>LiveWall — Live-Hintergründe für macOS</title>
-<meta name="description" content="Video-, WebGL- und Ebenen-Parallax-Hintergründe, die unter den Schreibtischsymbolen von macOS laufen. Eine Live-Hintergrund-App, von Grund auf für den Mac geschrieben.">
+<meta name="description" content="Eine Live-Hintergrund-App für den Mac und eine macOS-Alternative zu Wallpaper Engine: Video-, WebGL- und Ebenen-Parallax-Hintergründe unter den Schreibtischsymbolen, samt Konverter für deine vorhandene Sammlung.">
 <meta name="google-site-verification" content="93BTzCfdrxJ65LatgdtsEzQOmfIMGR1uFCZ4_jt4318">
 <link rel="canonical" href="https://futurebackrookie.github.io/livewall-site/de/">
 <link rel="alternate" hreflang="zh-Hans" href="https://futurebackrookie.github.io/livewall-site/">
@@ -16,7 +16,7 @@
 <meta name="theme-color" content="#08070E" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#F2F1F7" media="(prefers-color-scheme: light)">
 <meta property="og:title" content="LiveWall — Live-Hintergründe für macOS">
-<meta property="og:description" content="Video-, WebGL- und Ebenen-Parallax-Hintergründe, die unter den Schreibtischsymbolen von macOS laufen. Eine Live-Hintergrund-App, von Grund auf für den Mac geschrieben.">
+<meta property="og:description" content="Eine Live-Hintergrund-App für den Mac und eine macOS-Alternative zu Wallpaper Engine: Video-, WebGL- und Ebenen-Parallax-Hintergründe unter den Schreibtischsymbolen, samt Konverter für deine vorhandene Sammlung.">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="de_DE">
 <meta property="og:url" content="https://futurebackrookie.github.io/livewall-site/de/">
@@ -1115,8 +1115,72 @@ td small { display: block; color: var(--muted); font-size: 12.5px; line-height: 
   transition: border-color .18s ease, color .18s ease, background .18s ease;
 }
 .src-grid a:hover { border-color: var(--muted); color: var(--text); background: var(--surface-2); }
+
+/* 常见问题。用 <details> 而不是常驻展开：六条全铺开会把页面拉得很长，
+   而大多数人只关心其中一两条。 */
+.faq {
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: var(--surface);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.faq details { border-bottom: 1px solid var(--line-soft); }
+.faq details:last-child { border-bottom: none; }
+.faq summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 15px 18px;
+  font-size: 15px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background .18s ease;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::before {
+  content: "+";
+  font-family: var(--font-mono);
+  color: var(--beam);
+  font-size: 15px;
+  width: 14px;
+  flex: none;
+  transition: transform .2s ease;
+}
+.faq details[open] summary::before { content: "−"; }
+.faq summary:hover { background: var(--surface-2); }
+.faq-a {
+  padding: 0 18px 17px 42px;
+  font-size: 14.5px;
+  line-height: 1.75;
+  color: var(--text-dim);
+}
+.faq-a code { font-family: var(--font-mono); font-size: .88em; background: var(--surface-2); padding: 2px 6px; border-radius: 5px; color: var(--text); }
+.faq-a a { color: var(--beam); }
+
 .btn-line { border-color: var(--line); color: var(--text); }
 .btn-line:hover { border-color: var(--beam); background: var(--beam-glow); }
+
+/* 真实截图。加边框和圆角是为了和页面上那些「模拟界面」区分开 ——
+   这张是实拍，不该看起来像插画。 */
+.shot { margin: 0 0 26px; }
+.shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-lg);
+  background: var(--surface);
+}
+.shot figcaption {
+  margin-top: 10px;
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
 .btn[aria-disabled="true"] { opacity: .5; cursor: not-allowed; pointer-events: none; }
 
 .note {
@@ -1199,6 +1263,7 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
       <a href="#paths">Loslegen</a>
       <a href="#wallpapers">Finden</a>
       <a href="#trust">Datenschutz</a>
+      <a href="#faq">FAQ</a>
       <a href="#get">Holen</a>
     </div>
     <div class="langs" role="group" aria-label="Language"><a href="/livewall-site/" hreflang="zh-Hans" lang="zh-Hans">简体中文</a><a href="/livewall-site/en/" hreflang="en" lang="en">English</a><a href="/livewall-site/ja/" hreflang="ja" lang="ja">日本語</a><a href="/livewall-site/de/" hreflang="de" lang="de" aria-current="true">Deutsch</a><a href="/livewall-site/fr/" hreflang="fr" lang="fr">Français</a></div>
@@ -1357,7 +1422,15 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
         Die Reihenfolge innerhalb einer Ebene bestimmen nicht wir, und in der Messung lag es vor uns — dadurch wurde oben
         ein weißer Streifen in den Hintergrund gedrückt. Auf echter Hardware gefunden; im Code ist das nicht zu sehen.
       </div>
-    </div>
+    
+      <!-- 第二张实拍。放在这里是因为它能和上面那块模拟桌面对上：
+           演示里扳的那个开关，在真实 app 里就是「壁纸覆盖桌面图标」这一项。 -->
+      <figure class="shot rise">
+        <img src="https://futurebackrookie.github.io/livewall-site/screenshot-displays.png" width="1040" height="410" loading="lazy" decoding="async"
+             alt="LiveWalls Bildschirmeinstellungen mit Schaltern für Symbolüberdeckung und Maus-Parallaxe sowie Zuweisung je Bildschirm">
+        <figcaption>Die echten Bildschirmeinstellungen. Der Schalter aus der Demo oben ist hier „Hintergrund über den Symbolen“. Unten rechts stehen Live-Status und Bildrate.</figcaption>
+      </figure>
+</div>
   </div>
 </section>
 
@@ -1402,6 +1475,15 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
     { <span class="k">"image"</span>: "tree.png",  <span class="k">"depth"</span>: 1.0  }   <span class="c">// am nächsten, bewegt sich am meisten</span>
   ]
 }</div>
+
+      <!-- 第三张实拍。放在「壁纸类型」这节，因为它正好证明上面说的
+           「壁纸自己声明的开关和滑块会出现在属性面板里」。 -->
+      <figure class="shot rise" style="margin-top:26px">
+        <img src="https://futurebackrookie.github.io/livewall-site/screenshot-inspector.png" width="1040" height="450" loading="lazy" decoding="async"
+             alt="LiveWalls Hintergrund-Inspektor mit Typ, Herkunft und einstellbaren Parametern">
+        <figcaption>Wähl einen Hintergrund aus, und der Inspektor erscheint. Dieser mitgelieferte deklariert drei Parameter — Tempo, Körnung und Parallaxe — und jeder wirkt beim Ziehen sofort.</figcaption>
+      </figure>
+
     </div>
   </div>
 </section>
@@ -1474,10 +1556,10 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
   <div class="sec-grid">
     <div class="rail"><span class="rail-num">06</span><span>Umzug</span></div>
     <div>
-      <h2 class="sec-h rise">Was du auf Windows gesammelt hast, kann mitkommen.</h2>
+      <h2 class="sec-h rise">Bring deine Wallpaper-Engine-Sammlung auf den Mac.</h2>
       <p class="sec-p rise">
-        Der Kommandozeilen-Konverter liest nur Dateien, die bereits auf deinem Rechner liegen — kein Netzwerk, kein
-        Steam, nichts wird geladen. An 8 echten Einträgen mit insgesamt 713 MB getestet: 8 von 8 konvertiert.
+        Der Kommandozeilen-Konverter liest nur Wallpaper-Engine-Dateien, die bereits auf deinem Rechner liegen —
+        kein Netzwerk, kein Steam, nichts wird geladen. An 8 echten Einträgen mit insgesamt 713 MB getestet: 8 von 8 konvertiert.
       </p>
 
       <div class="table-scroll rise">
@@ -1546,9 +1628,9 @@ cd Tools/livewall-import &amp;&amp; swift build -c release
           <a href="https://github.com/futurebackrookie/livewall-catalog" target="_blank" rel="noopener">Katalog durchsehen</a>
         </article>
         <article class="path-card">
-          <span class="path-step">02 / Von Windows</span>
+          <span class="path-step">02 / Von Wallpaper Engine</span>
           <h3>Sammlung mitbringen, nicht bei null anfangen.</h3>
-          <p>Der Konverter liest nur Projekte, die schon auf deinem Rechner liegen — kein Steam-Login, keine Downloads. Video und Web werden zuerst unterstützt, für Scene gibt es einen dokumentierten Vorrender-Weg.</p>
+          <p>Der Konverter liest nur Wallpaper-Engine-Projekte, die schon auf deinem Rechner liegen — kein Steam-Login, keine Downloads. Video und Web werden zuerst unterstützt, für Scene gibt es einen dokumentierten Vorrender-Weg.</p>
           <a href="#import">Ansehen, was konvertiert — und wie</a>
         </article>
         <article class="path-card">
@@ -1647,13 +1729,42 @@ cd Tools/livewall-import &amp;&amp; swift build -c release
   </div>
 </section>
 
+
+<!-- ============================== § 常见问题 ============================== -->
+<section class="sec" id="faq">
+  <div class="sec-grid">
+    <div class="rail"><span class="rail-num">10</span><span>FAQ</span></div>
+    <div>
+      <h2 class="sec-h rise">Was du vor dem Download vermutlich geklärt haben willst.</h2>
+      <div class="faq rise">
+        <details><summary>Zieht das nicht ordentlich Strom?</summary><div class="faq-a">Es zeichnet kein einziges Bild, wenn niemand hinsieht. Bildschirm komplett von einem Fenster verdeckt, Sperrbildschirm, Bildschirm-Ruhezustand, Systemruhezustand und Energiesparmodus haben jeweils ihren eigenen Pausengrund, mit automatischer Fortsetzung beim Aufwachen; im Akkubetrieb kannst du zwischen Pause und niedrigerer Bildrate wählen. Das Bildratenlimit für Web-Hintergründe entsteht dadurch, dass wir <code>requestAnimationFrame</code> übernehmen — die Seite kann das nicht umgehen. Alle Entscheidungen liegen in einem einzigen Governor, deshalb hat „warum steht mein Hintergrund?“ immer genau eine Antwort, und die steht im Log.</div></details>
+        <details><summary>Kann ich eigene Videos oder Bilder verwenden?</summary><div class="faq-a">Ja — einfach ins Fenster ziehen. Video: mp4 / mov / m4v (H.264 oder HEVC). Bilder: die üblichen Formate plus GIF. Web-Hintergründe: HTML / WebGL. <strong>webm / VP9 laufen nicht direkt</strong> und müssen zuerst umkodiert werden — AVFoundation kann beide Codecs nicht dekodieren, das ist eine Einschränkung der Plattform.</div></details>
+        <details><summary>Wie schlägt es sich gegen Wallpaper Engine?</summary><div class="faq-a">Ehrlich gesagt hat jedes seine Stärken. <strong>Was es hat und wir nicht</strong>: Millionen Workshop-Inhalte, natives Scene-Rendering, ein ausgereifter Editor. <strong>Was wir haben und es nicht</strong>: ein eigener Hintergrund pro Space (unter Windows nicht machbar), automatisches Umschalten zu Sonnenauf- und -untergang und eine spürbar ernsthaftere Energiestrategie. Außerdem gibt es dort keine macOS-Version — und deine vorhandene Sammlung kann mit dem Konverter mitkommen.</div></details>
+        <details><summary>macOS hat den ersten Start blockiert. Ist die App kaputt?</summary><div class="faq-a">Nein. Dieser Build ist noch nicht von Apple notarisiert — Notarisierung braucht einen kostenpflichtigen Entwickleraccount. macOS meldet „Entwickler kann nicht verifiziert werden“; öffne Systemeinstellungen → Datenschutz &amp; Sicherheit → Sicherheit und klick einmal auf „Trotzdem öffnen“. Alles per Maus, kein Terminal, und nur beim ersten Mal. Die vollständigen Schritte stehen im Download-Bereich.</div></details>
+        <details><summary>Werden Daten von mir hochgeladen?</summary><div class="faq-a">Nein. Hintergründe, Lesezeichen, Importverlauf und Diagnosen bleiben auf deinem Mac. Nichts wird automatisch hochgeladen, und es gibt keine Werbe-Tracking-Skripte. Die einzige Netzwerkaktivität ist das Laden des Katalog-Index, wenn du selbst aktualisierst; ohne Aktualisierung geht die App nie online. Diagnoseberichte entstehen nur, wenn du sie exportierst, und enthalten Zustände und Fehler, nicht deine Hintergrunddateien.</div></details>
+        <details><summary>Welche Macs werden unterstützt?</summary><div class="faq-a">macOS 14 oder neuer, auf Apple Silicon wie auf Intel (Universal Binary). Mehrere Bildschirme und AirPlay-Zweitbildschirme wurden beide auf echter Hardware getestet.</div></details>
+      </div>
+      <div class="note rise"><b>Hier nicht beantwortet?</b> Das ist eine Beta, und deine Frage haben vermutlich auch andere — <a href="https://github.com/futurebackrookie/livewall-catalog/issues" target="_blank" rel="noopener">mach ein Issue auf</a>, dann landet die Antwort in diesem Abschnitt.</div>
+    </div>
+  </div>
+</section>
+
 <!-- ============================== § 拿到手 ============================== -->
 <section class="sec" id="get">
   <div class="sec-grid">
-    <div class="rail"><span class="rail-num">10</span><span>Holen</span></div>
+    <div class="rail"><span class="rail-num">11</span><span>Holen</span></div>
     <div>
       <h2 class="sec-h rise">Jetzt loslegen. Die Store-Version kommt.</h2>
       <p class="sec-p rise">Der Knopf unten startet den Download direkt. Du bekommst eine <code>.dmg</code>; öffne sie und zieh das Symbol in „Programme“. Keine Beipacksoftware, keine Werbe-Add-ons, keine dubiosen Downloadportale.</p>
+
+      <!-- 真实截图。此前整个网站一张 app 的实拍都没有，访客翻到底也不知道
+           下载下来长什么样。这张只包含自制的内置壁纸 —— 用户库里的第三方
+           内容不能出现在商业站点的宣传图里。 -->
+      <figure class="shot rise">
+        <img src="https://futurebackrookie.github.io/livewall-site/screenshot-library.png" width="1040" height="265" loading="lazy" decoding="async"
+             alt="Das LiveWall-Bibliotheksfenster mit drei mitgelieferten WebGL-Hintergründen">
+        <figcaption>Die LiveWall-Bibliothek. Diese drei kommen mit der App — sie sind sofort nach der Installation da.</figcaption>
+      </figure>
 
       <div class="status-grid rise">
         <div class="status-cell"><span class="k">App-Tests</span><span class="v">105</span><span class="n">automatisierte Regression, bestanden</span></div>
@@ -1735,9 +1846,9 @@ cd Tools/livewall-import &amp;&amp; swift build -c release
       <a href="#top">Nach oben</a>
     </div>
     <p class="legal">
-      LiveWall steht in keiner Verbindung zu Software oder Plattformen Dritter für Hintergrundbilder und ist von
-      diesen weder autorisiert noch unterstützt. Produktnamen werden ausschließlich zur Beschreibung von Kompatibilität
-      genannt; Marken gehören ihren jeweiligen Inhabern.
+      LiveWall steht in keiner Verbindung zu Wallpaper Engine, dessen Entwicklern oder irgendeiner Plattform
+      Dritter für Hintergrundbilder und ist von diesen weder autorisiert noch unterstützt. Produktnamen werden
+      ausschließlich zur Beschreibung von Kompatibilität genannt; Marken gehören ihren jeweiligen Inhabern.
       Der Konverter verarbeitet Dateien, die du bereits hast, auf deinem eigenen Rechner.
     </p>
   </div>

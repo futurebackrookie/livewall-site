@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>LiveWall — macOS のライブ壁紙</title>
-<meta name="description" content="動画・WebGL・レイヤー視差の壁紙が macOS のデスクトップアイコンの下で動きます。Mac のためにゼロから書いたライブ壁紙アプリ。">
+<meta name="description" content="Mac 向けのライブ壁紙アプリ、そして Wallpaper Engine の macOS 代替：動画・WebGL・レイヤー視差の壁紙がデスクトップアイコンの下で動き、既存のコレクションも変換して取り込めます。">
 <meta name="google-site-verification" content="93BTzCfdrxJ65LatgdtsEzQOmfIMGR1uFCZ4_jt4318">
 <link rel="canonical" href="https://futurebackrookie.github.io/livewall-site/ja/">
 <link rel="alternate" hreflang="zh-Hans" href="https://futurebackrookie.github.io/livewall-site/">
@@ -16,7 +16,7 @@
 <meta name="theme-color" content="#08070E" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#F2F1F7" media="(prefers-color-scheme: light)">
 <meta property="og:title" content="LiveWall — macOS のライブ壁紙">
-<meta property="og:description" content="動画・WebGL・レイヤー視差の壁紙が macOS のデスクトップアイコンの下で動きます。Mac のためにゼロから書いたライブ壁紙アプリ。">
+<meta property="og:description" content="Mac 向けのライブ壁紙アプリ、そして Wallpaper Engine の macOS 代替：動画・WebGL・レイヤー視差の壁紙がデスクトップアイコンの下で動き、既存のコレクションも変換して取り込めます。">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:url" content="https://futurebackrookie.github.io/livewall-site/ja/">
@@ -1115,8 +1115,72 @@ td small { display: block; color: var(--muted); font-size: 12.5px; line-height: 
   transition: border-color .18s ease, color .18s ease, background .18s ease;
 }
 .src-grid a:hover { border-color: var(--muted); color: var(--text); background: var(--surface-2); }
+
+/* 常见问题。用 <details> 而不是常驻展开：六条全铺开会把页面拉得很长，
+   而大多数人只关心其中一两条。 */
+.faq {
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: var(--surface);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.faq details { border-bottom: 1px solid var(--line-soft); }
+.faq details:last-child { border-bottom: none; }
+.faq summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 15px 18px;
+  font-size: 15px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background .18s ease;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::before {
+  content: "+";
+  font-family: var(--font-mono);
+  color: var(--beam);
+  font-size: 15px;
+  width: 14px;
+  flex: none;
+  transition: transform .2s ease;
+}
+.faq details[open] summary::before { content: "−"; }
+.faq summary:hover { background: var(--surface-2); }
+.faq-a {
+  padding: 0 18px 17px 42px;
+  font-size: 14.5px;
+  line-height: 1.75;
+  color: var(--text-dim);
+}
+.faq-a code { font-family: var(--font-mono); font-size: .88em; background: var(--surface-2); padding: 2px 6px; border-radius: 5px; color: var(--text); }
+.faq-a a { color: var(--beam); }
+
 .btn-line { border-color: var(--line); color: var(--text); }
 .btn-line:hover { border-color: var(--beam); background: var(--beam-glow); }
+
+/* 真实截图。加边框和圆角是为了和页面上那些「模拟界面」区分开 ——
+   这张是实拍，不该看起来像插画。 */
+.shot { margin: 0 0 26px; }
+.shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-lg);
+  background: var(--surface);
+}
+.shot figcaption {
+  margin-top: 10px;
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
 .btn[aria-disabled="true"] { opacity: .5; cursor: not-allowed; pointer-events: none; }
 
 .note {
@@ -1199,6 +1263,7 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
       <a href="#paths">はじめ方</a>
       <a href="#wallpapers">壁紙を探す</a>
       <a href="#trust">プライバシー</a>
+      <a href="#faq">よくある質問</a>
       <a href="#get">入手する</a>
     </div>
     <div class="langs" role="group" aria-label="Language"><a href="/livewall-site/" hreflang="zh-Hans" lang="zh-Hans">简体中文</a><a href="/livewall-site/en/" hreflang="en" lang="en">English</a><a href="/livewall-site/ja/" hreflang="ja" lang="ja" aria-current="true">日本語</a><a href="/livewall-site/de/" hreflang="de" lang="de">Deutsch</a><a href="/livewall-site/fr/" hreflang="fr" lang="fr">Français</a></div>
@@ -1357,7 +1422,15 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
         前後関係はこちらでは決められず、実測ではそれが手前に来ました —— 結果、壁紙の上端に白い帯が押し出されます。
         実機で動かして初めて分かったことで、コードを読んでいても見えません。
       </div>
-    </div>
+    
+      <!-- 第二张实拍。放在这里是因为它能和上面那块模拟桌面对上：
+           演示里扳的那个开关，在真实 app 里就是「壁纸覆盖桌面图标」这一项。 -->
+      <figure class="shot rise">
+        <img src="https://futurebackrookie.github.io/livewall-site/screenshot-displays.png" width="1040" height="410" loading="lazy" decoding="async"
+             alt="LiveWall のディスプレイ設定。アイコンより前面に、マウス視差などのスイッチと画面ごとの割り当て">
+        <figcaption>実際のディスプレイ設定です。上のデモで切り替えたスイッチが、ここの「壁紙をアイコンより前面に」にあたります。右下はリアルタイムの状態とフレームレート。</figcaption>
+      </figure>
+</div>
   </div>
 </section>
 
@@ -1402,6 +1475,15 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
     { <span class="k">"image"</span>: "tree.png",  <span class="k">"depth"</span>: 1.0  }   <span class="c">// 最も近く、最も大きく動く</span>
   ]
 }</div>
+
+      <!-- 第三张实拍。放在「壁纸类型」这节，因为它正好证明上面说的
+           「壁纸自己声明的开关和滑块会出现在属性面板里」。 -->
+      <figure class="shot rise" style="margin-top:26px">
+        <img src="https://futurebackrookie.github.io/livewall-site/screenshot-inspector.png" width="1040" height="450" loading="lazy" decoding="async"
+             alt="LiveWall の壁紙プロパティパネル。種類・出所・調整可能なパラメータが表示されている">
+        <figcaption>壁紙を選ぶとプロパティパネルが現れます。この内蔵壁紙は速度・粒子・視差の 3 つのパラメータを宣言していて、ドラッグした瞬間に反映されます。</figcaption>
+      </figure>
+
     </div>
   </div>
 </section>
@@ -1473,10 +1555,10 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
   <div class="sec-grid">
     <div class="rail"><span class="rail-num">06</span><span>移行</span></div>
     <div>
-      <h2 class="sec-h rise">Windows で集めた壁紙は、そのまま持ってこられます。</h2>
+      <h2 class="sec-h rise">Wallpaper Engine のコレクションを Mac へ。</h2>
       <p class="sec-p rise">
-        コマンドラインの変換ツールが読むのは、すでにあなたのマシンにあるファイルだけです —— ネットワークにも Steam にも
-        触れず、何もダウンロードしません。実際の 8 件・合計 713 MB で検証し、8/8 が変換できました。
+        コマンドラインの変換ツールが読むのは、すでにあなたのマシンにある Wallpaper Engine のファイルだけです ——
+        ネットワークにも Steam にも触れず、何もダウンロードしません。実際の 8 件・合計 713 MB で検証し、8/8 が変換できました。
       </p>
 
       <div class="table-scroll rise">
@@ -1545,9 +1627,9 @@ cd Tools/livewall-import &amp;&amp; swift build -c release
           <a href="https://github.com/futurebackrookie/livewall-catalog" target="_blank" rel="noopener">カタログを見る</a>
         </article>
         <article class="path-card">
-          <span class="path-step">02 / Windows から</span>
+          <span class="path-step">02 / Wallpaper Engine から</span>
           <h3>コレクションを持ち込む。ゼロからやり直さない。</h3>
-          <p>変換ツールが読むのは、すでにお使いのコンピュータにあるプロジェクトだけです。Steam へのログインもダウンロードもありません。動画とウェブ形式を優先して対応し、Scene には事前レンダリングの手順を明示しています。</p>
+          <p>変換ツールが読むのは、すでにお使いのコンピュータにある Wallpaper Engine のプロジェクトだけです。Steam へのログインもダウンロードもありません。動画とウェブ形式を優先して対応し、Scene には事前レンダリングの手順を明示しています。</p>
           <a href="#import">対応範囲と変換方法を見る</a>
         </article>
         <article class="path-card">
@@ -1643,13 +1725,42 @@ cd Tools/livewall-import &amp;&amp; swift build -c release
   </div>
 </section>
 
+
+<!-- ============================== § 常见问题 ============================== -->
+<section class="sec" id="faq">
+  <div class="sec-grid">
+    <div class="rail"><span class="rail-num">10</span><span>よくある質問</span></div>
+    <div>
+      <h2 class="sec-h rise">ダウンロードの前に、たぶん知りたいこと。</h2>
+      <div class="faq rise">
+        <details><summary>電力を食いませんか？</summary><div class="faq-a">誰にも見えていないときは 1 フレームも描きません。画面がウインドウで完全に覆われた、ロック画面、ディスプレイスリープ、システムスリープ、低電力モード —— それぞれに対応する停止理由があり、復帰時には自動的に再開します。バッテリー駆動時は停止するかフレームレートを落として続けるか選べます。ウェブ壁紙のフレーム上限は <code>requestAnimationFrame</code> を引き受けて実現しているので、ページ側から迂回はできません。判断はすべて 1 つのガバナーに集約されているため、「なぜ止まったのか」の答えは常に 1 つで、しかもログに残ります。</div></details>
+        <details><summary>自分の動画や画像を使えますか？</summary><div class="faq-a">使えます。ウインドウにドラッグするだけです。動画は mp4 / mov / m4v（H.264 または HEVC）、画像は一般的な形式と GIF、ウェブ壁紙は HTML / WebGL に対応します。<strong>webm / VP9 はそのままでは再生できず</strong>、先に変換が必要です —— AVFoundation がこの 2 つのコーデックをデコードできないためで、プラットフォームの制限です。</div></details>
+        <details><summary>Wallpaper Engine と比べてどうですか？</summary><div class="faq-a">正直に言うと、それぞれに強みがあります。<strong>あちらにあってこちらにないもの</strong>：数百万点のワークショップ、ネイティブの Scene 描画、成熟したエディタ。<strong>こちらにあってあちらにないもの</strong>：Space ごとに別の壁紙（Windows では実現できません）、日の出・日の入りでの自動切り替え、そして明らかに真面目な省電力設計。さらに向こうには macOS 版がなく、手持ちのコレクションは変換ツールで持ってこられます。</div></details>
+        <details><summary>初回起動がブロックされました。壊れているのですか？</summary><div class="faq-a">いいえ。このビルドはまだ Apple の公証を受けていません —— 公証には有料の開発者アカウントが必要です。macOS は「開発元を検証できません」と表示しますが、「システム設定 →プライバシーとセキュリティ →セキュリティ」で一度「このまま開く」を押せば済みます。すべてマウス操作、ターミナル不要、初回だけです。詳しい手順はダウンロード欄にあります。</div></details>
+        <details><summary>データはアップロードされますか？</summary><div class="faq-a">されません。壁紙、ブックマーク、インポート履歴、診断レポートはすべてあなたの Mac に留まります。自動アップロードはなく、広告トラッキングのスクリプトもありません。通信するのは、あなたが自分で壁紙カタログを更新したときにインデックスを取得する場面だけです。診断レポートは自分で書き出したときだけ生成され、含まれるのは状態とエラーで、壁紙ファイルは含まれません。</div></details>
+        <details><summary>対応している Mac は？</summary><div class="faq-a">macOS 14 以降。Apple シリコンでも Intel でも動作します（ユニバーサルバイナリ）。マルチディスプレイと AirPlay のサブディスプレイはどちらも実機で検証済みです。</div></details>
+      </div>
+      <div class="note rise"><b>ここに答えがありませんか？</b> これはベータ版で、あなたの疑問はたぶん他の人の疑問でもあります —— <a href="https://github.com/futurebackrookie/livewall-catalog/issues" target="_blank" rel="noopener">issue を立てて</a>いただければ、答えはこの欄に追加されます。</div>
+    </div>
+  </div>
+</section>
+
 <!-- ============================== § 拿到手 ============================== -->
 <section class="sec" id="get">
   <div class="sec-grid">
-    <div class="rail"><span class="rail-num">10</span><span>入手する</span></div>
+    <div class="rail"><span class="rail-num">11</span><span>入手する</span></div>
     <div>
       <h2 class="sec-h rise">今すぐ使えます。ストア版も準備中です。</h2>
       <p class="sec-p rise">下のボタンを押すとすぐダウンロードが始まります。<code>.dmg</code> が手に入るので、開いてアイコンを「アプリケーション」にドラッグすれば完了です。抱き合わせも、宣伝用アドオンも、素性の知れないダウンロードサイトもありません。</p>
+
+      <!-- 真实截图。此前整个网站一张 app 的实拍都没有，访客翻到底也不知道
+           下载下来长什么样。这张只包含自制的内置壁纸 —— 用户库里的第三方
+           内容不能出现在商业站点的宣传图里。 -->
+      <figure class="shot rise">
+        <img src="https://futurebackrookie.github.io/livewall-site/screenshot-library.png" width="1040" height="265" loading="lazy" decoding="async"
+             alt="LiveWall の壁紙ライブラリ。内蔵の WebGL 壁紙が 3 枚表示されている">
+        <figcaption>LiveWall の壁紙ライブラリ。この 3 枚はアプリに同梱されていて、インストールした時点でライブラリに入っています。</figcaption>
+      </figure>
 
       <div class="status-grid rise">
         <div class="status-cell"><span class="k">アプリのテスト</span><span class="v">105</span><span class="n">自動回帰テスト、すべて成功</span></div>
@@ -1730,8 +1841,8 @@ cd Tools/livewall-import &amp;&amp; swift build -c release
       <a href="#top">トップへ戻る</a>
     </div>
     <p class="legal">
-      LiveWall は、いかなるサードパーティの壁紙ソフトウェアやプラットフォームとも提携しておらず、
-      それらから許諾や推奨を受けてもいません。本文中の製品名は互換性を説明する目的でのみ言及しており、
+      LiveWall は、Wallpaper Engine およびその開発元、ならびにいかなるサードパーティの壁紙プラットフォームとも
+      提携しておらず、それらから許諾や推奨を受けてもいません。本文中の製品名は互換性を説明する目的でのみ言及しており、
       商標は各権利者に帰属します。変換ツールは、あなた自身のコンピュータ上で、あなたがすでに持っているファイルを処理します。
     </p>
   </div>

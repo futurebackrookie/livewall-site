@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>LiveWall — Fonds d’écran animés pour macOS</title>
-<meta name="description" content="Fonds d’écran vidéo, WebGL et parallaxe en calques tournant sous les icônes du bureau macOS. Une app de fonds d’écran animés écrite pour le Mac depuis zéro.">
+<meta name="description" content="Une app de fonds d’écran animés pour Mac, et une alternative macOS à Wallpaper Engine : vidéo, WebGL et parallaxe en calques sous les icônes du bureau, avec un convertisseur pour la collection que vous avez déjà.">
 <meta name="google-site-verification" content="93BTzCfdrxJ65LatgdtsEzQOmfIMGR1uFCZ4_jt4318">
 <link rel="canonical" href="https://futurebackrookie.github.io/livewall-site/fr/">
 <link rel="alternate" hreflang="zh-Hans" href="https://futurebackrookie.github.io/livewall-site/">
@@ -16,7 +16,7 @@
 <meta name="theme-color" content="#08070E" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#F2F1F7" media="(prefers-color-scheme: light)">
 <meta property="og:title" content="LiveWall — Fonds d’écran animés pour macOS">
-<meta property="og:description" content="Fonds d’écran vidéo, WebGL et parallaxe en calques tournant sous les icônes du bureau macOS. Une app de fonds d’écran animés écrite pour le Mac depuis zéro.">
+<meta property="og:description" content="Une app de fonds d’écran animés pour Mac, et une alternative macOS à Wallpaper Engine : vidéo, WebGL et parallaxe en calques sous les icônes du bureau, avec un convertisseur pour la collection que vous avez déjà.">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="fr_FR">
 <meta property="og:url" content="https://futurebackrookie.github.io/livewall-site/fr/">
@@ -1115,8 +1115,72 @@ td small { display: block; color: var(--muted); font-size: 12.5px; line-height: 
   transition: border-color .18s ease, color .18s ease, background .18s ease;
 }
 .src-grid a:hover { border-color: var(--muted); color: var(--text); background: var(--surface-2); }
+
+/* 常见问题。用 <details> 而不是常驻展开：六条全铺开会把页面拉得很长，
+   而大多数人只关心其中一两条。 */
+.faq {
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: var(--surface);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.faq details { border-bottom: 1px solid var(--line-soft); }
+.faq details:last-child { border-bottom: none; }
+.faq summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 15px 18px;
+  font-size: 15px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background .18s ease;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::before {
+  content: "+";
+  font-family: var(--font-mono);
+  color: var(--beam);
+  font-size: 15px;
+  width: 14px;
+  flex: none;
+  transition: transform .2s ease;
+}
+.faq details[open] summary::before { content: "−"; }
+.faq summary:hover { background: var(--surface-2); }
+.faq-a {
+  padding: 0 18px 17px 42px;
+  font-size: 14.5px;
+  line-height: 1.75;
+  color: var(--text-dim);
+}
+.faq-a code { font-family: var(--font-mono); font-size: .88em; background: var(--surface-2); padding: 2px 6px; border-radius: 5px; color: var(--text); }
+.faq-a a { color: var(--beam); }
+
 .btn-line { border-color: var(--line); color: var(--text); }
 .btn-line:hover { border-color: var(--beam); background: var(--beam-glow); }
+
+/* 真实截图。加边框和圆角是为了和页面上那些「模拟界面」区分开 ——
+   这张是实拍，不该看起来像插画。 */
+.shot { margin: 0 0 26px; }
+.shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-lg);
+  background: var(--surface);
+}
+.shot figcaption {
+  margin-top: 10px;
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
 .btn[aria-disabled="true"] { opacity: .5; cursor: not-allowed; pointer-events: none; }
 
 .note {
@@ -1199,6 +1263,7 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
       <a href="#paths">Commencer</a>
       <a href="#wallpapers">En trouver</a>
       <a href="#trust">Confidentialité</a>
+      <a href="#faq">FAQ</a>
       <a href="#get">Obtenir</a>
     </div>
     <div class="langs" role="group" aria-label="Language"><a href="/livewall-site/" hreflang="zh-Hans" lang="zh-Hans">简体中文</a><a href="/livewall-site/en/" hreflang="en" lang="en">English</a><a href="/livewall-site/ja/" hreflang="ja" lang="ja">日本語</a><a href="/livewall-site/de/" hreflang="de" lang="de">Deutsch</a><a href="/livewall-site/fr/" hreflang="fr" lang="fr" aria-current="true">Français</a></div>
@@ -1359,7 +1424,15 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
         bande blanche imprimée en haut du fond d’écran. Trouvé en le faisant tourner sur du vrai matériel ; impossible
         à voir en lisant le code.
       </div>
-    </div>
+    
+      <!-- 第二张实拍。放在这里是因为它能和上面那块模拟桌面对上：
+           演示里扳的那个开关，在真实 app 里就是「壁纸覆盖桌面图标」这一项。 -->
+      <figure class="shot rise">
+        <img src="https://futurebackrookie.github.io/livewall-site/screenshot-displays.png" width="1040" height="410" loading="lazy" decoding="async"
+             alt="Les réglages d’écran de LiveWall, avec les interrupteurs de recouvrement des icônes et de parallaxe, et l’affectation par écran">
+        <figcaption>Les vrais réglages d’écran. L’interrupteur de la démo ci-dessus, c’est « Fond d’écran au-dessus des icônes » ici. En bas à droite : état en direct et fréquence d’images.</figcaption>
+      </figure>
+</div>
   </div>
 </section>
 
@@ -1404,6 +1477,15 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
     { <span class="k">"image"</span>: "tree.png",  <span class="k">"depth"</span>: 1.0  }   <span class="c">// le plus près, bouge le plus</span>
   ]
 }</div>
+
+      <!-- 第三张实拍。放在「壁纸类型」这节，因为它正好证明上面说的
+           「壁纸自己声明的开关和滑块会出现在属性面板里」。 -->
+      <figure class="shot rise" style="margin-top:26px">
+        <img src="https://futurebackrookie.github.io/livewall-site/screenshot-inspector.png" width="1040" height="450" loading="lazy" decoding="async"
+             alt="L’inspecteur de fond d’écran de LiveWall, avec le type, la source et les paramètres réglables">
+        <figcaption>Sélectionnez un fond d’écran et l’inspecteur apparaît. Celui-ci, fourni avec l’app, déclare trois paramètres — vitesse, grain et parallaxe — chacun prenant effet dès qu’on le fait glisser.</figcaption>
+      </figure>
+
     </div>
   </div>
 </section>
@@ -1476,10 +1558,10 @@ footer { border-top: 1px solid var(--line); padding: 46px 0 60px; }
   <div class="sec-grid">
     <div class="rail"><span class="rail-num">06</span><span>Migration</span></div>
     <div>
-      <h2 class="sec-h rise">Ce que vous avez accumulé sur Windows peut vous suivre.</h2>
+      <h2 class="sec-h rise">Emportez votre collection Wallpaper Engine sur Mac.</h2>
       <p class="sec-p rise">
-        Le convertisseur en ligne de commande ne lit que des fichiers déjà présents sur votre machine — aucun réseau,
-        aucun Steam, aucun téléchargement. Testé sur 8 éléments réels totalisant 713 Mo : 8 sur 8 convertis.
+        Le convertisseur en ligne de commande ne lit que des fichiers Wallpaper Engine déjà présents sur votre
+        machine — aucun réseau, aucun Steam, aucun téléchargement. Testé sur 8 éléments réels totalisant 713 Mo : 8 sur 8 convertis.
       </p>
 
       <div class="table-scroll rise">
@@ -1548,9 +1630,9 @@ cd Tools/livewall-import &amp;&amp; swift build -c release
           <a href="https://github.com/futurebackrookie/livewall-catalog" target="_blank" rel="noopener">Parcourir le catalogue</a>
         </article>
         <article class="path-card">
-          <span class="path-step">02 / J’arrive de Windows</span>
+          <span class="path-step">02 / J’arrive de Wallpaper Engine</span>
           <h3>Emportez votre collection, ne repartez pas de zéro.</h3>
-          <p>Le convertisseur ne lit que les projets déjà présents sur votre ordinateur — aucune connexion à Steam, aucun téléchargement. Vidéo et web sont pris en charge en priorité, et Scene dispose d’une voie de pré-rendu documentée.</p>
+          <p>Le convertisseur ne lit que les projets Wallpaper Engine déjà présents sur votre ordinateur — aucune connexion à Steam, aucun téléchargement. Vidéo et web sont pris en charge en priorité, et Scene dispose d’une voie de pré-rendu documentée.</p>
           <a href="#import">Voir ce qui se convertit, et comment</a>
         </article>
         <article class="path-card">
@@ -1650,13 +1732,42 @@ cd Tools/livewall-import &amp;&amp; swift build -c release
   </div>
 </section>
 
+
+<!-- ============================== § 常见问题 ============================== -->
+<section class="sec" id="faq">
+  <div class="sec-grid">
+    <div class="rail"><span class="rail-num">10</span><span>FAQ</span></div>
+    <div>
+      <h2 class="sec-h rise">Ce que vous voulez probablement tirer au clair avant de télécharger.</h2>
+      <div class="faq rise">
+        <details><summary>Est-ce que ça consomme beaucoup ?</summary><div class="faq-a">Il ne dessine pas une seule image quand personne ne le voit. Écran entièrement couvert par une fenêtre, écran verrouillé, écran en veille, veille du système et mode économie d’énergie ont chacun leur motif de pause, avec reprise automatique au réveil ; sur batterie, vous choisissez entre la pause et une fréquence d’images réduite. La limite d’images des fonds web est obtenue en prenant la main sur <code>requestAnimationFrame</code> : la page ne peut pas la contourner. Toutes les décisions vivent dans un seul régulateur, donc « pourquoi mon fond d’écran s’est arrêté ? » n’a jamais qu’une réponse — et elle est dans le journal.</div></details>
+        <details><summary>Puis-je utiliser mes propres vidéos ou images ?</summary><div class="faq-a">Oui — glissez-les dans la fenêtre. Vidéo : mp4 / mov / m4v (H.264 ou HEVC). Images : les formats courants et le GIF. Fonds web : HTML / WebGL. <strong>Le webm / VP9 ne se lit pas directement</strong> et doit d’abord être transcodé — AVFoundation ne décode ni l’un ni l’autre, c’est une limite de la plateforme.</div></details>
+        <details><summary>Qu’est-ce que ça vaut face à Wallpaper Engine ?</summary><div class="faq-a">Honnêtement, chacun a ses forces. <strong>Ce qu’il a et que nous n’avons pas</strong> : des millions de contenus Workshop, le rendu Scene natif, un éditeur mature. <strong>Ce que nous avons et qu’il n’a pas</strong> : un fond d’écran différent par Space (impossible sous Windows), le basculement automatique au lever et au coucher du soleil, et une stratégie d’énergie nettement plus sérieuse. Il n’a par ailleurs pas de version macOS — et votre collection actuelle peut vous suivre grâce au convertisseur.</div></details>
+        <details><summary>macOS a bloqué le premier lancement. L’app est cassée ?</summary><div class="faq-a">Non. Cette version n’est pas encore notarisée par Apple — la notarisation exige un compte développeur payant. macOS indique « impossible de vérifier le développeur » ; ouvrez Réglages Système → Confidentialité et sécurité → Sécurité et cliquez une fois sur « Ouvrir quand même ». Tout à la souris, sans Terminal, et seulement la première fois. Les étapes détaillées sont dans la section de téléchargement.</div></details>
+        <details><summary>Est-ce que mes données sont envoyées quelque part ?</summary><div class="faq-a">Non. Fonds d’écran, signets, historique d’import et diagnostics restent sur votre Mac. Rien n’est envoyé automatiquement et il n’y a aucun script de pistage publicitaire. La seule activité réseau est la récupération de l’index du catalogue quand vous le rafraîchissez vous-même ; sans rafraîchissement, l’app ne se connecte jamais. Les rapports de diagnostic ne sont produits que si vous les exportez, et contiennent des états et des erreurs, pas vos fichiers de fond d’écran.</div></details>
+        <details><summary>Quels Mac sont pris en charge ?</summary><div class="faq-a">macOS 14 ou plus récent, sur Apple Silicon comme sur Intel (binaire universel). Les configurations multi-écrans et les écrans secondaires AirPlay ont été testés sur du vrai matériel.</div></details>
+      </div>
+      <div class="note rise"><b>Pas de réponse ici ?</b> C’est une bêta, et votre question est sans doute aussi celle de quelqu’un d’autre — <a href="https://github.com/futurebackrookie/livewall-catalog/issues" target="_blank" rel="noopener">ouvrez un ticket</a> et la réponse atterrira dans cette section.</div>
+    </div>
+  </div>
+</section>
+
 <!-- ============================== § 拿到手 ============================== -->
 <section class="sec" id="get">
   <div class="sec-grid">
-    <div class="rail"><span class="rail-num">10</span><span>Obtenir</span></div>
+    <div class="rail"><span class="rail-num">11</span><span>Obtenir</span></div>
     <div>
       <h2 class="sec-h rise">Commencez tout de suite. La version Store arrive.</h2>
       <p class="sec-p rise">Le bouton ci-dessous lance le téléchargement directement. Vous obtenez un <code>.dmg</code> : ouvrez-le et glissez l’icône dans « Applications ». Aucun logiciel accompagnant, aucun module promotionnel, aucun portail de téléchargement douteux.</p>
+
+      <!-- 真实截图。此前整个网站一张 app 的实拍都没有，访客翻到底也不知道
+           下载下来长什么样。这张只包含自制的内置壁纸 —— 用户库里的第三方
+           内容不能出现在商业站点的宣传图里。 -->
+      <figure class="shot rise">
+        <img src="https://futurebackrookie.github.io/livewall-site/screenshot-library.png" width="1040" height="265" loading="lazy" decoding="async"
+             alt="La fenêtre de bibliothèque de LiveWall affichant trois fonds d’écran WebGL fournis">
+        <figcaption>La bibliothèque de LiveWall. Ces trois-là sont livrés avec l’app : ils sont là dès l’installation.</figcaption>
+      </figure>
 
       <div class="status-grid rise">
         <div class="status-cell"><span class="k">Tests de l’app</span><span class="v">105</span><span class="n">régression automatisée, au vert</span></div>
@@ -1738,9 +1849,9 @@ cd Tools/livewall-import &amp;&amp; swift build -c release
       <a href="#top">Retour en haut</a>
     </div>
     <p class="legal">
-      LiveWall n’est affiliée à aucun logiciel ni plateforme tiers de fonds d’écran, et n’est ni autorisée ni soutenue
-      par eux. Les noms de produits ne sont mentionnés que pour décrire la compatibilité ; les marques appartiennent à
-      leurs détenteurs respectifs.
+      LiveWall n’est affiliée ni à Wallpaper Engine, ni à ses développeurs, ni à aucune plateforme tierce de fonds
+      d’écran, et n’est ni autorisée ni soutenue par eux. Les noms de produits ne sont mentionnés que pour décrire
+      la compatibilité ; les marques appartiennent à leurs détenteurs respectifs.
       Le convertisseur traite des fichiers que vous possédez déjà, sur votre propre ordinateur.
     </p>
   </div>

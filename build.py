@@ -37,6 +37,15 @@ DEFAULT = "zh-Hans"
 # 这个串是公开信息，本来就写在页面 <head> 里给 Google 读。
 GOOGLE_SITE_VERIFICATION = "93BTzCfdrxJ65LatgdtsEzQOmfIMGR1uFCZ4_jt4318"
 
+# 网页访问统计。留空 = 页面上一个追踪脚本都没有（当前状态）。
+#
+# 只支持无 cookie 的方案。页面自己有一整节在讲隐私，挂 Google Analytics
+# 那种广告产品是自相矛盾 —— 而且欧盟访客还得弹 Cookie 同意条。
+#
+#   ANALYTICS = ("cloudflare", "你的 token")   # dash.cloudflare.com → Web Analytics
+#   ANALYTICS = ("goatcounter", "你的子域名")   # 形如 livewall（不含 .goatcounter.com）
+ANALYTICS = None
+
 ROOT = pathlib.Path(__file__).parent
 PLACEHOLDER = re.compile(r"\{\{([\w.\-]+)\}\}")
 
@@ -101,6 +110,23 @@ def check_keys(locales, template):
     return errors
 
 
+def analytics_tag():
+    """无 cookie 的访问统计。没配置就什么都不输出。
+
+    defer 是必须的：统计脚本绝不该挡住首屏那个着色器的渲染。
+    """
+    if not ANALYTICS:
+        return []
+    kind, key = ANALYTICS
+    if kind == "cloudflare":
+        return ['<script defer src="https://static.cloudflareinsights.com/beacon.min.js" '
+                f"""data-cf-beacon='{{"token": "{key}"}}'></script>"""]
+    if kind == "goatcounter":
+        return [f'<script defer data-goatcounter="https://{key}.goatcounter.com/count" '
+                'src="//gc.zgo.at/count.js"></script>']
+    raise ValueError(f"不认识的统计方案：{kind}")
+
+
 def head(code, entries):
     subdir, lang, og_locale, _ = LOCALES[code]
     canonical = f"{SITE_URL}/{subdir}/" if subdir else f"{SITE_URL}/"
@@ -142,6 +168,9 @@ def head(code, entries):
         '"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>',
         f'<link rel="icon" type="image/png" href="{SITE_URL}/icon.png">',
         f'<link rel="apple-touch-icon" href="{SITE_URL}/icon.png">',
+    ]
+    lines += analytics_tag()
+    lines += [
         "</head>",
         "<body>",
     ]
@@ -169,6 +198,10 @@ def render(template, entries, code):
             raise KeyError(f"{code}: 缺词条 {key}")
         return str(entries[key])
     out = PLACEHOLDER.sub(rep, template)
+    # 正文里的资源引用必须换成绝对地址。语言页在 /en/ /ja/ 等子目录下，
+    # 相对路径会解析到子目录里去 —— 根页面正常、四个语言页全裂图，
+    # 只测根页面永远发现不了。
+    out = out.replace("%%SITE%%", SITE_URL)
     out = out.replace("<!--LANG-SWITCHER-->", lang_switcher(code))
     # 页面脚本要用的文案单独注入。JS 里写死中文的话，切到别的语言后
     # 交互部分（层级读数、调速器日志、精选卡片）会突然变回中文。
