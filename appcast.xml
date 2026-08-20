@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
+  <channel>
+    <title>LiveWall</title>
+    <link>https://futurebackrookie.github.io/livewall-site/appcast.xml</link>
+    <description>LiveWall 更新</description>
+    <language>zh-CN</language>
+    <item>
+      <title>1.0.0</title>
+      <pubDate>Thu, 20 Aug 2026 14:38:59 +0000</pubDate>
+      <sparkle:version>3</sparkle:version>
+      <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <description><![CDATA[LiveWall 1.0.0 Beta 3（构建号 3）这版改了什么
+
+新增更新检查：以后可以在菜单栏或设置里手动检查更新，也会按设置定期检查。
+发现新版本时会显示版本号、更新内容，并打开官网下载。
+
+新增锁屏背景同步：可以把当前动态壁纸的最新画面同步成 macOS 系统壁纸，锁屏
+后不再回到之前那张旧壁纸。受 macOS 限制，锁屏显示的是最新静帧，不会继续播放
+视频或网页动画。
+
+提高更新源校验、慢速网络处理和错误日志的可靠性，并补齐发布闭环测试。]]></description>
+      <enclosure url="https://github.com/futurebackrookie/livewall-site/releases/latest/download/LiveWall.dmg"
+                 length="3985977"
+                 type="application/octet-stream"/>
+    </item>
+  </channel>
+</rss>
