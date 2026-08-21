@@ -12,7 +12,7 @@
 | `build.py` | 生成各语言页面，**不要手改生成结果** |
 | `tools/lint_locales.py` | 语言文件体检（词条完整性、HTML 结构、语言串味） |
 | `tools/extract.py` | 一次性脚本，当初把中文页拆成模板 + 词条用的 |
-| `deploy.sh` | 校验 → 生成 → 同步到公开的 livewall-site 仓库 |
+| `deploy.sh` | 校验 → 生成 → 同步到公开的 swaylume-site 仓库 |
 | `icon.png` / `og-cover.*` | favicon 与社交分享卡片 |
 
 生成结果（都别手改）：`index.html`（中文）、`en/` `ja/` `de/` `fr/`、
@@ -32,7 +32,7 @@ python3 site/tools/lint_locales.py && python3 site/build.py
 部署到别的地址时，把站点地址告诉构建脚本，以便生成正确的 canonical / hreflang：
 
 ```bash
-LIVEWALL_SITE_URL=https://your-domain.com python3 site/build.py
+SWAYLUME_SITE_URL=https://your-domain.com python3 site/build.py
 ```
 
 ## 多语言是怎么做的
@@ -68,17 +68,17 @@ LIVEWALL_SITE_URL=https://your-domain.com python3 site/build.py
 用构建时间的话每次重新生成都会变一遍，等于反复喊「内容更新了」，久了就不被当真。
 
 > ⚠️ **`robots.txt` 在 github.io 子路径下不生效。**
-> 爬虫只读域名根部的 `robots.txt`，`/livewall-site/robots.txt` 会被忽略。
+> 爬虫只读域名根部的 `robots.txt`，`/swaylume-site/robots.txt` 会被忽略。
 > 文件照样生成，是为了将来绑自定义域名时自动生效。在那之前，让 sitemap 被发现的
 > 唯一办法是去 Google Search Console / Bing 站长工具**手动提交一次**：
-> `https://futurebackrookie.github.io/livewall-site/sitemap.xml`
+> `https://futurebackrookie.github.io/swaylume-site/sitemap.xml`
 
 ## 部署
 
 ### ⚠️ 先看这条
 
-**GitHub Pages 对私有仓库要付费**（需要 Pro）。LiveWall 主仓库是私有的，
-所以官网单独放在公开的 `livewall-site` 仓库里。同步用：
+**GitHub Pages 对私有仓库要付费**（需要 Pro）。Swaylume 主仓库是私有的，
+所以官网单独放在公开的 `swaylume-site` 仓库里。同步用：
 
 ```bash
 ./site/deploy.sh "改了什么"
@@ -90,7 +90,7 @@ LIVEWALL_SITE_URL=https://your-domain.com python3 site/build.py
 ### 自定义域名
 
 不是必需的。`.com` 一年 ¥60–80，等真要推广了再买 —— `github.io` 的地址一样能用。
-买了之后记得用 `LIVEWALL_SITE_URL` 重新生成，否则 canonical 和 hreflang 还指着旧地址。
+买了之后记得用 `SWAYLUME_SITE_URL` 重新生成，否则 canonical 和 hreflang 还指着旧地址。
 
 ## 页面里有什么
 

@@ -16,8 +16,8 @@
 """
 import json, re, os, sys, pathlib
 
-SITE_URL = os.environ.get("LIVEWALL_SITE_URL",
-                          "https://futurebackrookie.github.io/livewall-site").rstrip("/")
+SITE_URL = os.environ.get("SWAYLUME_SITE_URL",
+                          "https://futurebackrookie.github.io/swaylume-site").rstrip("/")
 
 # 语言代码 -> (输出子目录, <html lang>, og:locale, 语言切换器上的名字)
 LOCALES = {
@@ -43,13 +43,13 @@ GOOGLE_SITE_VERIFICATION = "93BTzCfdrxJ65LatgdtsEzQOmfIMGR1uFCZ4_jt4318"
 # 那种广告产品是自相矛盾 —— 而且欧盟访客还得弹 Cookie 同意条。
 #
 #   ANALYTICS = ("cloudflare", "你的 token")   # dash.cloudflare.com → Web Analytics
-#   ANALYTICS = ("goatcounter", "你的子域名")   # 形如 livewall（不含 .goatcounter.com）
+#   ANALYTICS = ("goatcounter", "你的子域名")   # 形如 swaylume（不含 .goatcounter.com）
 #
 # 这个 token 不是密钥：它会原样出现在每个访客的页面源码里，Cloudflare 就是这么
 # 设计的（它标识「统计哪个站点」，不能用来读数据，读数据要登录后台）。
 # 所以进版本库没有问题，不用当敏感信息处理。
 # 主机名注册的是 futurebackrookie.github.io —— 账号级域名，名下其它
-# GitHub Pages 项目的流量会一起算进来，后台按 /livewall-site/* 路径筛才是本站数字。
+# GitHub Pages 项目的流量会一起算进来，后台按 /swaylume-site/* 路径筛才是本站数字。
 ANALYTICS = ("cloudflare", "aca979be3ab8462e811dcefcae9aa19b")
 
 ROOT = pathlib.Path(__file__).parent
@@ -186,10 +186,10 @@ def head(code, entries):
         '<meta name="twitter:card" content="summary_large_image">',
         # downloadUrl 必须指向公开仓库；源码仓库是私有的，写进去等于喂死链
         '<script type="application/ld+json">'
-        '{"@context":"https://schema.org","@type":"SoftwareApplication","name":"LiveWall",'
+        '{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Swaylume",'
         '"applicationCategory":"UtilitiesApplication","operatingSystem":"macOS 14 or later",'
         '"softwareVersion":"Beta",'
-        '"downloadUrl":"https://github.com/futurebackrookie/livewall-site/releases",'
+        '"downloadUrl":"https://github.com/futurebackrookie/swaylume-site/releases",'
         '"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>',
         f'<link rel="icon" type="image/png" href="{SITE_URL}/icon.png">',
         f'<link rel="apple-touch-icon" href="{SITE_URL}/icon.png">',
@@ -284,7 +284,7 @@ def write_robots():
     """robots.txt。
 
     ⚠️ 部署在 github.io 的子路径下时，爬虫**只认域名根部**的 robots.txt，
-    /livewall-site/robots.txt 会被忽略。生成它是为了将来绑自定义域名时
+    /swaylume-site/robots.txt 会被忽略。生成它是为了将来绑自定义域名时
     自动生效；在那之前，让 sitemap 被发现的办法是去 Search Console 提交。
     """
     (ROOT / "robots.txt").write_text(

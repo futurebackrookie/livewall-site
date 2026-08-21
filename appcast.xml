@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
   <channel>
-    <title>LiveWall</title>
-    <link>https://futurebackrookie.github.io/livewall-site/appcast.xml</link>
-    <description>LiveWall 更新</description>
+    <title>Swaylume</title>
+    <link>https://futurebackrookie.github.io/swaylume-site/appcast.xml</link>
+    <description>Swaylume 更新</description>
     <language>zh-CN</language>
     <item>
       <title>1.0.0</title>
-      <pubDate>Fri, 21 Aug 2026 01:44:01 +0000</pubDate>
+      <pubDate>Fri, 21 Aug 2026 07:52:41 +0000</pubDate>
       <sparkle:version>5</sparkle:version>
       <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-      <description><![CDATA[LiveWall 1.0.0 Beta 5（构建号 5）这版改了什么
+      <description><![CDATA[Swaylume 1.0.0 Beta 5（构建号 5）这版改了什么
+
+LiveWall 现已更名为 Swaylume。升级后会继续使用原有资料库、显示器分配、
+设置与文件授权；新导出的壁纸包使用 .swaylume，旧 .livewall 包仍可导入。
+
+修复正常退出后桌面可能停留在已暂停动态壁纸的问题。现在退出 Swaylume 时会
+移除动态壁纸窗口，并在系统仍使用 Swaylume 静帧时恢复原系统壁纸。
 
 设置里新增“锁屏无延迟（预热）”开关。开启后，锁屏期间壁纸仍然暂停，但会保留视频
 解码管线和网页进程，将解锁后的播放等待压到更低。视频使用 preroll，网页壁纸会暂停动画帧与
@@ -22,8 +28,8 @@
 
 同时修复了重复锁屏事件可能反复重启预热，以及网页壁纸在锁屏后才加载完成时可能自行恢复播放的竞态。
 锁屏、解锁和睡眠状态仍会立即响应，原有轮询继续作为漏通知时的可靠性兜底。]]></description>
-      <enclosure url="https://github.com/futurebackrookie/livewall-site/releases/latest/download/LiveWall.dmg"
-                 length="4045272"
+      <enclosure url="https://github.com/futurebackrookie/swaylume-site/releases/latest/download/Swaylume.dmg"
+                 length="4058757"
                  type="application/octet-stream"/>
     </item>
   </channel>
