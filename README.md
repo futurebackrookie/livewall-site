@@ -23,7 +23,9 @@
 改 `locales/*.json` 里对应的键，然后：
 
 ```bash
-python3 site/tools/lint_locales.py && python3 site/build.py
+python3 site/tools/lint_locales.py && \
+python3 site/tools/test_external_links.py && \
+python3 site/build.py
 ```
 
 **改结构**（加分节、调样式）改 `template.html`；新增文案时记得五个语言文件都要加，
