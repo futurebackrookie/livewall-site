@@ -7,21 +7,23 @@
     <language>zh-CN</language>
     <item>
       <title>1.0.0</title>
-      <pubDate>Fri, 21 Aug 2026 00:58:08 +0000</pubDate>
-      <sparkle:version>4</sparkle:version>
+      <pubDate>Fri, 21 Aug 2026 01:44:01 +0000</pubDate>
+      <sparkle:version>5</sparkle:version>
       <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-      <description><![CDATA[LiveWall 1.0.0 Beta 4（构建号 4）这版改了什么
+      <description><![CDATA[LiveWall 1.0.0 Beta 5（构建号 5）这版改了什么
 
-修复解锁回到桌面后动态壁纸约停顿 2 秒的问题。现在直接响应 macOS 的即时解锁
-事件，不再等待 1 秒状态轮询；在实机验证中，解锁事件后约 79 毫秒恢复播放。
+设置里新增“锁屏无延迟（预热）”开关。开启后，锁屏期间壁纸仍然暂停，但会保留视频
+解码管线和网页进程，将解锁后的播放等待压到更低。视频使用 preroll，网页壁纸会暂停动画帧与
+媒体，不会在锁屏时继续播放画面。
 
-保留原有轮询作为漏通知时的可靠性兜底，不会为了提速牺牲锁屏与快速用户切换的
-状态校正。播放器在锁屏期间保持已加载，只暂停解码，解锁时无需重新创建壁纸。
+预热默认关闭，开启前会明确提醒：它会多占用少量内存，锁屏瞬间可能短暂使用 CPU/GPU。
+系统真正睡眠时永远不预热。实际恢复速度仍受 macOS、素材编码和硬盘性能影响。
 
-锁屏背景仍会同步为当前动态壁纸的最新静帧，不会退回之前那张旧壁纸。]]></description>
+同时修复了重复锁屏事件可能反复重启预热，以及网页壁纸在锁屏后才加载完成时可能自行恢复播放的竞态。
+锁屏、解锁和睡眠状态仍会立即响应，原有轮询继续作为漏通知时的可靠性兜底。]]></description>
       <enclosure url="https://github.com/futurebackrookie/livewall-site/releases/latest/download/LiveWall.dmg"
-                 length="4016314"
+                 length="4045272"
                  type="application/octet-stream"/>
     </item>
   </channel>
