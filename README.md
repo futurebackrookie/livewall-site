@@ -12,6 +12,7 @@
 | `build.py` | 生成各语言页面，**不要手改生成结果** |
 | `tools/lint_locales.py` | 语言文件体检（词条完整性、HTML 结构、语言串味） |
 | `tools/extract.py` | 一次性脚本，当初把中文页拆成模板 + 词条用的 |
+| `tools/analytics.py` | 拉 Cloudflare Web Analytics 的访问量（需 API token，见文件开头） |
 | `deploy.sh` | 校验 → 生成 → 同步到公开的 swaylume-site 仓库 |
 | `icon.png` / `og-cover.*` | favicon 与社交分享卡片 |
 
@@ -106,7 +107,9 @@ SWAYLUME_SITE_URL=https://your-domain.com python3 site/build.py
 或者演示里那个窗口铺满时，`requestAnimationFrame` 就停了。
 `prefers-reduced-motion` 下只画一帧。
 
-没有分析脚本、追踪像素或第三方运行时依赖。
+第三方运行时依赖只有一个：Cloudflare Web Analytics 的 beacon（无 Cookie、
+不跨站追踪、不给单个访客建档）。除此之外没有追踪像素，也没有别的外部脚本。
+不想要统计就把 `build.py` 里的 `ANALYTICS` 置空，页面上那句说明会一起消失。
 
 ## 排版上的雷（都踩过）
 
