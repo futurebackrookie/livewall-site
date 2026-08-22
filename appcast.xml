@@ -7,29 +7,32 @@
     <language>zh-CN</language>
     <item>
       <title>1.0.0</title>
-      <pubDate>Fri, 21 Aug 2026 07:52:41 +0000</pubDate>
-      <sparkle:version>5</sparkle:version>
+      <pubDate>Sat, 22 Aug 2026 21:54:18 +0000</pubDate>
+      <sparkle:version>6</sparkle:version>
       <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-      <description><![CDATA[Swaylume 1.0.0 Beta 5（构建号 5）这版改了什么
+      <description><![CDATA[Swaylume 1.0.0 Beta 6（构建号 6）这版改了什么
 
-LiveWall 现已更名为 Swaylume。升级后会继续使用原有资料库、显示器分配、
-设置与文件授权；新导出的壁纸包使用 .swaylume，旧 .livewall 包仍可导入。
+修复播放/暂停反相。点「暂停」壁纸继续播放、点「继续」壁纸反而停住 ——
+这一版之前一直是这样。原因是内部状态更新的时序问题，渲染器总是执行上一次的
+指令；界面文字始终显示正确，所以从界面上看不出任何异常。
 
-修复正常退出后桌面可能停留在已暂停动态壁纸的问题。现在退出 Swaylume 时会
-移除动态壁纸窗口，并在系统仍使用 Swaylume 静帧时恢复原系统壁纸。
+修复换壁纸慢一拍。选一张壁纸桌面不变，再选一张时才换成上次选的那张。
+和上面是同一类问题，这次一并修掉了五处。
 
-设置里新增“锁屏无延迟（预热）”开关。开启后，锁屏期间壁纸仍然暂停，但会保留视频
-解码管线和网页进程，将解锁后的播放等待压到更低。视频使用 preroll，网页壁纸会暂停动画帧与
-媒体，不会在锁屏时继续播放画面。
+音频响应的提示不再指错方向。此前壁纸不动时一律显示「无信号 · 检查设备选择」，
+但最常见的原因其实是当前壁纸根本不读频谱（视频、图片、2.5D 壁纸都不读，
+只有网页壁纸可能读）。现在会直接说明这一点。麦克风权限被拒时也会明确提示
+去系统设置开启，并提供直达按钮，不再让人在输入设备列表里反复试。
 
-预热默认关闭，开启前会明确提醒：它会多占用少量内存，锁屏瞬间可能短暂使用 CPU/GPU。
-系统真正睡眠时永远不预热。实际恢复速度仍受 macOS、素材编码和硬盘性能影响。
+补上无障碍支持。此前 VoiceOver 用户能听到壁纸名称，却无法选中或应用任何一张 ——
+壁纸网格用的点击手势对辅助功能完全不可见。现在每张壁纸都是可操作的按钮，
+支持「选中」和「应用到桌面」两个动作；图标要么有朗读标签，要么明确跳过。
 
-同时修复了重复锁屏事件可能反复重启预热，以及网页壁纸在锁屏后才加载完成时可能自行恢复播放的竞态。
-锁屏、解锁和睡眠状态仍会立即响应，原有轮询继续作为漏通知时的可靠性兜底。]]></description>
+Pixabay API 密钥改存钥匙串。此前是明文存在偏好设置里，而输入框是密码样式，
+两者不一致。已填过密钥的用户升级后会自动迁移，无需重新输入。]]></description>
       <enclosure url="https://github.com/futurebackrookie/swaylume-site/releases/latest/download/Swaylume.dmg"
-                 length="4058757"
+                 length="4113013"
                  type="application/octet-stream"/>
     </item>
   </channel>
